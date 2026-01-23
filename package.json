@@ -1,0 +1,18 @@
+{
+  "name": "latteq",
+  "version": "1.0.0",
+  "description": "Smooth Automation Strong Quality",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:headed": "playwright test --headed",
+    "test:practice": "playwright test tests/practice/"
+  },
+  "devDependencies": {
+    "@playwright/test": "latest"
+  },
+  "dependencies": {
+    "playwright": "^1.57.0"
+  }
+}
