@@ -54,5 +54,5 @@ Confidence < 5 → ask questions instead of proposing. 5–7 → proceed only if
 
 ## Agents and prompts
 
-- `.github/agents/playwright-test-*` (planner / generator / healer) drive the Playwright MCP and are **not used for exploration**. Plans and tests are written from `ui-context` maps instead.
+- No Playwright MCP agents: plans and tests are written from `ui-context` maps, and failures are debugged with traces plus the chrome-devtools CLI.
 - `/pr-reviewer` prompt (`.github/prompts/pr-reviewer.prompt.md`) → branch review.
