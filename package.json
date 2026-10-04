@@ -7,10 +7,25 @@
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
     "test:headed": "playwright test --headed",
-    "test:practice": "playwright test tests/practice/"
+    "test:practice": "playwright test tests/practice/",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify": "npm run type-check && npm run lint && npm run format:check",
+    "test:smoke": "playwright test --grep @smoke"
   },
   "devDependencies": {
-    "@playwright/test": "latest"
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "latest",
+    "@types/node": "^26.6.4",
+    "eslint": "^10.12.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-playwright": "^2.12.0",
+    "prettier": "^3.9.9",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0"
   },
   "dependencies": {
     "playwright": "^1.57.0"
