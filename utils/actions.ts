@@ -11,14 +11,14 @@ export class Actions {
     const loc = this.locator(target);
     await expect(loc).toBeVisible({ timeout: opts?.timeout ?? 10_000 });
     await expect(loc).toBeEnabled({ timeout: opts?.timeout ?? 10_000 });
-    await loc.scrollIntoViewIfNeeded();
+    // click() scrolls into view itself and re-resolves the locator if the element re-renders;
+    // a separate scrollIntoViewIfNeeded() fails with "not attached to the DOM" on SPAs like GitHub.
     await loc.click({ timeout: opts?.timeout ?? 10_000 });
   }
 
   async safeFill(target: Locator | string, value: string, opts?: { timeout?: number; clear?: boolean }) {
     const loc = this.locator(target);
     await expect(loc).toBeVisible({ timeout: opts?.timeout ?? 10_000 });
-    await loc.scrollIntoViewIfNeeded();
     if (opts?.clear ?? true) await loc.fill('');
     await loc.fill(value);
     await expect(loc).toHaveValue(value, { timeout: opts?.timeout ?? 10_000 });

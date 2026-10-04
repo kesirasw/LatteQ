@@ -1,11 +1,15 @@
-import { test, expect } from '../../fixtures/test';
+import { test } from '../../fixtures/test';
+import { ENV } from '../../data/env';
 
-test('Booking: destination + search results', async ({ booking, page }) => {
+test('Booking: searching a destination shows property results @flaky-site', async ({ booking }) => {
+  test.fixme(
+    true,
+    'Booking.com bot check (HTTP 202 + reload) wipes typed input in headless Chromium — failed 3/3 runs on 2026-10-04. See TEST_FIXES_KNOWLEDGE_BASE.md §8.',
+  );
+
   await booking.open();
-  await booking.setDestination('Melbourne');
+  await booking.setDestination(ENV.TEST_KEYWORDS.booking);
   await booking.clickSearch();
 
-  await expect(page).toHaveURL(/searchresults/i);
-  const cards = page.locator('[data-testid="property-card"]');
-  expect(await cards.count()).toBeGreaterThan(0);
+  await booking.assertResults();
 });

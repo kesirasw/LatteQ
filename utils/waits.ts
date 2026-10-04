@@ -7,6 +7,6 @@ export async function waitForDomSettled(page: Page, ms = 250) {
       new Promise<void>((resolve) => {
         requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, delay)));
       }),
-    ms
+    ms,
   );
 }
