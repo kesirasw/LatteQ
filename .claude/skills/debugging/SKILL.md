@@ -1,6 +1,6 @@
 ---
 name: debugging
-description: Failure investigation for LatteQ Playwright tests — capture (error, trace, screenshot, video), classify against the failure taxonomy (selector ambiguity, overlay interception, late rendering, cert/network, site change, bot wall, test bug), fix the root cause without bumping timeouts or swallowing errors, and record real-site fixes in TEST_FIXES_KNOWLEDGE_BASE.md. Load whenever a test fails, times out, is flaky, or the user says "fix this test" / "why is this red".
+description: Failure investigation for LatteQ Playwright tests — capture (error, trace, screenshot, video), classify against the failure taxonomy (selector ambiguity, overlay interception, late rendering, cert/network, site change, bot wall, test bug), fix the root cause without bumping timeouts or swallowing errors, and record real-site fixes in docs/TEST_FIXES_KNOWLEDGE_BASE.md. Load whenever a test fails, times out, is flaky, or the user says "fix this test" / "why is this red".
 ---
 
 # Debugging
@@ -9,7 +9,7 @@ description: Failure investigation for LatteQ Playwright tests — capture (erro
 
 - **Capture before you change anything.** Read the full error, then the trace. Never "try a fix and see".
 - **Fix the cause, not the symptom.** Forbidden "fixes": raising timeouts, `waitForTimeout`, `.catch(() => {})`, `force: true` without diagnosis, `.first()` to silence strict mode, `test.skip` without a reason, deleting the assertion.
-- **Check the knowledge base first.** `TEST_FIXES_KNOWLEDGE_BASE.md` already covers strict-mode ambiguity, overlays, SSL, multiple headings, chart render timing and auth state.
+- **Check the knowledge base first.** `docs/TEST_FIXES_KNOWLEDGE_BASE.md` already covers strict-mode ambiguity, overlays, SSL, multiple headings, chart render timing and auth state.
 - **Third-party site down or blocking you?** Say so plainly. Mark `test.fixme(true, '<site>: <what you saw> <date>')` only after the user agrees.
 - **Record it.** Every new real-site root cause gets a knowledge-base entry in the existing format (Problem / Root Cause / Solution / Code Change / Key Learning).
 
@@ -55,7 +55,7 @@ To compare against the live site, use the chrome-devtools CLI (`chrome-devtools-
 
 ## 5. Record
 
-Append to `TEST_FIXES_KNOWLEDGE_BASE.md` under "Test Failures & Solutions" with the next number:
+Append to `docs/TEST_FIXES_KNOWLEDGE_BASE.md` under "Test Failures & Solutions" with the next number:
 
 ```md
 ### N. <Site> Test - <Short problem name>

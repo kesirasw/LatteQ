@@ -1,3 +1,9 @@
+# Practice sites — original notes
+
+> A saved chat. LatteQ's practice suites were chosen from these suggestions (DataTables, Booking.com, GitHub, UI Testing Playground, MUI, Highcharts). Kept for ideas on what to automate next. The implemented sites and their quirks live in `ui-context/`.
+
+---
+
 Can you help me fetch complex pages to practice playwright web automation
 Absolutely — great idea for sharpening Playwright skills 👌
 If you want complex, real-world pages to practice advanced web automation, here’s a curated list grouped by what skill they stress-test. These are perfect for someone at your level (not toy demos).

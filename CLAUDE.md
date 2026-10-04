@@ -24,7 +24,9 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 | `scripts/ui-context/`          | `snapshot.mjs` (capture + sanitize), `map-locators.mjs` (snapshot → locators) | `ui-context`               |
 | `tests/seed.spec.ts`           | Seed spec (starting point for generated tests)                               | `test-standards`             |
 | `specs/*.md`                   | Markdown test plans, written from `ui-context` maps                          | `ui-context`                 |
-| `TEST_FIXES_KNOWLEDGE_BASE.md` | Every real-site failure we have diagnosed, with root cause and fix           | `debugging`                  |
+| `docs/TEST_FIXES_KNOWLEDGE_BASE.md` | Every real-site failure we have diagnosed, with root cause and fix           | `debugging`                  |
+| `docs/practice-sites.md`       | Original notes on which public sites to practise against, and why            | —                            |
+| `README.md`                    | Human entry point: setup, commands, layout, how the AI workflow fits in      | —                            |
 
 ## MUST
 
@@ -37,7 +39,7 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 7. **Tests assert the outcome.** Every test ends with at least one `expect` on user-visible state (URL, text, count, value). A test that only performs actions is incomplete.
 8. **Context before code.** Locators, labels and message strings come from `ui-context/<site>/MAP.md`. Crawl only when the map is missing, stale or lacks the element, and only with the **chrome-devtools CLI** (`ui-context`, `chrome-devtools-cli`). Never Playwright MCP or codegen, never memory or guesswork.
 9. **Verify.** After editing any spec, page or fixture, run `npm run verify` (type-check + lint + format check) and the affected tests: `npx playwright test <file>`. Report the actual result.
-10. **Record real-site fixes.** When a failure is caused by the target site (overlay, cert, rendering, bot wall), add an entry to `TEST_FIXES_KNOWLEDGE_BASE.md` using its existing format.
+10. **Record real-site fixes.** When a failure is caused by the target site (overlay, cert, rendering, bot wall), add an entry to `docs/TEST_FIXES_KNOWLEDGE_BASE.md` using its existing format.
 
 ## SHOULD
 

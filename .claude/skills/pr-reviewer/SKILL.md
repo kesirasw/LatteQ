@@ -28,7 +28,7 @@ description: Review a LatteQ branch or diff against the Constitution and skills 
    | `tests/**/*.spec.ts` | `test-standards` |
    | `fixtures/**`, `utils/**` | `fixtures` |
    | `data/**`, `playwright.config.ts`, `.env*` | `data-config` |
-   | `TEST_FIXES_KNOWLEDGE_BASE.md` | `debugging` (format) |
+   | `docs/TEST_FIXES_KNOWLEDGE_BASE.md` | `debugging` (format) |
    | `ui-context/**` | `ui-context` (MAP format, no uids as locators, snapshots sanitized: no `sid=`/`state=` in URLs) |
    | `.claude/**`, `.github/**`, `CLAUDE.md` | consistency between Claude and Copilot rule sets |
 3. **Mechanical scan** of added lines (`git diff -U0 origin/main...HEAD | grep '^+'`): `waitForTimeout`, `xpath=` / `'//`, `.catch(() => {})`, `force: true`, `from '@playwright/test'` in specs, `test.only`, `: any`, `@ts-ignore`, `https?://` literals outside `data/env.ts`, `.first()`/`.nth(` without intent.

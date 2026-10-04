@@ -12,6 +12,6 @@ applyTo: "pages/**/*.ts"
 - Strict-mode ambiguity: `exact: true` → scope to container → `filter({ hasText })` → more specific role. `.first()` only when "any one" is the intent and the method name says so.
 - Portals (MUI options) are queried from `page`, not the trigger container.
 - No `.catch(() => {})`. Optional elements (consent banners) use an explicit `if (await loc.isVisible())` with a comment.
-- `force: true` only with a comment naming the overlay and a `TEST_FIXES_KNOWLEDGE_BASE.md` entry.
+- `force: true` only with a comment naming the overlay and a `docs/TEST_FIXES_KNOWLEDGE_BASE.md` entry.
 - Methods are user intents (`search`, `sortByHeader`), with a one-line JSDoc. Navigation methods end with a readiness assertion; business assertions belong in specs.
 - Every locator must come from `ui-context/<site>/MAP.md` (or be added there from a chrome-devtools CLI snapshot in the same change), never from guesswork. Use the map's Key column as the property name.
