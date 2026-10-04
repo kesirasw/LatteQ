@@ -29,6 +29,10 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
+      # The Booking spec runs on branded Chrome (channel: 'chrome') to get past the site's bot check
+      - name: Install Google Chrome
+        run: npx playwright install chrome
+
       # Customize this step as needed
       - name: Build application
         run: npx run build

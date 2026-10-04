@@ -502,6 +502,16 @@ POM rewritten with live locators (`combobox "Enter destination"` scoped to `regi
 - An HTTP 202 followed by an immediate reload on a public site usually means a bot check. Don't try to defeat it; quarantine the test.
 - Re-check periodically (headed, or a different network) and remove the `fixme` when it passes 3/3.
 
+#### Resolution (2026-10-04, same day)
+A chrome-devtools CLI crawl (real Chrome) got through the bot check, and the saved map (`ui-context/booking/MAP.md`) exposed three more problems. Fixed:
+- Spec runs on installed Chrome: `test.use({ channel: 'chrome' })` (global config unchanged).
+- Late, randomly-timed sign-in modal → `page.addLocatorHandler(signInModal, dismiss)`.
+- Destination combobox is A/B-named ("Enter destination" / "Search in your own words") → located by role inside region "Search properties".
+- Typed value wiped after load (listbox shows "Trending destinations") → `toPass()` retry of fill until "List of suggested destinations" appears.
+- Results assertion: `/searchresults` + region "Filters" + the combobox keeps the destination. There is no city heading on that page.
+
+Passed 5/5 (`--repeat-each=5 --retries=0`). Requires Google Chrome installed locally and in CI (`npx playwright install chrome`).
+
 ---
 
 ### 9. GitHub Test - Clicks Swallowed During Hydration (2026-10-04)

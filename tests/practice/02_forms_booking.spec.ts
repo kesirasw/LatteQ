@@ -1,15 +1,15 @@
 import { test } from '../../fixtures/test';
 import { ENV } from '../../data/env';
 
-test('Booking: searching a destination shows property results @flaky-site', async ({ booking }) => {
-  test.fixme(
-    true,
-    'Booking.com bot check (HTTP 202 + reload) wipes typed input in headless Chromium — failed 3/3 runs on 2026-10-04. See TEST_FIXES_KNOWLEDGE_BASE.md §8.',
-  );
+// Booking's bot check blocks Playwright's bundled Chromium but lets real Chrome through (KB §8)
+test.use({ channel: 'chrome' });
+
+test('Booking: searching a destination shows its results @flaky-site', async ({ booking }) => {
+  const destination = ENV.TEST_KEYWORDS.booking;
 
   await booking.open();
-  await booking.setDestination(ENV.TEST_KEYWORDS.booking);
+  await booking.setDestination(destination);
   await booking.clickSearch();
 
-  await booking.assertResults();
+  await booking.assertResults(destination);
 });
