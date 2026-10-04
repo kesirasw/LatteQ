@@ -10,7 +10,7 @@ Scoped rules are auto-applied from `.github/instructions/*.instructions.md` by f
 - `pages/*Page.ts` — page objects, `constructor(page, actions)`.
 - `utils/actions.ts` (`safeClick`, `safeFill`, `safeType`, `safePress`, `stableNavigate`), `utils/network.ts`, `utils/table.ts`, `utils/waits.ts`, `utils/auth.ts`.
 - `data/env.ts` — `ENV`: URLs, credentials (`process.env`), keywords, timeouts.
-- `tests/practice/NN_*.spec.ts` — specs. `tests/seed.spec.ts` — seed for planner/generator agents. `specs/` — test plans.
+- `tests/practice/NN_*.spec.ts` — specs. `tests/seed.spec.ts` — seed spec (starting point for new specs). `specs/` — test plans.
 - `TEST_FIXES_KNOWLEDGE_BASE.md` — diagnosed real-site failures.
 
 ## MUST
