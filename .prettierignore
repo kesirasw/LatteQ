@@ -5,3 +5,4 @@ test-results/
 package-lock.json
 *.md
 *.txt
+api-context/**/openapi.json

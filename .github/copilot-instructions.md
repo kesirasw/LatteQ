@@ -9,8 +9,10 @@ Scoped rules are auto-applied from `.github/instructions/*.instructions.md` by f
 - `fixtures/test.ts` — the only `test` / `expect` export; registers every page object and util as a fixture.
 - `pages/*Page.ts` — page objects, `constructor(page, actions)`.
 - `utils/actions.ts` (`safeClick`, `safeFill`, `safeType`, `safePress`, `stableNavigate`), `utils/network.ts`, `utils/table.ts`, `utils/waits.ts`, `utils/auth.ts`.
+- `fixtures/api/` — `apiRequest` fixture + Zod schemas per site (`schemas/<site>/`). `tests/api/<site>/` — API specs. `data/api-endpoints.ts`, `data/invalid-values.ts`.
 - `data/env.ts` — `ENV`: URLs, credentials (`process.env`), keywords, timeouts.
-- `tests/practice/NN_*.spec.ts` — specs. `tests/seed.spec.ts` — seed spec (starting point for new specs). `specs/` — test plans.
+- `tests/practice/NN_*.spec.ts` — specs. `tests/seed.spec.ts` — seed spec (starting point for new specs). `test-plans/<site>/` — plain-English test plan and test cases (rules: `.claude/skills/test-planning/SKILL.md`).
+- `api-context/<site>/` — OpenAPI snapshot + generated `INVENTORY.md`. `test-plans/<site>/api/` — plain-English API test plan and cases (rules: `.claude/skills/api-test-planning/SKILL.md`).
 - `docs/TEST_FIXES_KNOWLEDGE_BASE.md` — diagnosed real-site failures.
 
 ## MUST
@@ -24,7 +26,8 @@ Scoped rules are auto-applied from `.github/instructions/*.instructions.md` by f
 7. Every test asserts a user-visible outcome.
 8. Context before code: take locators from `ui-context/<site>/MAP.md`. Crawl only when the map lacks the element, and only with the **chrome-devtools CLI** (`npm run ui:cdt`, see `.claude/skills/chrome-devtools-cli/SKILL.md`). Never use Playwright MCP or codegen for exploration.
 9. After edits run `npm run verify` and `npx playwright test <file>`; report the real result.
-10. Record real-site fixes in `docs/TEST_FIXES_KNOWLEDGE_BASE.md`.
+10. API responses are validated with `expect(SchemaName.parse(body)).toBeTruthy()` against `z.strictObject()` schemas built from the OpenAPI contract.
+11. Record real-site fixes in `docs/TEST_FIXES_KNOWLEDGE_BASE.md`.
 
 ## WON'T
 

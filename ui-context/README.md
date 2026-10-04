@@ -11,6 +11,7 @@ How to use, refresh and extend these maps: `.claude/skills/ui-context/SKILL.md`.
 | mui | [MAP.md](mui/MAP.md) | 2026-10-04 | 2026-10-04 | 16 "Age" comboboxes; portal listbox |
 | highcharts | [MAP.md](highcharts/MAP.md) | 2026-10-04 | 2026-10-04 | Chart in iframe; inner locators are `run`-verified |
 | github | [MAP.md](github/MAP.md) | 2026-10-04 | 2026-10-04 | Hydration race; issue filter ignores fill() |
+| toolshop | [MAP.md](toolshop/MAP.md) | 2026-10-04 | — (plan: `test-plans/toolshop/`) | Angular SPA; `data-test` attrs; server-side cart; silent API errors at Confirm |
 | booking | [MAP.md](booking/MAP.md) | 2026-10-04 | 2026-10-04 | Real Chrome only (`channel: 'chrome'`); A/B destination box; sign-in modal |
 
 ## Commands

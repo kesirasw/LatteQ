@@ -86,6 +86,22 @@ const RULES = [
     count: regexRule(/\btest\.(skip|fixme)\(\s*\)/g),
     fix: "Pass a condition and reason: test.skip(cond, 'why').",
   },
+  {
+    id: 'loose-zod-schema',
+    applies: inDirs('fixtures/api/schemas/'),
+    count: regexRule(/\bz\.object\s*\(/g),
+    fix: 'Use z.strictObject() so unexpected fields fail validation (api-testing skill).',
+  },
+  {
+    id: 'bare-schema-parse',
+    applies: (rel) => rel.startsWith('tests/'),
+    // Schema.parse(body) must be wrapped: expect(Schema.parse(body)).toBeTruthy()
+    count: (text) =>
+      text
+        .split(/\r?\n/)
+        .filter((l) => /\b[A-Z]\w*Schema\.parse\(/.test(l) && !/expect\(\s*[A-Z]\w*Schema\.parse\(/.test(l)).length,
+    fix: 'Validate with expect(SchemaName.parse(body)).toBeTruthy() (api-testing skill).',
+  },
 ];
 
 // Git Bash on Windows hands over paths like /c/Users/...; Node on Windows needs C:/Users/...

@@ -29,6 +29,9 @@ description: Review a LatteQ branch or diff against the Constitution and skills 
    | `fixtures/**`, `utils/**` | `fixtures` |
    | `data/**`, `playwright.config.ts`, `.env*` | `data-config` |
    | `docs/TEST_FIXES_KNOWLEDGE_BASE.md` | `debugging` (format) |
+   | `tests/api/**`, `fixtures/api/**`, `data/api-endpoints.ts`, `data/invalid-values.ts` | `api-testing` (contract-sourced schemas, `z.strictObject`, wrapped parse, `test.step` per call, negative coverage) |
+   | `test-plans/*/api/**`, `api-context/**` | `api-test-planning` (plain English outside Endpoint/Expected response, every documented status covered or excluded, inventory regenerated not hand-edited) |
+   | `test-plans/**` | `test-planning` (plain English, no locators/codes, every case has Basis + Map reference, counts match) |
    | `ui-context/**` | `ui-context` (MAP format, no uids as locators, snapshots sanitized: no `sid=`/`state=` in URLs) |
    | `.claude/**`, `.github/**`, `CLAUDE.md` | consistency between Claude and Copilot rule sets |
 3. **Mechanical scan** of added lines (`git diff -U0 origin/main...HEAD | grep '^+'`): `waitForTimeout`, `xpath=` / `'//`, `.catch(() => {})`, `force: true`, `from '@playwright/test'` in specs, `test.only`, `: any`, `@ts-ignore`, `https?://` literals outside `data/env.ts`, `.first()`/`.nth(` without intent.

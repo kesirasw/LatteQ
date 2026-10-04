@@ -8,6 +8,10 @@ export const ENV = {
   GH_USER: process.env.GH_USER || '',
   GH_PASS: process.env.GH_PASS || '',
 
+  // Toolshop demo customer (published demo accounts are listed in ui-context/toolshop/MAP.md)
+  TOOLSHOP_EMAIL: process.env.TOOLSHOP_EMAIL || '',
+  TOOLSHOP_PASSWORD: process.env.TOOLSHOP_PASSWORD || '',
+
   // Site URLs (override via process.env to point at another environment)
   BOOKING_URL: process.env.BOOKING_URL || 'https://www.booking.com/',
   GITHUB_URL: process.env.GITHUB_URL || 'https://github.com/',
@@ -16,6 +20,8 @@ export const ENV = {
   UITP_URL: process.env.UITP_URL || 'https://uitestingplayground.com/',
   MUI_URL: process.env.MUI_URL || 'https://mui.com/material-ui/react-select/',
   HIGHCHARTS_URL: process.env.HIGHCHARTS_URL || 'https://www.highcharts.com/demo',
+  TOOLSHOP_URL: process.env.TOOLSHOP_URL || 'https://practicesoftwaretesting.com/',
+  TOOLSHOP_API_URL: process.env.TOOLSHOP_API_URL || 'https://api.practicesoftwaretesting.com',
 
   // Test data
   TEST_KEYWORDS: {

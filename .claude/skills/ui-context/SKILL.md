@@ -103,6 +103,6 @@ Keys are the page-object property / method names, so POM ↔ map stay greppable.
 - After a green run that exercises a map, update **Last verified by run**.
 - Refreshing = re-capture the state file (overwrites), re-run `ui:map`, update rows; note changes in Quirks if behaviour changed.
 
-## Test plans (`specs/`)
+## Test plans
 
-Write plans from the map's **States & flows**; crawl only states the plan needs that the map lacks. Save to `specs/<site>.md`: scenarios with preconditions, steps, expected result per step (taken from "Observed outcome").
+After a crawl, the test plan and test cases are written by the `test-planning` skill into `test-plans/<site>/`, in plain English, from this map's *States & flows*, *Quirks* and *Gaps*. Keep flow step IDs (C1, K4 …) stable — test cases reference them.

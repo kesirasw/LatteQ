@@ -31,6 +31,7 @@ Optional, for the auth spec: set `GH_USER` and `GH_PASS` (a GitHub account witho
 | `npm test` | Run every spec (list + HTML report) |
 | `npm run test:practice` | Run `tests/practice/` only |
 | `npm run test:smoke` | Run tests tagged `@smoke` |
+| `npm run test:api` | Run API tests (tagged `@api`) |
 | `npx playwright test <file>` | Run one spec |
 | `npm run test:ui` / `test:headed` / `test:debug` | Interactive UI mode / visible browser / Inspector |
 | `npx playwright show-report` | Open the last HTML report (served locally, so traces work) |
@@ -39,6 +40,7 @@ Optional, for the auth spec: set `GH_USER` and `GH_PASS` (a GitHub account witho
 | `npm run ui:cdt -- <command>` | chrome-devtools CLI, used to crawl a site |
 | `npm run ui:snap -- <site> <state>` | Save a sanitized page snapshot to `ui-context/` |
 | `npm run ui:map -- <snapshot>` | Turn a snapshot into Playwright locator suggestions |
+| `npm run api:inventory -- <contract URL> --site <site>` | Save an API contract and its endpoint inventory to `api-context/` |
 
 Results land in `playwright-report/` (HTML) and `test-results/` (screenshots, videos and traces of failures). Both are git-ignored.
 
@@ -50,12 +52,17 @@ LatteQ/
 │   ├── practice/NN_<area>_<site>.spec.ts   specs, one site per file
 │   └── seed.spec.ts                        starting point for new specs
 ├── pages/<Site>Page.ts                     page objects: locators + user-intent methods
-├── fixtures/test.ts                        the only test/expect export; wires pages + utils as fixtures
+├── tests/api/<site>/<resource>.spec.ts     API specs (apiRequest + Zod schemas)
+├── fixtures/test.ts                        the only test/expect export; wires pages, utils and apiRequest
+├── fixtures/api/                           apiRequest fixture + Zod response schemas per site
 ├── utils/                                  Actions (safe click/fill), Network, table, auth, waits helpers
 ├── data/env.ts                             ENV: site URLs, credentials (from process.env), keywords, timeouts
+├── data/api-endpoints.ts, invalid-values.ts API paths per site; values for negative API tests
 ├── ui-context/<site>/                      saved UI knowledge per site: MAP.md + accessibility snapshots
 ├── scripts/ui-context/                     snapshot capture + snapshot→locator mapper
-├── specs/                                  markdown test plans
+├── api-context/<site>/                     OpenAPI contract snapshot + generated endpoint INVENTORY.md
+├── test-plans/<site>/                      plain-English test plan + test-cases/NN-<area>.md (UI)
+│   └── api/                                plain-English API test plan + test-cases/NN-<resource>.md
 ├── docs/
 │   ├── TEST_FIXES_KNOWLEDGE_BASE.md        every real-site failure diagnosed so far, with the fix
 │   └── practice-sites.md                   original notes on which sites to practise against

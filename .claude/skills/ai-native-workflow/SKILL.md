@@ -58,8 +58,10 @@ LatteQ-specific confidence reducers: target is a third-party site with bot prote
 | User intent | First skill | Then |
 |-------------|-------------|------|
 | "Automate / add a test for <site or flow>" | `ui-context` | (`chrome-devtools-cli` if crawl needed) → `page-objects` → `selectors` → `fixtures` → `test-standards` |
-| "Write a test plan for <site>" | `ui-context` | saves to `specs/<site>.md` |
+| "Write a test plan / test cases for <site>" | `ui-context` (crawl if no map) | `test-planning` → `test-plans/<site>/` |
 | "Map / crawl / refresh the UI of <site>" | `ui-context` | `chrome-devtools-cli` |
+| "Write an API test plan / API test cases for <site or resource>" | `api-test-planning` | `api-context` inventory → `test-plans/<site>/api/` → `api-testing` |
+| "Add API tests / automate backend checks for <endpoint or site>" | `api-testing` | contract (OpenAPI) → `data-config` (endpoints) → `fixtures` → `debugging` |
 | "Add / change a page object" | `page-objects` | `ui-context`, `selectors`, `fixtures` |
 | "This locator is wrong / strict mode violation" | `selectors` | `ui-context` (refresh state), `debugging` |
 | "Add a spec / restructure tests / tagging" | `test-standards` | `fixtures`, `page-objects` |

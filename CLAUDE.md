@@ -18,12 +18,18 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 | `utils/network.ts`             | `Network` — `waitForResponseContains`, `captureJson`                         | `page-objects`, `debugging`  |
 | `utils/table.ts`, `utils/waits.ts`, `utils/auth.ts` | Stateless helpers (table reads, DOM settle, storageState)  | `fixtures`                   |
 | `data/env.ts`                  | `ENV` — base URLs, credentials (`process.env.*`), test keywords, timeouts    | `data-config`                |
-| `tests/practice/NN_*.spec.ts`  | Spec files, one feature area per file                                        | `test-standards`             |
+| `tests/practice/NN_*.spec.ts`  | UI spec files, one feature area per file                                     | `test-standards`             |
+| `tests/api/<site>/*.spec.ts`   | API spec files, one resource per file (`@api`)                               | `api-testing`                |
+| `fixtures/api/`                | `apiRequest` fixture (merged into `fixtures/test.ts`) + Zod schemas per site in `schemas/<site>/` | `api-testing`  |
+| `data/api-endpoints.ts`        | API endpoint paths per site (`ToolshopApi.*`), taken from the OpenAPI contract | `api-testing`, `data-config` |
+| `data/invalid-values.ts`       | Universal `INVALID_*` values for negative API tests                          | `api-testing`                |
 | `ui-context/<site>/MAP.md`     | Saved UI knowledge per site: quirks, flows, curated Playwright locators     | `ui-context`                 |
 | `ui-context/<site>/*.snapshot.txt` | Sanitized chrome-devtools CLI accessibility snapshots                    | `ui-context`, `chrome-devtools-cli` |
 | `scripts/ui-context/`          | `snapshot.mjs` (capture + sanitize), `map-locators.mjs` (snapshot → locators) | `ui-context`               |
 | `tests/seed.spec.ts`           | Seed spec (starting point for generated tests)                               | `test-standards`             |
-| `specs/*.md`                   | Markdown test plans, written from `ui-context` maps                          | `ui-context`                 |
+| `api-context/<site>/`          | OpenAPI contract snapshot + generated `INVENTORY.md` (`npm run api:inventory`) | `api-test-planning`      |
+| `test-plans/<site>/api/`       | Plain-English API test plan + `test-cases/NN-<resource>.md`, from the contract | `api-test-planning`  |
+| `test-plans/<site>/`           | Plain-English test plan (`test-plan.md`) + `test-cases/NN-<area>.md`, written after the crawl | `test-planning`     |
 | `docs/TEST_FIXES_KNOWLEDGE_BASE.md` | Every real-site failure we have diagnosed, with root cause and fix           | `debugging`                  |
 | `docs/practice-sites.md`       | Original notes on which public sites to practise against, and why            | —                            |
 | `README.md`                    | Human entry point: setup, commands, layout, how the AI workflow fits in      | —                            |
@@ -39,7 +45,8 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 7. **Tests assert the outcome.** Every test ends with at least one `expect` on user-visible state (URL, text, count, value). A test that only performs actions is incomplete.
 8. **Context before code.** Locators, labels and message strings come from `ui-context/<site>/MAP.md`. Crawl only when the map is missing, stale or lacks the element, and only with the **chrome-devtools CLI** (`ui-context`, `chrome-devtools-cli`). Never Playwright MCP or codegen, never memory or guesswork.
 9. **Verify.** After editing any spec, page or fixture, run `npm run verify` (type-check + lint + format check) and the affected tests: `npx playwright test <file>`. Report the actual result.
-10. **Record real-site fixes.** When a failure is caused by the target site (overlay, cert, rendering, bot wall), add an entry to `docs/TEST_FIXES_KNOWLEDGE_BASE.md` using its existing format.
+10. **Validate API responses with Zod.** Every API response body is checked as `expect(SchemaName.parse(body)).toBeTruthy();` against a `z.strictObject()` schema built from the site's OpenAPI contract (`api-testing`).
+11. **Record real-site fixes.** When a failure is caused by the target site (overlay, cert, rendering, bot wall), add an entry to `docs/TEST_FIXES_KNOWLEDGE_BASE.md` using its existing format.
 
 ## SHOULD
 
@@ -65,6 +72,7 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 | Placeholder/TODO locators, "fill in later" page objects                       | Read the map (or crawl), then write real locators                 |
 | Playwright MCP / `playwright codegen` / ad-hoc scripts for UI discovery       | chrome-devtools CLI → `ui-context` map                            |
 | Session uids from a snapshot used as locators                                 | The mapped Playwright locator                                     |
+| `z.object()` in API schemas, bare `Schema.parse(body)`, loosening a schema to match a buggy API | `z.strictObject()`, `expect(Schema.parse(body)).toBeTruthy()`, `test.skip` + `// FIXME:` |
 | `.js` spec files                                                              | TypeScript only                                                   |
 
 ## Enforcement
@@ -72,7 +80,7 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 The WON'T table is enforced in three layers:
 
 1. **This file + skills** — read by the agent (prompt level).
-2. **Write-time hook** — `.claude/hooks/enforce-constitution.mjs`, registered in `.claude/settings.json` as a `PreToolUse` hook on `Write|Edit|MultiEdit`. It blocks any edit that *adds* a hard wait, XPath, `@playwright/test` import in a spec, `.only`, empty `.catch`, `any`, `@ts-ignore`, a literal URL in `pages/`/`tests/`, undocumented `force: true`, or a reasonless `skip`/`fixme`. Pre-existing violations in untouched lines don't block. If blocked, fix the change — don't work around the hook.
+2. **Write-time hook** — `.claude/hooks/enforce-constitution.mjs`, registered in `.claude/settings.json` as a `PreToolUse` hook on `Write|Edit|MultiEdit`. It blocks any edit that *adds* a hard wait, XPath, `@playwright/test` import in a spec, `.only`, empty `.catch`, `any`, `@ts-ignore`, a literal URL in `pages/`/`tests/`, undocumented `force: true`, a reasonless `skip`/`fixme`, `z.object()` in `fixtures/api/schemas/`, or an unwrapped `Schema.parse(` in a spec. Pre-existing violations in untouched lines don't block. If blocked, fix the change — don't work around the hook.
 3. **ESLint** — `npm run lint` (also covers Copilot, which the hook doesn't).
 
 ## Workflow Entry Point
@@ -90,9 +98,12 @@ Trivial edits (typo, single import) may use Direct Mode — but confirm the prem
 | `ai-native-workflow` | Start of any non-trivial task; "which skill?"                                  |
 | `ui-context`         | Before writing any locator, page object, spec or test plan (map first)        |
 | `chrome-devtools-cli`| When `ui-context` says a crawl is needed — the only exploration tool          |
+| `test-planning`      | Writing a test plan / test cases for a site after its crawl (plain English)   |
+| `api-test-planning`  | Writing an API test plan / test cases from the OpenAPI contract (plain English) |
 | `selectors`          | Choosing or fixing a locator                                                   |
 | `page-objects`       | Creating or editing anything in `pages/`                                       |
 | `fixtures`           | Registering a page/util, editing `fixtures/test.ts`, or adding to `utils/`      |
+| `api-testing`        | API specs, Zod schemas, `apiRequest`, automating a plan's backend checks        |
 | `test-standards`     | Creating or editing a spec file                                                |
 | `data-config`        | Adding URLs, env vars, keywords, timeouts; editing `playwright.config.ts`      |
 | `debugging`          | Any failing or flaky test                                                      |
@@ -104,6 +115,7 @@ Trivial edits (typo, single import) may use Direct Mode — but confirm the prem
 npm test                         # all tests
 npx playwright test <file>       # one spec
 npm run test:practice            # tests/practice/
+npm run test:api                 # tests tagged @api
 npm run test:headed              # watch it run
 npx playwright show-report       # last HTML report
 npx playwright show-trace <zip>  # inspect a trace
@@ -116,4 +128,7 @@ npm run ui:cdt -- new_page "<url>"
 npm run ui:snap -- <site> <state> [--verbose]          # save sanitized snapshot to ui-context/
 npm run ui:map -- ui-context/<site>/<state>.snapshot.txt   # Playwright locator candidates
 npm run ui:cdt -- stop
+
+# API context (OpenAPI contract)
+npm run api:inventory -- "<contract URL>" --site <site> [--tags User,Invoice]
 ```

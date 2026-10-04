@@ -17,7 +17,9 @@
     "test:smoke": "playwright test --grep @smoke",
     "ui:cdt": "chrome-devtools",
     "ui:map": "node scripts/ui-context/map-locators.mjs",
-    "ui:snap": "node scripts/ui-context/snapshot.mjs"
+    "ui:snap": "node scripts/ui-context/snapshot.mjs",
+    "test:api": "playwright test --grep @api",
+    "api:inventory": "node scripts/api-context/inventory.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -29,7 +31,8 @@
     "eslint-plugin-playwright": "^2.12.0",
     "prettier": "^3.9.9",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.71.0"
+    "typescript-eslint": "^8.71.0",
+    "zod": "^4.6.5"
   },
   "dependencies": {
     "playwright": "^1.57.0"

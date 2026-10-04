@@ -58,6 +58,7 @@ For login, prefer a Playwright **setup project** that writes `.auth/state.json` 
 
 ## Existing utils
 
+- `apiRequest` (from `fixtures/api/api-request-fixture.ts`, merged into `test` with `mergeTests`) — typed HTTP calls for API tests; see the `api-testing` skill.
 - `Actions` — `safeClick`, `safeFill` (verifies value), `safeType`, `safePress`, `stableNavigate`.
 - `Network` — `waitForResponseContains(urlPart, { status })`, `captureJson(urlPart, action)`.
 - `utils/table.ts` — `getColumnText(table, col)`, `isSortedAsc`, `expectSortedAsc`.

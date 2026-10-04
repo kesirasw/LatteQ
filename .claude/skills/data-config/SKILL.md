@@ -29,6 +29,11 @@ export const ENV = {
 
 Override with `process.env.*` so CI can point at another environment without code changes.
 
+## API endpoints
+
+- Base URLs per site in `ENV` (`TOOLSHOP_API_URL` …); endpoint paths in `data/api-endpoints.ts` (`ToolshopApi.LOGIN` …), each taken from the site's OpenAPI contract.
+- Negative-test values: universal ones in `data/invalid-values.ts`; site-specific sets in `data/<site>-invalid-data.ts` (`as const`, never `.json`). See `api-testing`.
+
 ## Timeouts
 
 - Defaults live in `playwright.config.ts` (test 60s, expect 10s, action 15s, navigation 30s). Leave them alone.
