@@ -32,7 +32,7 @@ LatteQ/
 │   └── HighchartsPage.ts         # Highcharts (chart interactions)
 │
 ├── tests/
-│   ├── example.spec.js           # Initial example test
+│   ├── seed.spec.ts              # Seed spec (starting point for new specs)
 │   └── practice/
 │       ├── 01_tables_datatables.spec.ts       # Table filtering, sorting
 │       ├── 02_forms_booking.spec.ts           # Complex form flows

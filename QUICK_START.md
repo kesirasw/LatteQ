@@ -68,7 +68,7 @@ npm test tests/practice/01_tables_datatables.spec.ts
 
 ### Tests
 - `tests/practice/01-07_*.spec.ts` - Practice test suites
-- `tests/example.spec.js` - Basic example (keep or replace)
+- `tests/seed.spec.ts` - Seed spec (starting point for new specs)
 
 ### Config
 - `playwright.config.ts` - Playwright settings (trace, screenshots, video)
