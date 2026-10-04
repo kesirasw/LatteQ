@@ -11,7 +11,7 @@ description: Locator strategy for LatteQ page objects — priority order (getByR
 - **No XPath. Ever.**
 - **No blind `.first()` / `.nth()`.** If a locator matches several elements, make it unique (`exact: true`, scope to a container, `filter({ hasText })`). `.first()` is allowed only when "any of these" is genuinely the intent (e.g. "first search result"), and the method name must say so (`openFirstResult`).
 - **No auto-generated IDs or hashed classes** (`#mui-123`, `.css-1x2y3z`, `.sc-abc`). They change between builds.
-- **Every locator comes from a snapshot** (`explore`).
+- **Every locator comes from the site's `ui-context` map** (a `cdt`/`run` row). If the element isn't mapped, add it from a chrome-devtools CLI snapshot first (`ui-context`). `npm run ui:map` already flags `exact: true` and scoping needs.
 
 ## Choosing a locator
 
@@ -51,6 +51,7 @@ Error: `strict mode violation: getByRole(...) resolved to 2 elements`. In order 
 | Seen | Fix |
 |------|-----|
 | `page.locator('#example tbody tr')` in a spec | Expose `rows` on the page object |
-| `page.locator('input[name="ss"]')` | `getByPlaceholder` / `getByLabel` / `getByRole('combobox')` from the snapshot |
-| `'[data-testid="a"], [role="option"]'` (OR-selector to cover unknown DOM) | Explore and pick the one that's actually there |
+| `page.locator('input[name="ss"]')` | `getByPlaceholder` / `getByLabel` / `getByRole('combobox')` from the map |
+| `'[data-testid="a"], [role="option"]'` (OR-selector to cover unknown DOM) | Check the map (or crawl) and pick the one that's actually there |
+| Name that changes between visits (A/B copy, counts, locale dates) | Role inside a unique container, or a regex on the stable part (see the map's Quirks) |
 | `.first()` to silence strict mode | One of the five resolutions above |

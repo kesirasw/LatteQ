@@ -23,7 +23,7 @@ npx playwright test <file> --headed --debug         # step through (Inspector)
 npx playwright test <file> --repeat-each 5          # check flakiness
 ```
 
-With the MCP server: `test_run` → `test_debug` pauses at the failure; then `browser_snapshot`, `browser_console_messages`, `browser_network_requests`, `browser_generate_locator` against the paused page.
+To compare against the live site, use the chrome-devtools CLI (`chrome-devtools-cli`), not Playwright MCP: open the failing state, `take_snapshot`, `list_console_messages`, `list_network_requests`. Diff the result against the state's file in `ui-context/<site>/`. The Playwright trace's `error-context.md` also contains an accessibility snapshot of the moment of failure.
 
 ## 2. Classify
 
@@ -33,7 +33,8 @@ With the MCP server: `test_run` → `test_debug` pauses at the failure; then `br
 | `<div …> intercepts pointer events` | Overlay / modal | Dismiss the overlay; last resort documented `force: true` or keyboard input | §2, §3 |
 | `waiting for locator…` timeout, element appears later | Late render / SPA | Wait for the right signal: locator assertion, `waitForURL`, `Network.waitForResponseContains` | §6 |
 | `net::ERR_CERT_*` | Cert / network | Global `ignoreHTTPSErrors` (already on) | §4 |
-| Locator not found, page looks different in screenshot | Site changed | Re-explore, update the page object | — |
+| Locator not found, page looks different in screenshot | Site changed | Refresh that state's `ui-context` map with the CLI, update map rows, then the page object | — |
+| Works in the CLI's Chrome, fails in Playwright (or vice versa) | Browser variant | Note it in the map's Quirks (A/B copy, locale, CORS); consider `channel: 'chrome'` | §8, §10 |
 | Captcha, "unusual traffic", empty results only in CI | Bot wall | Report to user; `@flaky-site` tag or `fixme` with reason | — |
 | Passes alone, fails in parallel | Shared state | Isolate via fixture / storageState | §7 |
 | Wrong value asserted, logic error | Test bug | Fix the test or page method | — |

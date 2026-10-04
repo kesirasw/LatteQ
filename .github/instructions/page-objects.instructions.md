@@ -14,4 +14,4 @@ applyTo: "pages/**/*.ts"
 - No `.catch(() => {})`. Optional elements (consent banners) use an explicit `if (await loc.isVisible())` with a comment.
 - `force: true` only with a comment naming the overlay and a `TEST_FIXES_KNOWLEDGE_BASE.md` entry.
 - Methods are user intents (`search`, `sortByHeader`), with a one-line JSDoc. Navigation methods end with a readiness assertion; business assertions belong in specs.
-- Every locator must come from a live snapshot (playwright-test MCP), never from guesswork.
+- Every locator must come from `ui-context/<site>/MAP.md` (or be added there from a chrome-devtools CLI snapshot in the same change), never from guesswork. Use the map's Key column as the property name.

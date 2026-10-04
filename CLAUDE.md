@@ -19,8 +19,11 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 | `utils/table.ts`, `utils/waits.ts`, `utils/auth.ts` | Stateless helpers (table reads, DOM settle, storageState)  | `fixtures`                   |
 | `data/env.ts`                  | `ENV` — base URLs, credentials (`process.env.*`), test keywords, timeouts    | `data-config`                |
 | `tests/practice/NN_*.spec.ts`  | Spec files, one feature area per file                                        | `test-standards`             |
-| `tests/seed.spec.ts`           | Seed file for the Playwright planner/generator MCP tools                     | `explore`                    |
-| `specs/*.md`                   | Markdown test plans (output of planning, input to generation)                | `explore`                    |
+| `ui-context/<site>/MAP.md`     | Saved UI knowledge per site: quirks, flows, curated Playwright locators     | `ui-context`                 |
+| `ui-context/<site>/*.snapshot.txt` | Sanitized chrome-devtools CLI accessibility snapshots                    | `ui-context`, `chrome-devtools-cli` |
+| `scripts/ui-context/`          | `snapshot.mjs` (capture + sanitize), `map-locators.mjs` (snapshot → locators) | `ui-context`               |
+| `tests/seed.spec.ts`           | Seed spec (starting point for generated tests)                               | `test-standards`             |
+| `specs/*.md`                   | Markdown test plans, written from `ui-context` maps                          | `ui-context`                 |
 | `TEST_FIXES_KNOWLEDGE_BASE.md` | Every real-site failure we have diagnosed, with root cause and fix           | `debugging`                  |
 
 ## MUST
@@ -32,7 +35,7 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 5. **Web-first waiting.** Wait with locator assertions (`await expect(loc).toBeVisible()`), `waitForURL`, `waitForResponse` or the `Network` util. Never sleep.
 6. **Single source of truth.** Base URLs, credentials and shared keywords come from `ENV` in `data/env.ts`; credentials are read from `process.env.*` there and nowhere else.
 7. **Tests assert the outcome.** Every test ends with at least one `expect` on user-visible state (URL, text, count, value). A test that only performs actions is incomplete.
-8. **Explore before you write.** Locators, labels and message strings come from a live snapshot of the page (see `explore`), never from memory or guesswork.
+8. **Context before code.** Locators, labels and message strings come from `ui-context/<site>/MAP.md`. Crawl only when the map is missing, stale or lacks the element, and only with the **chrome-devtools CLI** (`ui-context`, `chrome-devtools-cli`). Never Playwright MCP or codegen, never memory or guesswork.
 9. **Verify.** After editing any spec, page or fixture, run `npm run verify` (type-check + lint + format check) and the affected tests: `npx playwright test <file>`. Report the actual result.
 10. **Record real-site fixes.** When a failure is caused by the target site (overlay, cert, rendering, bot wall), add an entry to `TEST_FIXES_KNOWLEDGE_BASE.md` using its existing format.
 
@@ -57,7 +60,9 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 | Hardcoded URLs or credentials in pages/specs                                  | `ENV.*`                                                           |
 | `test.only`, committed `test.skip` without a reason string                     | Remove, or `test.skip(cond, 'reason')`                            |
 | Raising timeouts to make a flaky test pass                                    | Find the real wait condition (`debugging`)                        |
-| Placeholder/TODO locators, "fill in later" page objects                       | Explore first, then write real locators                           |
+| Placeholder/TODO locators, "fill in later" page objects                       | Read the map (or crawl), then write real locators                 |
+| Playwright MCP / `playwright codegen` / ad-hoc scripts for UI discovery       | chrome-devtools CLI → `ui-context` map                            |
+| Session uids from a snapshot used as locators                                 | The mapped Playwright locator                                     |
 | `.js` spec files                                                              | TypeScript only                                                   |
 
 ## Enforcement
@@ -72,7 +77,7 @@ The WON'T table is enforced in three layers:
 
 Non-trivial work follows the **8-phase workflow** in `.claude/skills/ai-native-workflow/SKILL.md`:
 
-1. Classify intent → 2. Route to skill → 3. Explore → 4. **Plan + Confidence gate** (1–10, rationale, unknowns) → 5. Human gate → 6. Apply → 7. Verify → 8. Report + ask before commit.
+1. Classify intent → 2. Route to skill → 3. Context (map first, crawl only if needed) → 4. **Plan + Confidence gate** (1–10, rationale, unknowns) → 5. Human gate → 6. Apply → 7. Verify → 8. Report + ask before commit.
 
 Trivial edits (typo, single import) may use Direct Mode — but confirm the premise in the file first.
 
@@ -81,7 +86,8 @@ Trivial edits (typo, single import) may use Direct Mode — but confirm the prem
 | Skill                | Load when                                                                      |
 | -------------------- | ------------------------------------------------------------------------------ |
 | `ai-native-workflow` | Start of any non-trivial task; "which skill?"                                  |
-| `explore`            | Before writing any locator, page object or test plan                           |
+| `ui-context`         | Before writing any locator, page object, spec or test plan (map first)        |
+| `chrome-devtools-cli`| When `ui-context` says a crawl is needed — the only exploration tool          |
 | `selectors`          | Choosing or fixing a locator                                                   |
 | `page-objects`       | Creating or editing anything in `pages/`                                       |
 | `fixtures`           | Registering a page/util, editing `fixtures/test.ts`, or adding to `utils/`      |
@@ -101,4 +107,11 @@ npx playwright show-report       # last HTML report
 npx playwright show-trace <zip>  # inspect a trace
 npm run verify                   # type-check + lint + format check
 npm run lint:fix && npm run format
+
+# UI context (chrome-devtools CLI)
+npm run ui:cdt -- start --headless --isolated --acceptInsecureCerts --no-usage-statistics --no-performance-crux
+npm run ui:cdt -- new_page "<url>"
+npm run ui:snap -- <site> <state> [--verbose]          # save sanitized snapshot to ui-context/
+npm run ui:map -- ui-context/<site>/<state>.snapshot.txt   # Playwright locator candidates
+npm run ui:cdt -- stop
 ```

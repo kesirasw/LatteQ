@@ -1,6 +1,6 @@
 ---
 name: ai-native-workflow
-description: Entry-point router for AI-assisted QA work on LatteQ. Owns the 8-phase workflow (classify → route → explore → plan+confidence → human gate → apply → verify → report), the confidence-gate format every non-trivial proposal must use, and the routing table that picks the specialised skill. Load first whenever the user starts a non-trivial task — "add a test for X", "automate this site", "create a page object", "this test is flaky", "refactor Y", "review my branch" — or asks "which skill should I use?" / "how do we work with AI here?".
+description: Entry-point router for AI-assisted QA work on LatteQ. Owns the 8-phase workflow (classify → route → context (ui-context map first, chrome-devtools CLI crawl only if needed) → plan+confidence → human gate → apply → verify → report), the confidence-gate format every non-trivial proposal must use, and the routing table that picks the specialised skill. Load first whenever the user starts a non-trivial task — "add a test for X", "automate this site", "create a page object", "this test is flaky", "refactor Y", "review my branch" — or asks "which skill should I use?" / "how do we work with AI here?".
 ---
 
 # AI-Native Workflow
@@ -9,8 +9,9 @@ Routing layer between user intent and the skills that own the rules. This skill 
 
 ## Critical
 
-- **Confidence < 5 means you are still exploring.** Do not write a proposal. Go back to Phase 3 and ask the user for the missing input (URL, flow, expected result, credentials).
-- **Ask, don't invent.** Never guess a URL, label, button name, message text, env-var name or file path. Use `ls`/`grep`, the browser snapshot (`explore`), or ask.
+- **Confidence < 5 means you are still gathering context.** Do not write a proposal. Go back to Phase 3 and ask the user for the missing input (URL, flow, expected result, credentials).
+- **Ask, don't invent.** Never guess a URL, label, button name, message text, env-var name or file path. Use `ls`/`grep`, the site's `ui-context` map, or ask.
+- **Map first, crawl second.** Read `ui-context/<site>/MAP.md` before touching a browser. Crawl only via the chrome-devtools CLI, and only for what the map lacks (`ui-context` decides).
 - **No placeholders.** A page object with `// TODO locator` or a test with no assertion is a failure, not progress.
 - **Verify the premise, even for one-liners.** Open the file and confirm the defect is really there before "fixing" it.
 - **CLAUDE.md is the floor.** Its MUST/WON'T tables beat anything in a skill or template.
@@ -21,9 +22,9 @@ Routing layer between user intent and the skills that own the rules. This skill 
 
 | # | Phase | What happens | Owned by |
 |---|-------|--------------|----------|
-| 1 | **Classify** | codegen / edit / refactor / debug / explore / config / review | — |
+| 1 | **Classify** | codegen / edit / refactor / debug / context / config / review | — |
 | 2 | **Route** | Pick the first skill from the table below | — |
-| 3 | **Explore** | Gather evidence: read existing pages/specs, snapshot the live page. Missing a primary input → ASK now. | `explore` (UI), `debugging` (failures), `grep` impact (refactor) |
+| 3 | **Context** | Read existing pages/specs and the site's `ui-context` map; crawl (chrome-devtools CLI) only the states the map lacks. Missing a primary input → ASK now. | `ui-context` → `chrome-devtools-cli` (UI), `debugging` (failures), `grep` impact (refactor) |
 | 4 | **Plan + Confidence** | Emit the proposal block below | this skill |
 | 5 | **Human gate** | Wait for approve / reject / rework. Reject → back to 3 with the stated gap. | — |
 | 6 | **Apply** | Edit per the leaf skill. Re-read its Critical block before finishing. | leaf skill |
@@ -35,6 +36,7 @@ Routing layer between user intent and the skills that own the rules. This skill 
 ```
 ## Proposal
 - Scope: <files to create/change and what changes in each>
+- Context: <"reused ui-context/<site>/MAP.md, no crawl" | "crawled <states> (map was missing/stale/lacked X)">
 - Approach: <locator strategy / fixture wiring / fix, in 1-3 lines>
 - Trade-offs: <if any, else "none">
 - Confidence: <1-10> (<low|medium|high>)
@@ -46,8 +48,8 @@ Routing layer between user intent and the skills that own the rules. This skill 
 
 - **< 5** → don't propose. Ask the user questions for the missing input.
 - **5–7** → propose with explicit unknowns; proceed only if the user accepts them.
-- **≥ 8** → evidence in hand (live snapshot taken, existing patterns read); proceed.
-- **≥ 9** only if every locator came from a snapshot, the expected outcome is stated by the user or visible on the page, and no env/credential is missing.
+- **≥ 8** → evidence in hand (every locator is in a fresh map or a new snapshot, existing patterns read); proceed.
+- **≥ 9** only if every locator is a `cdt` or `run` row in the map, the expected outcome is stated by the user or is an "Observed outcome" in the map, and no env/credential is missing.
 
 LatteQ-specific confidence reducers: target is a third-party site with bot protection or consent walls (Booking.com, GitHub search), the flow needs login, or the element lives in canvas/SVG (Highcharts).
 
@@ -55,10 +57,11 @@ LatteQ-specific confidence reducers: target is a third-party site with bot prote
 
 | User intent | First skill | Then |
 |-------------|-------------|------|
-| "Automate / add a test for <site or flow>" | `explore` | `page-objects` → `selectors` → `fixtures` → `test-standards` |
-| "Write a test plan for <site>" | `explore` | saves to `specs/<area>.md` |
-| "Add / change a page object" | `page-objects` | `explore`, `selectors`, `fixtures` |
-| "This locator is wrong / strict mode violation" | `selectors` | `explore`, `debugging` |
+| "Automate / add a test for <site or flow>" | `ui-context` | (`chrome-devtools-cli` if crawl needed) → `page-objects` → `selectors` → `fixtures` → `test-standards` |
+| "Write a test plan for <site>" | `ui-context` | saves to `specs/<site>.md` |
+| "Map / crawl / refresh the UI of <site>" | `ui-context` | `chrome-devtools-cli` |
+| "Add / change a page object" | `page-objects` | `ui-context`, `selectors`, `fixtures` |
+| "This locator is wrong / strict mode violation" | `selectors` | `ui-context` (refresh state), `debugging` |
 | "Add a spec / restructure tests / tagging" | `test-standards` | `fixtures`, `page-objects` |
 | "Test failing / flaky / timeout" | `debugging` | `selectors`, `page-objects`, `data-config` |
 | "Add URL / env var / keyword / config change" | `data-config` | `fixtures` |
@@ -75,14 +78,14 @@ For trivial work (typo, single import, rename a local variable) apply and report
 ## When to Stop and Ask
 
 - The target URL, flow or expected result isn't stated.
-- The page can't be loaded / snapshotted (bot wall, cert error, login required).
+- The page can't be loaded or snapshotted with the CLI (bot wall, login required). A cert error just needs `--acceptInsecureCerts`.
 - Credentials are needed and `process.env` doesn't have them.
 - Two valid designs with real trade-offs (e.g. new page object vs extend existing).
 - The request conflicts with a CLAUDE.md rule — say so; never silently bypass.
 
 ## Example chain — "Add a test that DataTables paginates to page 2"
 
-1. Classify: codegen. Route: `explore`.
-2. Explore: read `pages/DataTablesPage.ts` and `tests/practice/01_tables_datatables.spec.ts`; snapshot the page; find the pagination control's role/name.
-3. Proposal: add `goToPage(n)` to `DataTablesPage` using `getByRole('link'|'button', { name: '2' })` scoped to the pagination nav; new test in `01_tables_datatables.spec.ts` asserting the info text changes. Confidence 8.
-4. Gate → Apply (`page-objects`, `selectors`, `test-standards`) → Verify → Report.
+1. Classify: codegen. Route: `ui-context`.
+2. Context: read `pages/DataTablesPage.ts`, the spec, and `ui-context/datatables/MAP.md`. The map already has `pagination` (`navigation "pagination"` with links "1"…"6") and `status` ("Showing 1 to 10 of 57 entries"), captured < 30 days ago → **no crawl**.
+3. Proposal: add `goToPage(n)` using `pagination.getByRole('link', { name: String(n), exact: true })`; new test asserting `status` shows "Showing 11 to 20". Context: reused map. Confidence 8 (the page-2 status text is inferred, not observed → note as unknown, or crawl just that state).
+4. Gate → Apply (`page-objects`, `selectors`, `test-standards`) → Verify → add the new row/state to the map → Report.

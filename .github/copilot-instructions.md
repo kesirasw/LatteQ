@@ -22,7 +22,7 @@ Scoped rules are auto-applied from `.github/instructions/*.instructions.md` by f
 5. Wait with web-first assertions, `waitForURL`, `waitForResponse` / `Network`. Never sleep.
 6. URLs and credentials come from `ENV` (`data/env.ts`).
 7. Every test asserts a user-visible outcome.
-8. Explore the live page (playwright-test MCP `browser_snapshot`) before writing locators.
+8. Context before code: take locators from `ui-context/<site>/MAP.md`. Crawl only when the map lacks the element, and only with the **chrome-devtools CLI** (`npm run ui:cdt`, see `.claude/skills/chrome-devtools-cli/SKILL.md`). Never use Playwright MCP or codegen for exploration.
 9. After edits run `npm run verify` and `npx playwright test <file>`; report the real result.
 10. Record real-site fixes in `TEST_FIXES_KNOWLEDGE_BASE.md`.
 
@@ -32,7 +32,7 @@ Scoped rules are auto-applied from `.github/instructions/*.instructions.md` by f
 
 ## Workflow for non-trivial tasks
 
-1. Classify → 2. Pick the matching skill → 3. Explore (read code + snapshot page; ask if a URL/flow/expected result is missing) → 4. Propose:
+1. Classify → 2. Pick the matching skill → 3. Context (read code + `ui-context` map; crawl with the chrome-devtools CLI only what's missing; ask if a URL/flow/expected result is missing) → 4. Propose:
 
 ```
 ## Proposal
@@ -46,9 +46,13 @@ Scoped rules are auto-applied from `.github/instructions/*.instructions.md` by f
 
 Confidence < 5 → ask questions instead of proposing. 5–7 → proceed only if the user accepts the unknowns. → 5. Wait for approval → 6. Apply → 7. Verify → 8. Report and ask before committing.
 
+## UI context
+
+- `ui-context/<site>/MAP.md`: quirks, states & flows, curated Playwright locators (Source `cdt` = seen in a CLI snapshot, `run` = proven by a passing test).
+- `ui-context/<site>/*.snapshot.txt`: sanitized chrome-devtools CLI accessibility snapshots. Grep them for elements that aren't curated yet.
+- Tools: `npm run ui:snap -- <site> <state>` (capture), `npm run ui:map -- <snapshot>` (snapshot → locator candidates).
+
 ## Agents and prompts
 
-- `.github/agents/playwright-test-planner` → plans into `specs/`.
-- `.github/agents/playwright-test-generator` → generates tests; reshape output to LatteQ conventions (fixtures import, logic in page objects).
-- `.github/agents/playwright-test-healer` → fixes failing tests; must follow the debugging rules (no timeout bumps, no swallowed errors).
+- `.github/agents/playwright-test-*` (planner / generator / healer) drive the Playwright MCP and are **not used for exploration**. Plans and tests are written from `ui-context` maps instead.
 - `/pr-reviewer` prompt (`.github/prompts/pr-reviewer.prompt.md`) → branch review.

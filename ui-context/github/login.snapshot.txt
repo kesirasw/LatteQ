@@ -1,0 +1,39 @@
+# ui-context snapshot: login
+# captured: 2026-10-04 with chrome-devtools-mcp 1.10.1 (headless Chrome)
+# uids are session-only; never use them as locators. Regenerate locators with: npm run ui:map -- <this file>
+uid=11_0 RootWebArea "Sign in to GitHub · GitHub" url="https://github.com/login"
+  uid=11_1 link "Skip to content" url="https://github.com/login"
+    uid=11_2 StaticText "Skip to content"
+  uid=11_3 banner
+  uid=11_4 main
+    uid=11_5 heading "Sign in to GitHub" level="1"
+    uid=11_6 form
+      uid=11_7 StaticText "Username or email address"
+      uid=11_8 textbox "Username or email address" focusable focused required
+      uid=11_9 StaticText "Password"
+      uid=11_10 textbox "Password" required
+      uid=11_11 link "Forgot password?" url="https://github.com/password_reset"
+        uid=11_12 StaticText "Forgot password?"
+      uid=11_13 button "Sign in"
+    uid=11_14 StaticText "or"
+    uid=11_15 form
+      uid=11_16 button "Continue with Google"
+    uid=11_17 form
+      uid=11_18 button "Continue with Apple"
+    uid=11_19 StaticText "New to GitHub? "
+    uid=11_20 link "Create an account" url="https://github.com/signup"
+      uid=11_21 StaticText "Create an account"
+    uid=11_22 button "Sign in with a passkey"
+  uid=11_23 contentinfo
+    uid=11_24 link "Terms" url="https://docs.github.com/site-policy/github-terms/github-terms-of-service"
+      uid=11_25 StaticText "Terms"
+    uid=11_26 link "Privacy" url="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement"
+      uid=11_27 StaticText "Privacy"
+    uid=11_28 link "Docs" url="https://docs.github.com/"
+      uid=11_29 StaticText "Docs"
+    uid=11_30 link "Contact GitHub Support" url="https://support.github.com/"
+      uid=11_31 StaticText "Contact GitHub Support"
+    uid=11_32 button "Manage cookies"
+    uid=11_33 button "Do not share my personal information"
+  uid=11_34 generic atomic live="polite" relevant="additions text"
+  uid=11_35 generic atomic live="assertive" relevant="additions text"

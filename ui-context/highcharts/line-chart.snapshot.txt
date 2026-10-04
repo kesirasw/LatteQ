@@ -1,0 +1,456 @@
+# ui-context snapshot: line-chart
+# captured: 2026-10-04 with chrome-devtools-mcp 1.10.1 (headless Chrome)
+# uids are session-only; never use them as locators. Regenerate locators with: npm run ui:map -- <this file>
+uid=5_0 RootWebArea "Line chart Demo | Highcharts" url="https://www.highcharts.com/demo/highcharts/line-chart"
+  uid=5_1 banner
+    uid=5_2 link "NEW Highcharts React v5 See what's new Close notification" url="https://www.highcharts.com/blog/post/highcharts-react-v5-esm-support-cleaner-components-better-dx/"
+      uid=5_3 StaticText "NEW"
+      uid=5_4 StaticText "Highcharts React v5"
+      uid=5_5 StaticText "See what's new"
+      uid=5_6 button "Close notification"
+    uid=5_7 navigation
+      uid=5_8 button "Skip to content"
+      uid=5_9 link "Highcharts" url="https://www.highcharts.com/"
+        uid=5_10 image "Highcharts" description="Highcharts"
+      uid=5_11 button "Products"
+      uid=5_12 button "Demos"
+      uid=5_13 button "Support"
+      uid=5_14 button "Resources"
+      uid=5_15 button "Pricing"
+      uid=5_16 button "Blog"
+      uid=5_17 button "Highcharts Assist"
+      uid=5_18 button "Search" expandable haspopup="dialog"
+      uid=5_19 button "Preferences" expandable haspopup="dialog"
+      uid=5_20 button "Buy Now"
+      uid=5_21 button "Try for Free"
+  uid=5_22 navigation
+    uid=5_23 link "Highcharts Demos" url="https://www.highcharts.com/demo"
+      uid=5_24 StaticText "Highcharts Demos"
+    uid=5_25 image "Collapse sidebar"
+    uid=5_26 generic live="polite" relevant="additions text"
+    uid=5_27 searchbox "Search for a demo or tag on Highcharts.com/demo"
+    uid=5_28 heading "Overview" level="2"
+    uid=5_29 region "Overview"
+      uid=5_30 button "Basics" expandable expanded
+      uid=5_31 link "Line chart" url="https://www.highcharts.com/demo/highcharts/line-chart"
+        uid=5_32 StaticText "Line chart"
+      uid=5_33 link "Column chart" url="https://www.highcharts.com/demo/highcharts/column-basic"
+        uid=5_34 StaticText "Column chart"
+      uid=5_35 link "Bar chart" url="https://www.highcharts.com/demo/highcharts/bar-chart"
+        uid=5_36 StaticText "Bar chart"
+      uid=5_37 link "Pie chart" url="https://www.highcharts.com/demo/highcharts/pie-chart"
+        uid=5_38 StaticText "Pie chart"
+      uid=5_39 link "Donut chart" url="https://www.highcharts.com/demo/highcharts/donut"
+        uid=5_40 StaticText "Donut chart"
+      uid=5_41 link "Gauge" url="https://www.highcharts.com/demo/highcharts/gauge"
+        uid=5_42 StaticText "Gauge"
+      uid=5_43 link "Bubble chart" url="https://www.highcharts.com/demo/highcharts/bubble"
+        uid=5_44 StaticText "Bubble chart"
+      uid=5_45 link "Scatter plot" url="https://www.highcharts.com/demo/highcharts/scatter"
+        uid=5_46 StaticText "Scatter plot"
+      uid=5_47 link "Heatmap" url="https://www.highcharts.com/demo/highcharts/heatmap"
+        uid=5_48 StaticText "Heatmap"
+      uid=5_49 link "Candlestick" url="https://www.highcharts.com/demo/stock/candlestick"
+        uid=5_50 StaticText "Candlestick"
+      uid=5_51 link "Choropleth map" url="https://www.highcharts.com/demo/maps/us-counties"
+        uid=5_52 StaticText "Choropleth map"
+      uid=5_53 link "Tiled web map" url="https://www.highcharts.com/demo/maps/twm-oslo-attractions"
+        uid=5_54 StaticText "Tiled web map"
+      uid=5_55 link "Gantt chart" url="https://www.highcharts.com/demo/gantt/project-management"
+        uid=5_56 StaticText "Gantt chart"
+      uid=5_57 link "Dashboard" url="https://www.highcharts.com/demo/dashboards/minimal"
+        uid=5_58 StaticText "Dashboard"
+      uid=5_59 link "Grid with sparklines PRO" url="https://www.highcharts.com/demo/grid/basic-sparklines"
+        uid=5_60 StaticText "Grid with sparklines"
+        uid=5_61 StaticText "PRO"
+    uid=5_62 heading "Highcharts Core" level="2"
+    uid=5_63 region "Highcharts Core"
+      uid=5_64 button "Line charts" expandable
+      uid=5_65 button "Area charts" expandable
+      uid=5_66 button "Column and bar charts" expandable
+      uid=5_67 button "Pie charts" expandable
+      uid=5_68 button "Scatter and bubble charts" expandable
+      uid=5_69 button "Combinations" expandable
+      uid=5_70 button "Styled mode (CSS styling)" expandable
+      uid=5_71 button "Accessibility" expandable
+      uid=5_72 button "Audio charts" expandable
+      uid=5_73 button "Dynamic charts" expandable
+      uid=5_74 button "3D charts" expandable
+      uid=5_75 button "Gauges" expandable
+      uid=5_76 button "Heat and tree maps" expandable
+      uid=5_77 button "Trees and networks" expandable
+      uid=5_78 button "Data" expandable
+      uid=5_79 button "More chart types" expandable
+    uid=5_80 heading "Stock" level="2"
+    uid=5_81 region "Stock"
+      uid=5_82 button "General" expandable
+      uid=5_83 button "Chart types" expandable
+      uid=5_84 button "Various features" expandable
+      uid=5_85 button "Flags and Technical indicators" expandable
+      uid=5_86 button "Designs" expandable
+    uid=5_87 heading "Maps" level="2"
+    uid=5_88 region "Maps"
+      uid=5_89 button "General" expandable
+      uid=5_90 button "Dynamic" expandable
+      uid=5_91 button "Input formats" expandable
+      uid=5_92 button "Series types" expandable
+    uid=5_93 heading "Grid" level="2"
+    uid=5_94 region "Grid"
+      uid=5_95 button "General" expandable
+    uid=5_96 heading "Highcharts Dashboards" level="2"
+    uid=5_97 region "Highcharts Dashboards"
+      uid=5_98 button "Basic" expandable
+      uid=5_99 button "Advanced" expandable
+    uid=5_100 heading "Gantt" level="2"
+    uid=5_101 region "Gantt"
+      uid=5_102 button "Highcharts Gantt" expandable
+  uid=5_103 main
+    uid=5_104 navigation "breadcrumbs"
+      uid=5_105 link "Demo page icon All Demos" url="https://www.highcharts.com/demo"
+        uid=5_106 image "Demo page icon" url="https://www.highcharts.com/demo/icons/demo-page-icon-OLD.svg"
+        uid=5_107 StaticText "All Demos"
+      uid=5_108 StaticText "/"
+      uid=5_109 link "Basics" url="https://www.highcharts.com/demo"
+        uid=5_110 StaticText "Basics"
+    uid=5_111 link "Previous demo" disableable disabled
+      uid=5_112 StaticText "Previous"
+    uid=5_113 link "Next demo" url="https://www.highcharts.com/demo/highcharts/column-basic"
+      uid=5_114 StaticText "Next"
+    uid=5_115 heading "Line chart" level="1"
+    uid=5_116 button "Select system mode" pressed
+    uid=5_117 button "Select light mode"
+    uid=5_118 button "Select dark mode"
+    uid=5_119 button "Code"
+    uid=5_120 button "Toggle fullscreen"
+    uid=5_121 button "select react code tab" pressed
+    uid=5_122 button "select typescript code tab"
+    uid=5_123 button "select javascript code tab"
+    uid=5_124 button "Copy"
+    uid=5_125 button "File App.css"
+    uid=5_126 button "File App.tsx"
+    uid=5_127 button "File Chart.tsx"
+    uid=5_128 textbox "Code Editor for Chart.tsx" autocomplete="list" multiline value="1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+import {
+    Chart,
+    Title,
+    Subtitle,
+    YAxis,
+    XAxis,
+    Legend,
+    Tooltip,
+    PlotOptions
+} from '@highcharts/react';
+import { LineSeries } from '@highcharts/react/series/Line';
+import { Exporting } from '@highcharts/react/modules/Exporting';
+import { Accessibility } from '@highcharts/react/modules/Accessibility';
+
+
+import 'highcharts/es-modules/masters/modules/series-label.src.js';
+
+
+export default function LineChart() {
+    return (
+        <Chart
+            options={{
+                chart: {
+                    plotBorderColor:
+                        'var(--highcharts-neutral-color-10, #e6e6e6)',
+                    plotBorderWidth: 1,
+                    plotBorderRadius: 5
+                }
+            }}
+        >
+            <Title align="left">Application users last 24 hours</Title>
+            <Subtitle>All traffic sources combined</Subtitle>
+            <YAxis>Unique users</YAxis>
+            <XAxis
+                type="datetime"
+                crosshair={true}
+                dateTimeLabelFormats={{
+                    // Don't show the date"
+    uid=5_129 Iframe "Highcharts Line chart demo"
+      uid=5_130 RootWebArea url="about:srcdoc"
+    uid=5_131 heading "Custom palette" level="4"
+    uid=5_132 button "Reset"
+    uid=5_133 StaticText "Theme"
+    uid=5_134 button "open theme selector" expandable haspopup="menu"
+    uid=5_135 StaticText "Color palette"
+    uid=5_136 button
+    uid=5_137 button
+    uid=5_138 button
+    uid=5_139 button
+    uid=5_140 button
+    uid=5_141 button
+    uid=5_142 button
+    uid=5_143 button
+    uid=5_144 button
+    uid=5_145 button
+    uid=5_146 StaticText "Background"
+    uid=5_147 button
+    uid=5_148 StaticText "Text"
+    uid=5_149 button
+    uid=5_150 StaticText "Highlight"
+    uid=5_151 button
+    uid=5_152 link "StackBlitz" url="https://www.highcharts.com/demo/highcharts/line-chart"
+      uid=5_153 StaticText "StackBlitz"
+    uid=5_154 link "API reference" url="https://api.highcharts.com/highcharts/"
+      uid=5_155 StaticText "API reference"
+    uid=5_156 link "Highcharts Core" url="https://www.highcharts.com/products/highcharts/"
+      uid=5_157 StaticText "Highcharts Core"
+    uid=5_158 link "Get started" url="https://www.highcharts.com/download/"
+      uid=5_159 StaticText "Get started"
+    uid=5_160 link "Add to cart" url="https://shop.highcharts.com/"
+      uid=5_161 StaticText "Add to cart"
+    uid=5_162 heading "CORE Basics" level="2"
+    uid=5_163 link "Line chart" url="https://www.highcharts.com/demo/highcharts/line-chart"
+      uid=5_164 StaticText "Line chart"
+    uid=5_165 link "Column chart" url="https://www.highcharts.com/demo/highcharts/column-basic"
+      uid=5_166 StaticText "Column chart"
+    uid=5_167 link "Bar chart" url="https://www.highcharts.com/demo/highcharts/bar-chart"
+      uid=5_168 StaticText "Bar chart"
+    uid=5_169 link "Pie chart" url="https://www.highcharts.com/demo/highcharts/pie-chart"
+      uid=5_170 StaticText "Pie chart"
+    uid=5_171 link "Donut chart" url="https://www.highcharts.com/demo/highcharts/donut"
+      uid=5_172 StaticText "Donut chart"
+    uid=5_173 link "Gauge" url="https://www.highcharts.com/demo/highcharts/gauge"
+      uid=5_174 StaticText "Gauge"
+    uid=5_175 link "Bubble chart" url="https://www.highcharts.com/demo/highcharts/bubble"
+      uid=5_176 StaticText "Bubble chart"
+    uid=5_177 link "Scatter plot" url="https://www.highcharts.com/demo/highcharts/scatter"
+      uid=5_178 StaticText "Scatter plot"
+    uid=5_179 link "Heatmap" url="https://www.highcharts.com/demo/highcharts/heatmap"
+      uid=5_180 StaticText "Heatmap"
+    uid=5_181 link "View all demos" url="https://www.highcharts.com/demo"
+      uid=5_182 StaticText "View all demos"
+    uid=5_183 heading "npm install highcharts --save" level="3"
+    uid=5_184 StaticText "The official Highcharts NPM package comes with support for CommonJS and contains Highcharts, and its Stock, Maps and Gantt packages."
+    uid=5_185 link "Documentation documentation" url="https://www.highcharts.com/docs/getting-started/installation"
+      uid=5_186 StaticText "Documentation"
+      uid=5_187 image "documentation" url="https://www.highcharts.com/demo/icons/documentation.svg"
+    uid=5_188 heading "Download our library" level="3"
+    uid=5_189 StaticText "The zip archive contains Javascript files and examples. Unzip the zip package and open index.html in your browser to see the examples."
+    uid=5_190 link "Download download" url="https://www.highcharts.com/blog/download/"
+      uid=5_191 StaticText "Download"
+      uid=5_192 image "download" url="https://www.highcharts.com/demo/icons/download.svg"
+    uid=5_193 heading "Buy a license" level="3"
+    uid=5_194 StaticText "You can download and try out all Highcharts products for free. Once your project/product is ready for launch, purchase a commercial license."
+    uid=5_195 link "See License Pricing pricing" url="https://shop.highcharts.com/"
+      uid=5_196 StaticText "See License Pricing"
+      uid=5_197 image "pricing" url="https://www.highcharts.com/demo/icons/pricing.svg"
+  uid=5_198 contentinfo
+    uid=5_199 link "Highcharts" url="https://www.highcharts.com/"
+      uid=5_200 image "Highcharts" description="Highcharts"
+    uid=5_201 StaticText "We make it easy for developers to create charts and dashboards for web and mobile platforms."
+    uid=5_202 button "npm install highcharts"
+    uid=5_203 button "Meet the team behind the charts" expandable haspopup="dialog"
+    uid=5_204 heading "Stay in the Loop" level="2"
+    uid=5_205 form
+      uid=5_206 textbox "Email address"
+      uid=5_207 button "Sign up"
+    uid=5_208 StaticText "By signing up, you agree to the"
+    uid=5_209 link "Privacy Policy" url="https://www.highcharts.com/privacy/"
+      uid=5_210 StaticText "Privacy Policy"
+    uid=5_211 link "Join the Highcharts Discord community" url="https://discord.com/invite/xHxxcyyy6K"
+      uid=5_212 heading "Discord / Total" level="2"
+      uid=5_213 StaticText "Join us"
+      uid=5_214 StaticText "526"
+      uid=5_215 StaticText " members"
+    uid=5_216 StaticText "Ways to get help"
+    uid=5_217 StaticText "We operate in CET"
+    uid=5_218 LineBreak "
+"
+    uid=5_219 StaticText "Monday - Friday"
+    uid=5_220 link "Ask tech and sales questions with Highcharts Assist" url="https://www.highcharts.com/chat/gpt/"
+      uid=5_221 StaticText "Ask tech and sales questions with"
+      uid=5_222 StaticText "Highcharts Assist"
+    uid=5_223 link "Search answers on StackOverflow" url="https://stackoverflow.com/questions/tagged/highcharts"
+      uid=5_224 StaticText "Search answers on"
+      uid=5_225 StaticText "StackOverflow"
+    uid=5_226 link "Report issues on GitHub" url="https://github.com/highcharts/highcharts/issues"
+      uid=5_227 StaticText "Report issues on"
+      uid=5_228 StaticText "GitHub"
+    uid=5_229 link "Contact sales about Licensing Options" url="https://shop.highcharts.com/contact"
+      uid=5_230 StaticText "Contact sales about"
+      uid=5_231 StaticText "Licensing Options"
+    uid=5_232 heading "Products" level="2"
+    uid=5_233 link "Core" url="https://www.highcharts.com/products/highcharts/"
+      uid=5_234 StaticText "Core"
+    uid=5_235 link "Stock" url="https://www.highcharts.com/products/stock/"
+      uid=5_236 StaticText "Stock"
+    uid=5_237 link "Maps" url="https://www.highcharts.com/products/maps/"
+      uid=5_238 StaticText "Maps"
+    uid=5_239 link "Gantt" url="https://www.highcharts.com/products/gantt/"
+      uid=5_240 StaticText "Gantt"
+    uid=5_241 link "Dashboards" url="https://www.highcharts.com/products/dashboards/"
+      uid=5_242 StaticText "Dashboards"
+    uid=5_243 link "Grid NEW" url="https://www.highcharts.com/products/grid/"
+      uid=5_244 StaticText "Grid"
+      uid=5_245 StaticText "NEW"
+    uid=5_246 heading "Integrations" level="2"
+    uid=5_247 link "React" url="https://www.highcharts.com/integrations/react/"
+      uid=5_248 StaticText "React"
+    uid=5_249 link "TypeScript" url="https://www.highcharts.com/integrations/typescript/"
+      uid=5_250 StaticText "TypeScript"
+    uid=5_251 link "Angular" url="https://www.highcharts.com/integrations/angular/"
+      uid=5_252 StaticText "Angular"
+    uid=5_253 link "Vue" url="https://www.highcharts.com/integrations/vue/"
+      uid=5_254 StaticText "Vue"
+    uid=5_255 link "JavaScript" url="https://www.highcharts.com/integrations/javascript/"
+      uid=5_256 StaticText "JavaScript"
+    uid=5_257 link "Flutter NEW" url="https://www.highcharts.com/integrations/flutter/"
+      uid=5_258 StaticText "Flutter"
+      uid=5_259 StaticText "NEW"
+    uid=5_260 link "Node.js" url="https://www.highcharts.com/integrations/node/"
+      uid=5_261 StaticText "Node.js"
+    uid=5_262 link "Python" url="https://www.highcharts.com/integrations/python/"
+      uid=5_263 StaticText "Python"
+    uid=5_264 link "Svelte" url="https://www.highcharts.com/integrations/svelte/"
+      uid=5_265 StaticText "Svelte"
+    uid=5_266 heading "Documentation" level="2"
+    uid=5_267 link "Demos" url="https://www.highcharts.com/demo"
+      uid=5_268 StaticText "Demos"
+    uid=5_269 link "Docs" url="https://www.highcharts.com/docs/index"
+      uid=5_270 StaticText "Docs"
+    uid=5_271 link "API Reference" url="https://api.highcharts.com/highcharts/"
+      uid=5_272 StaticText "API Reference"
+    uid=5_273 link "Roadmap" url="https://www.highcharts.com/roadmap/"
+      uid=5_274 StaticText "Roadmap"
+    uid=5_275 link "Changelog" url="https://changelog.highcharts.com/"
+      uid=5_276 StaticText "Changelog"
+    uid=5_277 heading "Support" level="2"
+    uid=5_278 link "Ask Highcharts Assist" url="https://www.highcharts.com/chat/gpt/"
+      uid=5_279 StaticText "Ask Highcharts Assist"
+    uid=5_280 link "Highcharts Forum" url="https://www.highcharts.com/forum/"
+      uid=5_281 StaticText "Highcharts Forum"
+    uid=5_282 link "Customer Support Portal" url="https://www.highcharts.com/support/"
+      uid=5_283 StaticText "Customer Support Portal"
+    uid=5_284 link "Highcharts for Python Support" url="https://www.highchartspython.com/get-help"
+      uid=5_285 StaticText "Highcharts for Python Support"
+    uid=5_286 link "FAQ" url="https://shop.highcharts.com/faq"
+      uid=5_287 StaticText "FAQ"
+    uid=5_288 link "Channel Partner" url="https://shop.highcharts.com/channel-partners"
+      uid=5_289 StaticText "Channel Partner"
+    uid=5_290 heading "Learning" level="2"
+    uid=5_291 link "Highcharts Academy" url="https://www.highcharts.com/highcharts-academy/"
+      uid=5_292 StaticText "Highcharts Academy"
+    uid=5_293 link "Chart Chooser" url="https://www.highcharts.com/chartchooser/"
+      uid=5_294 StaticText "Chart Chooser"
+    uid=5_295 link "Educational License" url="https://www.highcharts.com/education/"
+      uid=5_296 StaticText "Educational License"
+    uid=5_297 link "Accessibility" url="https://www.highcharts.com/accessibility/"
+      uid=5_298 StaticText "Accessibility"
+    uid=5_299 link "Inspiration" url="https://www.highcharts.com/blog/inspirations/"
+      uid=5_300 StaticText "Inspiration"
+    uid=5_301 heading "Community" level="2"
+    uid=5_302 link "Highsoft Lab" url="https://lab.highsoft.com/"
+      uid=5_303 StaticText "Highsoft Lab"
+    uid=5_304 link "Discord NEW" url="https://www.highcharts.com/highcharts-discord/"
+      uid=5_305 StaticText "Discord"
+      uid=5_306 StaticText "NEW"
+    uid=5_307 link "Blog" url="https://www.highcharts.com/blog/home/"
+      uid=5_308 StaticText "Blog"
+    uid=5_309 heading "About" level="2"
+    uid=5_310 link "Our Story" url="https://www.highcharts.com/about/"
+      uid=5_311 StaticText "Our Story"
+    uid=5_312 link "Discover the Team" url="https://www.highcharts.com/people/"
+      uid=5_313 StaticText "Discover the Team"
+    uid=5_314 link "Join the Team" url="https://highsoft.teamtailor.com/"
+      uid=5_315 StaticText "Join the Team"
+    uid=5_316 link "Contact Us" url="https://www.highcharts.com/contact/"
+      uid=5_317 StaticText "Contact Us"
+    uid=5_318 link "Highsoft" url="https://www.highsoft.com/"
+      uid=5_319 StaticText "Highsoft"
+    uid=5_320 heading "Solutions" level="2"
+    uid=5_321 link "Finance" url="https://www.highcharts.com/industry/finance/"
+      uid=5_322 StaticText "Finance"
+    uid=5_323 link "Software" url="https://www.highcharts.com/industry/software/"
+      uid=5_324 StaticText "Software"
+    uid=5_325 link "Healthcare" url="https://www.highcharts.com/industry/healthcare/"
+      uid=5_326 StaticText "Healthcare"
+    uid=5_327 heading "Data Connectors" level="2"
+    uid=5_328 link "Morningstar Data" url="https://www.highcharts.com/products/data-connector-for-morningstar/"
+      uid=5_329 StaticText "Morningstar Data"
+    uid=5_330 heading "Pro Services" level="2"
+    uid=5_331 link "Custom Projects" url="https://www.highcharts.com/products/custom-projects/"
+      uid=5_332 StaticText "Custom Projects"
+    uid=5_333 heading "Support Plans" level="2"
+    uid=5_334 link "Advantage" url="https://www.highcharts.com/products/advantage/"
+      uid=5_335 StaticText "Advantage"
+    uid=5_336 link "Advantage Plus" url="https://www.highcharts.com/products/advantage/"
+      uid=5_337 StaticText "Advantage Plus"
+    uid=5_338 heading "Tools" level="2"
+    uid=5_339 link "Figma Plugin" url="https://www.figma.com/community/plugin/1369795683946720598/highcharts-core"
+      uid=5_340 StaticText "Figma Plugin"
+    uid=5_341 link "Editor" url="https://www.highcharts.com/products/highcharts-editor/"
+      uid=5_342 StaticText "Editor"
+    uid=5_343 link "Highcharts Assist" url="https://www.highcharts.com/chat/gpt/"
+      uid=5_344 StaticText "Highcharts Assist"
+    uid=5_345 heading "Legal" level="2"
+    uid=5_346 link "Privacy Policy" url="https://www.highcharts.com/privacy/"
+      uid=5_347 StaticText "Privacy Policy"
+    uid=5_348 link "EULA & AUP" url="https://shop.highcharts.com/license-eula"
+      uid=5_349 StaticText "EULA & AUP"
+    uid=5_350 link "Refund Policy" url="https://www.highcharts.com/refund-policy-pdf"
+      uid=5_351 StaticText "Refund Policy"
+    uid=5_352 link "Standard License Agreement" url="https://shop.highcharts.com/license"
+      uid=5_353 StaticText "Standard License Agreement"
+    uid=5_354 link "Orbit Beta Agreement" url="https://shop.highcharts.com/license-orbit"
+      uid=5_355 StaticText "Orbit Beta Agreement"
+    uid=5_356 link "Code of Conduct" url="https://www.highcharts.com/code-of-business-conduct-and-ethics"
+      uid=5_357 StaticText "Code of Conduct"
+    uid=5_358 link "Due Diligence Transparency Act" url="https://www.highcharts.com/aktsomhetsvurdering"
+      uid=5_359 StaticText "Due Diligence Transparency Act"
+    uid=5_360 link url="https://businessnorway.com/made-in-norway"
+    uid=5_361 StaticText "© "
+    uid=5_362 StaticText "2026"
+    uid=5_363 StaticText " Highsoft. All rights reserved."
+    uid=5_364 link "Accessibility Statement" url="https://www.highcharts.com/blog/article/accessibility-statement/"
+      uid=5_365 StaticText "Accessibility Statement"
+    uid=5_366 link "Sitemap" url="https://www.highcharts.com/sitemap.xml"
+      uid=5_367 StaticText "Sitemap"
+    uid=5_368 button "Cookie Preferences"
+    uid=5_369 button "Cookie Policy" expandable haspopup="dialog"
+    uid=5_370 link "StackOverlow" url="https://stackoverflow.com/questions/tagged/highcharts"
+    uid=5_371 link "GitHub" url="https://github.com/highcharts/highcharts"
+    uid=5_372 link "X" url="https://twitter.com/Highcharts"
+    uid=5_373 link "Facebook" url="https://www.facebook.com/Highcharts"
+    uid=5_374 link "Instagram" url="https://www.instagram.com/highsoftcompany/"
+    uid=5_375 link "LinkedIn" url="https://www.linkedin.com/company/highsoft"
+    uid=5_376 link "Discord" url="https://www.highcharts.com/highcharts-discord/"
+    uid=5_377 link "Youtube" url="https://www.youtube.com/channel/UCzxXofPTQ0DoT7uIy3Fxw7A"
+  uid=5_378 alert atomic live="assertive" relevant="additions text"

@@ -1,0 +1,13 @@
+# ui-context snapshot: home.signin-modal
+# captured: 2026-10-04 with chrome-devtools-mcp 1.10.1 (headless Chrome)
+# uids are session-only; never use them as locators. Regenerate locators with: npm run ui:map -- <this file>
+uid=12_0 RootWebArea "Booking.com | Official site | The best hotels, flights, car rentals & accommodations" url="https://www.booking.com/"
+  uid=13_0 dialog "Window offering discounts of 10% or more when you sign in to Booking.com" modal
+    uid=13_1 button "Dismiss sign-in info." focusable focused
+    uid=13_2 image "blue Genius logo"
+    uid=13_3 heading "Sign in, save money" level="2"
+    uid=13_4 StaticText "Sign in to "
+    uid=13_5 StaticText "save 10% or more"
+    uid=13_6 StaticText " with a free Booking.com membership"
+    uid=13_7 link "Sign in or register" url="https://account.booking.com/auth/oauth2"
+      uid=13_8 StaticText "Sign in or register"

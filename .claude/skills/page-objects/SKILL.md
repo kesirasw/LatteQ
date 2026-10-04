@@ -16,7 +16,7 @@ description: Page Object rules for LatteQ's pages/ folder — the XxxPage class 
   // Consent banner only shows for new sessions
   if (await this.acceptCookies.isVisible()) await this.actions.safeClick(this.acceptCookies);
   ```
-- **Every locator from a snapshot** (`explore`) following `selectors`.
+- **Every locator from the site's `ui-context` map**, following `selectors`. Use the map's **Key** column as the property/method name so POM and map stay greppable. Handle every blocker listed in the map's Quirks (modals, banners, iframes).
 
 ## Template
 
@@ -67,4 +67,5 @@ export class ExamplePage {
 - [ ] No literal URLs; no `.catch(() => {})`; no `waitForTimeout`; no XPath.
 - [ ] Every `force: true` / raw interaction has a comment and a knowledge-base entry.
 - [ ] Registered in `fixtures/test.ts` with a short camelCase fixture name.
+- [ ] Every locator has a row in `ui-context/<site>/MAP.md`; "Used by" lists this file.
 - [ ] `npm run verify` passes; the spec that uses it passes.

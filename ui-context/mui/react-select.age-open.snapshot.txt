@@ -1,0 +1,11 @@
+# ui-context snapshot: react-select.age-open
+# captured: 2026-10-04 with chrome-devtools-mcp 1.10.1 (headless Chrome)
+# uids are session-only; never use them as locators. Regenerate locators with: npm run ui:map -- <this file>
+uid=16_0 RootWebArea "React Select component - Material UI" url="https://mui.com/material-ui/react-select/"
+  uid=17_0 generic
+  uid=17_1 generic
+    uid=17_2 listbox "Age" orientation="vertical"
+      uid=17_3 option "Ten" focusable focused selectable value="Ten"
+      uid=17_4 option "Twenty" selectable value="Twenty"
+      uid=17_5 option "Thirty" selectable value="Thirty"
+  uid=17_6 generic
