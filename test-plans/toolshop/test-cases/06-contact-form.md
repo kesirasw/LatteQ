@@ -7,8 +7,8 @@ Part of the [Toolshop test plan](../test-plan.md).
 | ID | Title | Priority | Basis |
 |---|---|---|---|
 | TC-CON-01 | Sending an empty form shows what's required | Medium | Seen during exploration |
-| TC-CON-02 | Only empty text files can be attached | Low | Needs confirming |
-| TC-CON-03 | Sending a complete message | Medium | Needs confirming |
+| TC-CON-02 | Only empty text files can be attached | Low | Confirmed by run |
+| TC-CON-03 | Sending a complete message | Medium | Confirmed by run |
 
 ---
 
@@ -32,10 +32,10 @@ Part of the [Toolshop test plan](../test-plan.md).
   1. Fill in every field.
   2. Attach a picture, or a text file that has content in it.
   3. Click **Send**.
-- **Expected result:** The attachment is refused, in line with the rule shown on the page: "Only files with the txt extension are allowed, and files must be 0kb."
-- **Basis:** Needs confirming
+- **Expected result:** The message **File should be empty.** appears, and the message isn't sent. This matches the rule shown on the page: "Only files with the txt extension are allowed, and files must be 0kb."
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** F1
-- **Notes:** The rule text was seen. Attaching a file wasn't tried.
+- **Notes:** Confirmed by the automated run on 2026-10-05. Tested with a text file that has content.
 
 ### TC-CON-03 — Sending a complete message
 
@@ -47,6 +47,6 @@ Part of the [Toolshop test plan](../test-plan.md).
   2. Choose **Customer service** as the **Subject**.
   3. Write a message.
   4. Click **Send**.
-- **Expected result:** A confirmation says the message was sent.
-- **Basis:** Needs confirming
+- **Expected result:** The message **Thanks for your message! We will contact you shortly.** appears.
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** F1

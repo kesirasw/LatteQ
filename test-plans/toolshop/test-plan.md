@@ -4,8 +4,8 @@
 |---|---|
 | Website | https://practicesoftwaretesting.com (Toolshop, version 5) |
 | Based on | Exploration on 2026-10-04. See `ui-context/toolshop/MAP.md` |
-| Status | Draft, for review before automation |
-| Last updated | 2026-10-04 |
+| Status | Automated: all 47 cases (see section 10) |
+| Last updated | 2026-10-05 |
 
 ## 1. Purpose
 
@@ -73,7 +73,7 @@ Toolshop is a complete online hardware shop built for practising software testin
 
 ## 8. Test case summary
 
-| Area | Cases | High | Medium | Low | Seen during exploration | Needs confirming |
+| Area | Cases | High | Medium | Low | Seen during exploration | Confirmed by automated run |
 |---|---|---|---|---|---|---|
 | Browsing and search | 10 | 2 | 4 | 4 | 4 | 6 |
 | Product details | 5 | 2 | 0 | 3 | 2 | 3 |
@@ -84,25 +84,49 @@ Toolshop is a complete online hardware shop built for practising software testin
 | Backend checks | 5 | 1 | 3 | 1 | 4 | 1 |
 | **Total** | **47** | **11** | **21** | **15** | **22** | **25** |
 
-"Seen during exploration" means the expected result was observed on the live site. "Needs confirming" means it's a reasonable expectation that hasn't been observed yet; confirm it on the first run.
+"Seen during exploration" means the expected result was observed on the live site before automation. "Confirmed by automated run" means it was a reasonable expectation that the automated run then confirmed (on 2026-10-05). No cases still need confirming.
 
 ## 9. Questions and suspected defects
 
-1. **Suspected defect: refused orders show no message** (TC-CHK-11).
+**Suspected defects** (each has a test that expects the correct behaviour. It's marked as an expected failure, so the suite stays green and reports if the site gets fixed.)
+
+1. **Refused orders show no message** (TC-CHK-11).
    - **Should happen:** if the shop refuses an order because the state doesn't belong to the country, the customer sees why and can fix it.
-   - **What was seen:** the shop refused the order with a clear reason, but nothing appeared on screen, and **Confirm** simply did nothing.
-2. **Suspected defect: an expired sign-in shows no message** (TC-CHK-12).
-   - **Should happen:** the customer is told their session expired and is asked to sign in again.
-   - **What was seen:** the order was refused, with nothing on screen.
-3. **Question: which country and state combinations does the shop accept?** The postcode lookup fills in made-up addresses (for example a US state for an Austrian postcode). We need one working combination before automating TC-CHK-07.
-4. **Question: what does the order confirmation look like?** It wasn't reached during exploration. Confirm it on the first run of TC-CHK-07.
-5. **Accessibility finding:** the button that removes an item from the cart has no text or label, so screen-reader users can't tell what it does (TC-CRT-03).
+   - **What happens:** the shop refuses the order with a clear reason, but nothing appears on screen, and **Confirm** simply does nothing.
+2. **An expired sign-in shows no message** (TC-CHK-12).
+   - **Should happen:** the customer is told the session expired and is asked to sign in again.
+   - **What happens:** the order is refused, with nothing on screen. Sign-ins only last 5 minutes, so a slow customer can easily hit this.
+3. **"Forgot password" shows untranslated text** (TC-AUT-07).
+   - **Should happen:** a readable confirmation.
+   - **What happens:** the page shows **page.forgot-password.confirm**.
 
-Questions 1 and 2 may be deliberate training defects, since this is a practice site. Either way, our tests expect the correct behaviour and will report the difference.
+**Other findings**
 
-## 10. Suggested order for automation
+4. **Inconsistent password rules** (TC-AUT-06): the registration page says passwords need at least 8 characters, but the error says "minimal 6 characters", and it calls "abc" invalid characters.
+5. **Accessibility:** the cart's remove button (TC-CRT-03) and the **Sign out** menu item (TC-AUT-08) have no proper role or label, so screen-reader users can't find or identify them.
+6. **Buy now, pay later** gives no message explaining why **Check payment** is unavailable (TC-CHK-10).
+7. **Service details** (for the API plan): sign-in errors and other "not signed in" errors come back in two different formats, and creating an order answers "created" where the documentation says "OK".
 
-1. **Preparation:** add the site and accounts to the environment settings, and create a way to sign in and empty the cart through the shop's service.
-2. **High priority (smoke):** TC-CAT-01, TC-CAT-02, TC-PRD-01, TC-PRD-03, TC-CRT-01, TC-AUT-01, TC-CHK-01, TC-CHK-03, TC-CHK-06, TC-API-01. Add TC-CHK-07 once questions 3 and 4 are answered.
-3. **Medium priority,** area by area, in the order of section 2.
-4. **Low priority.**
+**Answered questions**
+
+- **Which addresses does the shop accept?** Only addresses that match its own postcode lookup. Enter a postcode and house number, and the lookup fills in street, city and state. Typed alternatives (e.g. "Vienna" as the state) are refused.
+- **What does the order confirmation look like?** **Thanks for your order! Your invoice number is INV-…**, and the invoice is listed under **My account → Invoices**.
+
+## 10. Automation
+
+All 47 cases are automated (2026-10-05).
+
+| Area | Spec file |
+|---|---|
+| Browsing and search | `tests/toolshop/01_browsing_and_search.spec.ts` |
+| Product details | `tests/toolshop/02_product_details.spec.ts` |
+| Shopping cart | `tests/toolshop/03_shopping_cart.spec.ts` |
+| Checkout and payment | `tests/toolshop/04_checkout_and_payment.spec.ts` |
+| Login and account | `tests/toolshop/05_login_and_account.spec.ts` |
+| Contact form | `tests/toolshop/06_contact_form.spec.ts` |
+| Backend checks | `tests/api/toolshop/users.spec.ts`, `products.spec.ts`, `orders.spec.ts` |
+
+- **How to run:** `npx playwright test --project=toolshop`. High-priority cases only: add `--grep @smoke`.
+- **Accounts:** every test registers its own new customer, so no accounts or passwords need to be set up.
+- **Load:** the site is a shared public demo, so Toolshop tests run at most two at a time.
+- **Results:** three full runs in a row with no retries, 141 of 141 as expected (132 passed, plus the 3 suspected-defect cases failing as expected each time).

@@ -7,15 +7,15 @@ Part of the [Toolshop test plan](../test-plan.md).
 | ID | Title | Priority | Basis |
 |---|---|---|---|
 | TC-CHK-01 | Signing in during checkout | High | Seen during exploration |
-| TC-CHK-02 | Guest checkout asks for contact details | Medium | Needs confirming |
+| TC-CHK-02 | Guest checkout asks for contact details | Medium | Confirmed by run |
 | TC-CHK-03 | Checkout waits for the required address details | High | Seen during exploration |
 | TC-CHK-04 | Postcode lookup fills in the street and city | Medium | Seen during exploration |
 | TC-CHK-05 | Each payment method asks for its own details | Medium | Seen during exploration |
 | TC-CHK-06 | Checking a cash-on-delivery payment | High | Seen during exploration |
-| TC-CHK-07 | Placing an order | High | Needs confirming |
-| TC-CHK-08 | Credit card number must be in the right format | Medium | Needs confirming |
-| TC-CHK-09 | Gift card details are checked | Low | Needs confirming |
-| TC-CHK-10 | Buy now, pay later needs a number of instalments | Low | Needs confirming |
+| TC-CHK-07 | Placing an order | High | Confirmed by run |
+| TC-CHK-08 | Credit card number must be in the right format | Medium | Confirmed by run |
+| TC-CHK-09 | Gift card details are checked | Low | Confirmed by run |
+| TC-CHK-10 | Buy now, pay later needs a number of instalments | Low | Confirmed by run |
 | TC-CHK-11 | A state that doesn't match the country is explained | Medium | Seen during exploration (suspected defect) |
 | TC-CHK-12 | An expired sign-in at the last step is explained | Low | Seen during exploration (suspected defect) |
 
@@ -33,7 +33,7 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Expected result:** The page says **Hello Jane Doe, you are already logged in. You can proceed to checkout.**, and the top menu shows the customer's name.
 - **Basis:** Seen during exploration
 - **Map reference:** K2, K3
-- **Notes:** The greeting uses whichever demo customer signed in. "Jane Doe" is the first demo customer.
+- **Notes:** The greeting uses whichever customer signed in ("Jane Doe" was the demo customer during exploration). The automated test registers its own customer.
 
 ### TC-CHK-02 — Guest checkout asks for contact details
 
@@ -44,10 +44,10 @@ Part of the [Toolshop test plan](../test-plan.md).
   1. Choose the **Continue as Guest** tab.
   2. Leave **Email address**, **First name** and **Last name** empty.
   3. Click **Continue as Guest**.
-- **Expected result:** Checkout doesn't continue, and each empty field is flagged as required.
-- **Basis:** Needs confirming
+- **Expected result:** Checkout doesn't continue, and the messages **Email is required**, **First name is required** and **Last name is required** appear.
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** K2
-- **Notes:** The three fields and the button were seen. What happens on an empty submit wasn't tried.
+- **Notes:** Confirmed by the automated run on 2026-10-05.
 
 ### TC-CHK-03 — Checkout waits for the required address details
 
@@ -57,10 +57,10 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Leave **Postal code**, **House number** and **State** empty.
   2. Fill them in one at a time.
-- **Expected result:** **Proceed to checkout** stays unavailable until all three are filled in, then becomes available.
+- **Expected result:** **Proceed to checkout** stays unavailable until all three are filled in, then becomes available. Filling in the house number also fills in **State** automatically (postcode lookup). Clearing **State** makes the button unavailable again.
 - **Basis:** Seen during exploration
 - **Map reference:** K4
-- **Notes:** Country, Street and City are pre-filled from the customer's profile.
+- **Notes:** Country, Street and City are pre-filled from the customer's profile. The shop only accepts addresses that match its own postcode lookup (see the plan, section 9).
 
 ### TC-CHK-04 — Postcode lookup fills in the street and city
 
@@ -73,7 +73,7 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Expected result:** The **Street** and **City** fields are filled in automatically from the postcode.
 - **Basis:** Seen during exploration
 - **Map reference:** K4 (quirks: postcode lookup)
-- **Notes:** The demo fills in made-up addresses, so check that the fields change, not what they change to.
+- **Notes:** Clear Street and City first, so the change is visible. Check that the fields are filled, not what with.
 
 ### TC-CHK-05 — Each payment method asks for its own details
 
@@ -111,9 +111,9 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Click **Confirm**.
 - **Expected result:** An order confirmation with an invoice number is shown. The cart is empty, and the new invoice appears under **My account → Invoices**.
-- **Basis:** Needs confirming
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** K8
-- **Notes:** The confirmation screen wasn't reached during exploration (see TC-CHK-11 and TC-CHK-12). First, find out which country and state combinations the shop accepts (plan, question 2).
+- **Notes:** Seen on screen: **Thanks for your order! Your invoice number is INV-…**. Works when the address comes from the postcode lookup (plan, section 9, question 3).
 
 ### TC-CHK-08 — Credit card number must be in the right format
 
@@ -123,10 +123,10 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Enter **1234** as the credit card number, and fill in the other card fields.
   2. Click **Check payment**.
-- **Expected result:** An error explains that the number must be 16 digits in the format 0000-0000-0000-0000, and the payment isn't accepted.
-- **Basis:** Needs confirming
+- **Expected result:** The message **Invalid card number format.** appears, and **Check payment** stays unavailable.
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** K6
-- **Notes:** The format rule is shown on the page. The error message itself wasn't seen.
+- **Notes:** Confirmed by the automated run on 2026-10-05.
 
 ### TC-CHK-09 — Gift card details are checked
 
@@ -136,8 +136,8 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Enter a gift card number shorter than 16 characters and a 3-character validation code.
   2. Click **Check payment**.
-- **Expected result:** An error explains what is wrong, and the payment isn't accepted.
-- **Basis:** Needs confirming
+- **Expected result:** The messages **Please enter a valid gift card number: exactly 16 letters and/or digits.** and **Please enter a valid validation code: exactly 4 letters and/or digits.** appear, and **Check payment** stays unavailable.
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** K6
 
 ### TC-CHK-10 — Buy now, pay later needs a number of instalments
@@ -148,8 +148,9 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Don't choose a number of instalments.
   2. Click **Check payment**.
-- **Expected result:** You're asked to choose a number of instalments, and the payment isn't accepted.
-- **Basis:** Needs confirming
+- **Expected result:** **Check payment** stays unavailable until a number of instalments is chosen.
+- **Notes:** No message explains why the button is unavailable (minor usability finding).
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** K6
 
 ### TC-CHK-11 — A state that doesn't match the country is explained

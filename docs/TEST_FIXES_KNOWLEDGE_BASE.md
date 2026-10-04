@@ -584,6 +584,70 @@ Click the header's sort button (`getByRole('button', { name: /^Office: Activate 
 
 ---
 
+### 12. Toolshop Checkout - Orders Refused Unless the Address Matches the Shop's Postcode Lookup (2026-10-04)
+
+**File**: `tests/toolshop/04_checkout_and_payment.spec.ts`, `tests/api/toolshop/orders.spec.ts`
+**POM**: `pages/ToolshopCheckoutPage.ts`
+
+#### Problem
+```
+POST /invoices → 422 {"billing_country":["The billing_country does not match the entered address. The state does not belong to the selected country."]}
+```
+Real, correct addresses (Springfield, Missouri, USA; Vienna, Austria) were refused, and the UI showed nothing.
+
+#### Root Cause
+The shop validates the billing address against its **own postcode lookup** (`GET /postcode-lookup`), not real geography. With the country stored as a **code** (`AT`) the lookup returns a realistic address and fills Street, City *and State*. With the country stored as a **name** ("Austria", e.g. older demo profiles) it returns generated data (Leffler Fords, New Arianna, Missouri) and doesn't fill State. Anything typed that differs from the lookup is refused.
+
+#### Solution
+Tests register their own customer with `country: 'AT'` (`toolshopCustomer` fixture), enter postal code 1010 and house number 1, and let the lookup fill the rest (`fillAddressByPostcode`). Orders then succeed. The refusal itself is kept as a suspected-defect test (TC-CHK-11, `test.fail`), because the UI gives no feedback.
+
+#### Key Learning
+- When a "valid" address is refused, look for the site's own lookup/validation service and probe it via the API before guessing data.
+- Give each test its own registered user: no shared carts or profiles on a public demo.
+
+---
+
+### 13. Toolshop API - Two Different 401 Bodies and an Undocumented Status (2026-10-04)
+
+**File**: `tests/api/toolshop/orders.spec.ts`
+**Schemas**: `fixtures/api/schemas/toolshop/errorResponseSchema.ts`
+
+#### Problem
+```
+ZodError: expected "error", received unrecognized key "message"
+```
+
+#### Root Cause
+The contract lists 401 for many endpoints but documents no body. Login answers `{"error":"Unauthorized"}`; protected endpoints (e.g. `POST /invoices`) answer `{"message":"Unauthorized"}`. Separately, `POST /invoices` documents **200** but returns **201**.
+
+#### Solution
+Two live-captured schemas (`UnauthorizedResponseSchema` for login, `UnauthenticatedResponseSchema` for protected endpoints), each with a FIXME noting it was captured live. Invoice creation asserts the real 201, with a comment on the contract discrepancy.
+
+#### Key Learning
+- A schema captured from one endpoint's error isn't a schema for every endpoint's error.
+- Record contract gaps and mismatches as findings, not just test fixes.
+
+---
+
+### 14. Toolshop - Shared Demo Fails Under Heavy Parallel Load (2026-10-05)
+
+**Files**: `tests/toolshop/**`, `tests/api/toolshop/**`, `playwright.config.ts`
+
+#### Problem
+A 3× run with 4 workers (about 150 tests, each registering its own customer) produced "Login failed" for freshly registered customers and blank pages. The run then hung and never reported.
+
+#### Root Cause
+The demo is public and shared. It sends no rate-limit headers, but it degrades when one machine sends a burst of registrations, logins and page loads. The same tests pass when run with less concurrency.
+
+#### Solution
+A separate `toolshop` project in `playwright.config.ts` with `workers: 2`; other sites keep full parallelism. No retries, timeouts or waits were added.
+
+#### Key Learning
+- "Passes alone, fails at scale" on someone else's server can be load, not your code. Lower the concurrency for that target, and keep the tests strict.
+- Log long background runs to a file, so a hang still leaves evidence.
+
+---
+
 ## Configuration Changes
 
 ### playwright.config.ts

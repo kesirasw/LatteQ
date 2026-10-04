@@ -8,14 +8,14 @@ Part of the [Toolshop test plan](../test-plan.md).
 |---|---|---|---|
 | TC-CAT-01 | Home page shows a page of products | High | Seen during exploration |
 | TC-CAT-02 | Searching shows only matching products | High | Seen during exploration |
-| TC-CAT-03 | Clearing the search brings back all products | Medium | Needs confirming |
+| TC-CAT-03 | Clearing the search brings back all products | Medium | Confirmed by run |
 | TC-CAT-04 | Sorting by price, lowest first | Medium | Seen during exploration |
-| TC-CAT-05 | Other sort options order the list correctly | Low | Needs confirming |
+| TC-CAT-05 | Other sort options order the list correctly | Low | Confirmed by run |
 | TC-CAT-06 | Filtering by a product category | Medium | Seen during exploration |
-| TC-CAT-07 | Filtering by brand | Low | Needs confirming |
-| TC-CAT-08 | Showing only eco-friendly products | Low | Needs confirming |
-| TC-CAT-09 | Limiting the price range | Low | Needs confirming |
-| TC-CAT-10 | Moving to the next page of products | Medium | Needs confirming |
+| TC-CAT-07 | Filtering by brand | Low | Confirmed by run |
+| TC-CAT-08 | Showing only eco-friendly products | Low | Confirmed by run |
+| TC-CAT-09 | Limiting the price range | Low | Confirmed by run |
+| TC-CAT-10 | Moving to the next page of products | Medium | Confirmed by run |
 
 ---
 
@@ -51,7 +51,7 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Click the **X** next to the search box.
 - **Expected result:** The "Searched for" heading disappears, and the full product list returns, including products that aren't pliers.
-- **Basis:** Needs confirming
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** C2
 
 ### TC-CAT-04 — Sorting by price, lowest first
@@ -74,7 +74,7 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Choose **Price (High - Low)**, then **Name (A - Z)**, then **Name (Z - A)**, checking the list after each.
 - **Expected result:** The list follows the chosen order each time.
-- **Basis:** Needs confirming
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** C1
 
 ### TC-CAT-06 — Filtering by a product category
@@ -97,7 +97,7 @@ Part of the [Toolshop test plan](../test-plan.md).
   1. Under **By brand**, tick **ForgeFlex Tools**.
   2. Open two of the products shown.
 - **Expected result:** The list changes, and each product opened belongs to ForgeFlex Tools.
-- **Basis:** Needs confirming
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** C1
 
 ### TC-CAT-08 — Showing only eco-friendly products
@@ -108,7 +108,7 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Tick **Show only eco-friendly products**.
 - **Expected result:** Only products with a good eco rating are shown.
-- **Basis:** Needs confirming
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** C1
 
 ### TC-CAT-09 — Limiting the price range
@@ -119,7 +119,7 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Drag the upper end of the **Price Range** slider down to a lower amount.
 - **Expected result:** No product shown costs more than the new upper limit.
-- **Basis:** Needs confirming
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** C1
 
 ### TC-CAT-10 — Moving to the next page of products
@@ -131,5 +131,5 @@ Part of the [Toolshop test plan](../test-plan.md).
   1. Note the names of the products on page 1.
   2. Click page **2**.
 - **Expected result:** A different set of products is shown, and page 2 is marked as the current page.
-- **Basis:** Needs confirming
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** C1

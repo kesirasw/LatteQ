@@ -24,6 +24,14 @@ export class Actions {
     await expect(loc).toHaveValue(value, { timeout: opts?.timeout ?? 10_000 });
   }
 
+  /** Choose an option of a native <select> by its visible label and verify it took. */
+  async safeSelect(target: Locator | string, label: string, opts?: { timeout?: number }) {
+    const loc = this.locator(target);
+    await expect(loc).toBeVisible({ timeout: opts?.timeout ?? 10_000 });
+    await loc.selectOption({ label });
+    await expect(loc.locator('option:checked')).toHaveText(label, { timeout: opts?.timeout ?? 10_000 });
+  }
+
   async safeType(target: Locator | string, value: string, opts?: { delay?: number; timeout?: number }) {
     const loc = this.locator(target);
     await expect(loc).toBeVisible({ timeout: opts?.timeout ?? 10_000 });

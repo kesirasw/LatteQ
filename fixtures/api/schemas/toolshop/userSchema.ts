@@ -20,5 +20,35 @@ export const LoginRequestSchema = z.strictObject({
   password: z.string().min(1),
 });
 
+/**
+ * `UserResponse` (POST /users/register → 201, GET /users/me → 200).
+ * The contract marks no field as required, so fields are optional here; `strictObject` still rejects
+ * undocumented fields. Tests assert the fields they rely on explicitly.
+ */
+export const UserResponseSchema = z.strictObject({
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  address: z
+    .strictObject({
+      street: z.string().optional(),
+      house_number: z.string().nullable().optional(),
+      city: z.string().optional(),
+      state: z.string().nullable().optional(),
+      country: z.string().optional(),
+      postal_code: z.string().nullable().optional(),
+    })
+    .optional(),
+  phone: z.string().nullable().optional(),
+  dob: z.string().optional(),
+  email: z.string().optional(),
+  id: z.string().optional(),
+  provider: z.string().nullable().optional(),
+  totp_enabled: z.boolean().optional(),
+  enabled: z.boolean().optional(),
+  failed_login_attempts: z.number().int().nullable().optional(),
+  created_at: z.string().optional(),
+});
+
 export type LoginResponse = zOutput<typeof LoginResponseSchema>;
 export type LoginRequest = zOutput<typeof LoginRequestSchema>;
+export type UserResponse = zOutput<typeof UserResponseSchema>;

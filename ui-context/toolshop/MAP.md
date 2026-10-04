@@ -2,13 +2,13 @@
 
 | | |
 |---|---|
-| Base URL | `https://practicesoftwaretesting.com/` (Sprint 5, v5.0, "v2.5 Built 2026-09-30, Angular 20.0.5" in footer). **Not in `ENV` yet**: add `TOOLSHOP_URL` / `TOOLSHOP_API_URL` when implementing |
+| Base URL | `https://practicesoftwaretesting.com/` (Sprint 5, v5.0, "v2.5 Built 2026-09-30, Angular 20.0.5" in footer). `ENV.TOOLSHOP_URL` / `ENV.TOOLSHOP_API_URL` |
 | API | `https://api.practicesoftwaretesting.com` · OpenAPI 3.2 contract (57 paths): `/docs?api-docs.json` · human view: `/api/documentation` · endpoint inventory: `api-context/toolshop/INVENTORY.md` |
 | Other builds | `v1`–`v4.practicesoftwaretesting.com` (earlier sprints) · `with-bugs.practicesoftwaretesting.com` (deliberately buggy, for debugging practice) |
 | Captured | 2026-10-04 · chrome-devtools-mcp 1.10.1 · headless Chrome (en) |
-| Snapshots | `home` · `home.search-pliers` · `home.sort-price-asc` · `home.filter-hammer` · `product` · `product.added-to-cart` · `checkout.1-cart` (+`.verbose`) · `checkout.2-signin` · `checkout.2-guest` · `checkout.2-signed-in` · `checkout.3-address` · `checkout.4-payment.<method>` (5) · `checkout.5-payment-checked` · `login` · `account` · `register` · `forgot-password` · `contact` · `contact.empty-submit` |
-| Used by | `test-plans/toolshop/` (test plan + 47 test cases; they reference the flow step IDs below) |
-| Last verified by run | — |
+| Snapshots | `home` · `home.search-pliers` · `home.sort-price-asc` · `home.filter-hammer` · `product` · `product.added-to-cart` · `checkout.1-cart` (+`.verbose`) · `checkout.2-signin` · `checkout.2-guest` · `checkout.2-signed-in` · `checkout.3-address` · `checkout.4-payment.<method>` (5) · `checkout.5-payment-checked` · `login` · `account` · `register` · `forgot-password` · `contact` · `contact.empty-submit` · **2nd crawl:** `login.wrong-password` · `account.user-menu` · `account.invoices` (+verbose) · `checkout.1-cart.qty-3` (verbose) · `checkout.1-cart.empty` · `checkout.6-order-placed` · `contact.sent` · `forgot-password.submitted` · `register.weak-password` |
+| Used by | `pages/Toolshop*.ts` · `tests/toolshop/*.spec.ts` · `tests/api/toolshop/*.spec.ts` · `test-plans/toolshop/` (47 cases reference the flow step IDs below) |
+| Last verified by run | 2026-10-05 (Toolshop project 3/3, 141 of 141 as expected, no retries) |
 
 ## Demo accounts (published in the project README)
 
@@ -36,6 +36,11 @@ These are shared with everyone who practises on the site. Put them in `ENV` via 
 - Product URLs use IDs (`/product/01M42MHP…`). Navigate by product name, never by ID: IDs can change when the demo database resets.
 - Seven UI languages (`lang-de`, `el`, `en`, `es`, `fr`, `nl`, `tr`), so copy assertions assume English.
 
+## Address validation (solved)
+- Orders are accepted only when the billing address **matches the site's own postcode lookup**. With the country stored as a **code** (`AT`, which is what the register and checkout selects send), the lookup returns a realistic address and fills **Street, City and State** (Austria 1010 / house 1 → Marvin-Krenn-Gasse, Mittersill, Vorarlberg) → order accepted (201).
+- With the country as a **name** ("Austria", e.g. old demo profiles) the lookup returns generated data (Leffler Fords, New Arianna, Missouri) and doesn't fill State. Typing any other state (e.g. "Vienna") is rejected with 422 "The state does not belong to the selected country", silently.
+- API probes: invoices with arbitrary real addresses → 422 "city does not belong…"; with the lookup's exact street/city/state → 201.
+
 ## States & flows
 | Step | Action | Observed outcome |
 |---|---|---|
@@ -57,7 +62,29 @@ These are shared with everyone who practises on the site. Put them in `ENV` via 
 | A2 | log in | heading "My account"; links Favorites · Profile · Invoices · Messages |
 | F1 | `/contact`, Send empty | "First name is required", "Last name is required", "Email is required", "Subject is required", "Message is required"; attachment rule "Only files with the txt extension are allowed, and files must be 0kb." |
 | R1 | `/auth/register` | Customer registration: First name, Last name, Date of Birth *, Country, Postal code, House number, Street, City, State, Phone, Email address, Password; rules "at least 8 characters", "uppercase and lowercase", "at least one number", "at least one special symbol"; strength Weak/Moderate/Strong/Very Strong |
-| R2 | `/auth/forgot-password` | heading "Forgot Password"; Email address *; "Set New Password" |
+| A3 | wrong password | **"Invalid email or password"** |
+| A4 | user menu (name button) | links My account, My favorites, My profile, My invoices, My messages; **"Sign out"** is an `<a>` without href (not in the a11y tree; `data-test="nav-sign-out"`) |
+| A5 | Sign out | token (`localStorage["auth-token"]`) cleared, lands on `/auth/login`; `/account` while signed out → `/auth/login` |
+| P3 | Add to favourites (signed out) | alert **"Unauthorized, can not add product to your favorite list."** |
+| P4 | Add to cart | alert **"Product added to shopping cart."** (transient) |
+| K9 | cart: set quantity 3 (+ Tab) | line and total $42.45 (3 × 14.15), badge 3 |
+| K10 | cart: remove (red X) | alert **"Product deleted."**, text **"The cart is empty. Nothing to display."**, cart icon gone |
+| K11 | guest tab, submit empty | "Email is required", "First name is required", "Last name is required" |
+| K12 | guest continue | "Continuing as guest: <first> <last> (<email>)" |
+| K13 | address: Country Austria, Postal 1010, House 1 | lookup fills Street/City/State → Proceed enabled |
+| K14 | payment validation | Credit card "1234" → **"Invalid card number format."**; Gift card short → **"Please enter a valid gift card number: exactly 16 letters and/or digits."** + **"Please enter a valid validation code: exactly 4 letters and/or digits."**; BNPL without instalments → no message; **Check payment** stays disabled in all three |
+| K15 | Confirm (valid address, fresh token) | **"Thanks for your order! Your invoice number is INV-…"**; `POST /invoices` 201; cart emptied; invoice listed in **Invoices** table (Invoice Number, Billing Address, Invoice Date, Total) |
+| C5 | Page 2 | a different 9 products (Sledgehammer, …) |
+| C6 | X after a search | full first page back |
+| C7 | brand ForgeFlex Tools | list changes (hammers, saw, wrenches…) |
+| C8 | eco-friendly filter | every card's active CO₂ letter is A/B (unfiltered page 2: D) |
+| C9 | price slider max (PageDown ×n) | max drops 20 per press (100 → 80 …); 6 presses → 1 → no products |
+| P5 | related product "Pliers" | Pliers product page |
+| F3 | contact, attach a non-empty .txt, Send | **"File should be empty."** (`data-test="attachment-error"`), message not sent |
+| F2 | contact, all fields + subject + 50+ char message | **"Thanks for your message! We will contact you shortly."** |
+| R3 | register, valid data | redirect to `/auth/login`; new account can sign in |
+| R4 | register, password "abc" | stays on register; **"Password must be minimal 6 characters long."** + **"Password can not include invalid characters."** (page rule says 8, inconsistent) |
+| R2 | `/auth/forgot-password` | heading "Forgot Password"; Email address *; "Set New Password". After submit: shows the raw text **`page.forgot-password.confirm`** (missing translation) |
 
 ## Locators
 | Key | Playwright locator | Source | Notes |
@@ -95,7 +122,11 @@ These are shared with everyone who practises on the site. Put them in `ENV` via 
 | cartRow(name) | `page.getByRole('row').filter({ hasText: '<name>' })` | cdt (verbose) | Columns: Item, Quantity, Price, Total, (remove) |
 | cartRowQty(name) | `page.getByRole('spinbutton', { name: 'Quantity for <name>' })` | cdt | |
 | linePrice / cartTotal | `page.locator('[data-test="line-price"]')` / `'[data-test="cart-total"]'` | evaluate_script | |
-| removeItem(name) | `cartRow(name).getByRole('button')` | not verified | Icon-only, unnamed, no `data-test` found |
+| removeItem(name) | `cartRow(name).locator('.btn-danger')` | evaluate_script + run | `<a class="btn btn-danger">` with an X icon: no href, no label, not in the a11y tree → scoped CSS is the only option |
+| signOut | `page.getByText('Sign out', { exact: true })` | evaluate_script | Not a link in the a11y tree |
+| alert | `page.getByRole('alert')` | evaluate_script | Transient toasts (cart, favourites, delete) |
+| co2Active(card) | `card.locator('[data-test="co2-rating-badge"] .co2-letter.active')` | evaluate_script | Active CO₂ letter A–E |
+| invoicesTable | `page.getByRole('table')` with `getByRole('cell', { name: 'INV-…' })` | cdt (verbose) | |
 | continueShopping / proceed | `getByRole('button', { name: 'Continue Shopping' })` / `{ name: 'Proceed to checkout' }` | cdt | Same name on steps 1–3; scope by step, or use `data-test` `proceed-1/2/3` |
 | signInTab / guestTab | `page.getByRole('tab', { name: 'Sign in' })` / `{ name: 'Continue as Guest' }` | cdt | |
 | loginEmail / loginPassword / loginSubmit | `getByRole('textbox', { name: 'Email address *' })` / `'Password *'` / `getByRole('button', { name: 'Login' })` | cdt | Same on `/auth/login` |
@@ -134,6 +165,5 @@ These are shared with everyone who practises on the site. Put them in `ENV` via 
 | `POST /invoices` | Confirm | 401 (expired session), 422 (state ≠ country) |
 
 ## Gaps
-- **Order success screen** after Confirm was not reached (see K8). Confirm on the first implementation run, with a fresh login and a valid Country/State pair.
-- Add-to-cart toast text, cart remove/quantity-change behaviour, favourites, eco/price filters, invalid-login message, registration success, contact success and logout were not exercised.
-- Admin area (`admin@…`) not crawled.
+- Admin area not crawled. Profile edit, favourites list and messages not exercised.
+- Toast text for "Add to favourites" while signed in not captured.

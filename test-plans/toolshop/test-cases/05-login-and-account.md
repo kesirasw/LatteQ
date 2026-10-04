@@ -8,12 +8,12 @@ Part of the [Toolshop test plan](../test-plan.md).
 |---|---|---|---|
 | TC-AUT-01 | Signing in as a customer | High | Seen during exploration |
 | TC-AUT-02 | Sign-in needs an email address | Medium | Seen during exploration |
-| TC-AUT-03 | Signing in with a wrong password | Medium | Needs confirming |
+| TC-AUT-03 | Signing in with a wrong password | Medium | Confirmed by run |
 | TC-AUT-04 | Registration explains the password rules | Medium | Seen during exploration |
-| TC-AUT-05 | Registering a new customer | Medium | Needs confirming |
-| TC-AUT-06 | A weak password is refused | Low | Needs confirming |
-| TC-AUT-07 | Asking for a new password | Low | Needs confirming |
-| TC-AUT-08 | Signing out | Medium | Needs confirming |
+| TC-AUT-05 | Registering a new customer | Medium | Confirmed by run |
+| TC-AUT-06 | A weak password is refused | Low | Confirmed by run |
+| TC-AUT-07 | Asking for a new password | Low | Confirmed by run (suspected defect) |
+| TC-AUT-08 | Signing out | Medium | Confirmed by run |
 
 ---
 
@@ -50,8 +50,8 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Enter a demo customer's email address with a wrong password.
   2. Click **Login**.
-- **Expected result:** A message says the email or password is incorrect, and you aren't signed in.
-- **Basis:** Needs confirming
+- **Expected result:** The message **Invalid email or password** appears, and you aren't signed in.
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** A1
 
 ### TC-AUT-04 — Registration explains the password rules
@@ -74,8 +74,8 @@ Part of the [Toolshop test plan](../test-plan.md).
   1. Open the registration page.
   2. Fill in every field, using a password that meets all the rules.
   3. Click **Register**.
-- **Expected result:** The account is created, and you're taken to the sign-in page (or signed straight in). Signing in with the new details works.
-- **Basis:** Needs confirming
+- **Expected result:** The account is created and you're taken to the sign-in page. Signing in with the new details opens **My account**.
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** R1
 - **Notes:** Use a new email address each time. This creates a real account on the shared demo.
 
@@ -87,8 +87,9 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Fill in every field, but use **abc** as the password.
   2. Click **Register**.
-- **Expected result:** The password is marked **Weak**, the unmet rules are pointed out, and no account is created.
-- **Basis:** Needs confirming
+- **Expected result:** No account is created, you stay on the registration page, and the message **Password must be minimal 6 characters long.** appears.
+- **Notes:** Inconsistency: the page's own rules say *at least 8 characters*, but the error says *6*. It also says "Password can not include invalid characters." for "abc" (plan, section 9).
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** R1
 
 ### TC-AUT-07 — Asking for a new password
@@ -100,8 +101,9 @@ Part of the [Toolshop test plan](../test-plan.md).
   1. On the sign-in page, click **Forgot your Password?**.
   2. Enter a demo customer's email address.
   3. Click **Set New Password**.
-- **Expected result:** A message confirms that the request was received.
-- **Basis:** Needs confirming
+- **Expected result:** A readable message confirms that the request was received.
+- **Notes:** Suspected defect: the page shows the untranslated text **page.forgot-password.confirm** instead of a message (plan, section 9).
+- **Basis:** Confirmed by automated run (2026-10-05): suspected defect
 - **Map reference:** R2
 
 ### TC-AUT-08 — Signing out
@@ -113,5 +115,5 @@ Part of the [Toolshop test plan](../test-plan.md).
   1. Open the menu with the customer's name.
   2. Choose the sign-out option.
 - **Expected result:** The top menu shows **Sign in** again, and opening **My account** asks you to sign in.
-- **Basis:** Needs confirming
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** A2

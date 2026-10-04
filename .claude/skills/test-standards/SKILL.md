@@ -18,6 +18,7 @@ description: Spec-file standards for LatteQ — file naming (tests/practice/NN_a
 ## File layout
 
 - `tests/practice/NN_<topic>_<site>.spec.ts` — next free `NN`, e.g. `08_upload_filepicker.spec.ts`.
+- Full-application suites get their own folder, with files matching the plan's feature areas: `tests/<site>/NN_<area>.spec.ts` (e.g. `tests/toolshop/04_checkout_and_payment.spec.ts`). Titles start with the plan case ID: `'TC-CHK-07 Toolshop: placing an order @smoke'`.
 - API specs: `tests/api/<site>/<resource>.spec.ts`, titled `'<Site> API: <behaviour> @api'` — rules in the `api-testing` skill.
 - One site/feature area per file. Group related tests with `test.describe('<Area>', …)` when a file has more than one test.
 - Test data that is used in more than one place → `ENV.TEST_KEYWORDS` (see `data-config`); one-off literals inline are fine.

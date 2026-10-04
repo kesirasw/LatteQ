@@ -1,0 +1,154 @@
+# ui-context snapshot: account.invoices
+# captured: 2026-10-04 with chrome-devtools-mcp 1.10.1 (headless Chrome)
+# uids are session-only; never use them as locators. Regenerate locators with: npm run ui:map -- <this file>
+uid=136_0 RootWebArea "Invoices - Practice Software Testing - Toolshop - v5.0" url="https://practicesoftwaretesting.com/account/invoices"
+  uid=137_0 ignored
+    uid=137_1 generic
+      uid=137_2 generic
+        uid=136_1 StaticText "View the "
+          uid=137_3 InlineTextBox "View the "
+        uid=136_2 link "Documentation" url="https://testsmith-io.github.io/practice-software-testing/"
+          uid=136_3 StaticText "Documentation"
+            uid=137_3 InlineTextBox "Documentation"
+        uid=136_4 StaticText " for this application."
+          uid=137_3 InlineTextBox " for this application."
+      uid=137_4 ignored
+        uid=137_5 ignored
+          uid=137_6 ignored
+            uid=136_5 StaticText "Practice Black Box Testing & Bug Hunting"
+              uid=137_3 InlineTextBox "Practice Black Box Testing & Bug Hunting"
+          uid=136_6 button "Testing Guide"
+            uid=137_7 StaticText "Testing Guide"
+              uid=137_3 InlineTextBox "Testing Guide"
+          uid=136_7 button "🐛 Bug Hunting"
+            uid=137_8 StaticText "🐛 Bug Hunting"
+              uid=137_3 InlineTextBox "🐛 Bug Hunting"
+      uid=136_8 navigation
+        uid=137_9 ignored
+          uid=136_9 link "Practice Software Testing - Toolshop" url="https://practicesoftwaretesting.com/"
+            uid=137_10 image
+          uid=137_11 generic
+            uid=136_10 menubar "Main menu" orientation="horizontal"
+              uid=136_11 menuitem "Home"
+                uid=136_12 link "Home" url="https://practicesoftwaretesting.com/"
+                  uid=137_12 StaticText "Home"
+                    uid=137_3 InlineTextBox "Home"
+              uid=136_13 menuitem "Categories "
+                uid=136_14 button "Categories " expandable
+                  uid=137_13 StaticText "Categories "
+                    uid=137_3 InlineTextBox "Categories "
+                  uid=137_14 generic
+              uid=136_15 menuitem "Contact"
+                uid=136_16 link "Contact" url="https://practicesoftwaretesting.com/contact"
+                  uid=137_15 StaticText "Contact"
+                    uid=137_3 InlineTextBox "Contact"
+              uid=136_17 menuitem "Latte Register "
+                uid=136_18 button "Latte Register " expandable
+                  uid=137_16 StaticText "Latte Register "
+                    uid=137_3 InlineTextBox "Latte Register "
+                  uid=137_17 generic
+            uid=137_18 generic
+              uid=136_19 button "Select language" expandable
+                uid=137_19 ignored
+                  uid=137_20 ignored
+                uid=137_21 StaticText " EN "
+                  uid=137_3 InlineTextBox " EN "
+                uid=137_22 generic
+              uid=137_23 ignored
+      uid=137_24 generic
+        uid=136_20 heading "Invoices" level="1"
+          uid=137_25 StaticText "Invoices"
+            uid=137_3 InlineTextBox "Invoices"
+        uid=137_26 table
+          uid=137_27 rowgroup
+            uid=137_28 row
+              uid=137_29 columnheader "Invoice Number"
+                uid=136_21 StaticText "Invoice Number"
+                  uid=137_3 InlineTextBox "Invoice Number"
+              uid=137_30 columnheader "Billing Address"
+                uid=136_22 StaticText "Billing Address"
+                  uid=137_3 InlineTextBox "Billing Address"
+              uid=137_31 columnheader "Invoice Date"
+                uid=136_23 StaticText "Invoice Date"
+                  uid=137_3 InlineTextBox "Invoice Date"
+              uid=137_32 columnheader "Total"
+                uid=136_24 StaticText "Total"
+                  uid=137_3 InlineTextBox "Total"
+              uid=137_33 columnheader
+          uid=137_34 ignored
+            uid=137_35 row
+              uid=137_36 cell "INV-2026000007"
+                uid=136_25 StaticText "INV-2026000007"
+                  uid=137_3 InlineTextBox "INV-2026000007"
+              uid=137_37 cell "Marvin-Krenn-Gasse"
+                uid=136_26 StaticText "Marvin-Krenn-Gasse"
+                  uid=137_3 InlineTextBox "Marvin-Krenn-Gasse"
+              uid=137_38 cell "2026-10-04 08:29:40"
+                uid=136_27 StaticText "2026-10-04 08:29:40"
+                  uid=137_3 InlineTextBox "2026-10-04 08:29:40"
+              uid=137_39 cell "$14.15"
+                uid=136_28 StaticText "$14.15"
+                  uid=137_3 InlineTextBox "$14.15"
+              uid=137_40 cell "Details"
+                uid=136_29 link "Details" url="https://practicesoftwaretesting.com/account/invoices/01m430gy49hafbhvttgzff010r"
+                  uid=136_30 StaticText "Details"
+                    uid=137_3 InlineTextBox "Details"
+      uid=136_31 contentinfo
+        uid=137_41 ignored
+          uid=137_42 ignored
+            uid=137_43 generic
+              uid=136_32 StaticText "LEARN & EXPLORE"
+                uid=137_3 InlineTextBox "LEARN & EXPLORE"
+            uid=137_44 ignored
+              uid=137_45 ignored
+                uid=136_33 link "Learn Test Automation Hands-on courses for Playwright, Robot Framework, APIs and more" url="https://onlinecourses.testsmith.io/"
+                  uid=137_46 ignored
+                    uid=137_47 ignored
+                      uid=136_34 StaticText "Learn Test Automation"
+                        uid=137_3 InlineTextBox "Learn Test Automation"
+                    uid=136_35 StaticText "Hands-on courses for Playwright, Robot Framework, APIs and more"
+                      uid=137_3 InlineTextBox "Hands-on courses for Playwright, Robot Framework, APIs and "
+                      uid=137_3 InlineTextBox "more"
+              uid=137_48 ignored
+                uid=136_36 link "API Spector Open-source API testing, mocking and contract testing" url="https://api-spector.dev/"
+                  uid=137_49 ignored
+                    uid=137_50 ignored
+                      uid=136_37 StaticText "API Spector"
+                        uid=137_3 InlineTextBox "API Spector"
+                    uid=136_38 StaticText "Open-source API testing, mocking and contract testing"
+                      uid=137_3 InlineTextBox "Open-source API testing, mocking and contract testing"
+              uid=137_51 ignored
+                uid=136_39 link "GitHub Source code, issues and contributions" url="https://github.com/testsmith-io/practice-software-testing"
+                  uid=137_52 ignored
+                    uid=137_53 ignored
+                      uid=136_40 StaticText "GitHub"
+                        uid=137_3 InlineTextBox "GitHub"
+                    uid=136_41 StaticText "Source code, issues and contributions"
+                      uid=137_3 InlineTextBox "Source code, issues and contributions"
+        uid=137_54 ignored
+          uid=137_55 generic
+            uid=136_42 StaticText "This is a DEMO application, used for software testing training purpose. | "
+              uid=137_3 InlineTextBox "This is a DEMO application, used for software testing training purpose. | "
+            uid=136_43 link "Privacy Policy" url="https://practicesoftwaretesting.com/privacy"
+              uid=136_44 StaticText "Privacy Policy"
+                uid=137_3 InlineTextBox "Privacy Policy"
+            uid=136_45 StaticText " | Banner photo by "
+              uid=137_3 InlineTextBox " | Banner photo by "
+            uid=136_46 link "Barn Images" url="https://unsplash.com/@barnimages"
+              uid=136_47 StaticText "Barn Images"
+                uid=137_3 InlineTextBox "Barn Images"
+            uid=136_48 StaticText " on "
+              uid=137_3 InlineTextBox " on "
+            uid=136_49 link "Unsplash" url="https://unsplash.com/photos/t5YUoHW6zRo"
+              uid=136_50 StaticText "Unsplash"
+                uid=137_3 InlineTextBox "Unsplash"
+            uid=136_51 StaticText "."
+              uid=137_3 InlineTextBox "."
+          uid=137_56 generic
+            uid=136_52 StaticText "v2.5 | Built 2026-09-30 | Angular 20.0.5"
+              uid=137_3 InlineTextBox "v2.5 | Built 2026-09-30 | Angular 20.0.5"
+      uid=137_57 generic
+        uid=136_53 button "Open chat"
+          uid=137_58 image
+      uid=137_59 generic
+        uid=136_54 button "Show live shop activity"

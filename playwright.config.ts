@@ -16,6 +16,20 @@ export default defineConfig({
     trace: 'on-first-retry',
     ignoreHTTPSErrors: true,
   },
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  projects: [
+    {
+      name: 'chromium',
+      testIgnore: ['**/toolshop/**'],
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      // The Toolshop demo is shared and public: under 4+ parallel workers it returns "Login failed" and blank pages
+      // (KB §14). Two workers keep the load reasonable without retries or longer timeouts.
+      name: 'toolshop',
+      testMatch: ['**/toolshop/**/*.spec.ts'],
+      workers: 2,
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
   reporter: [['list'], ['html', { open: 'never' }]],
 });

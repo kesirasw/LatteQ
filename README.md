@@ -13,6 +13,7 @@
 | 05 | Components | MUI Select | `05_components_mui.spec.ts` | Portal-rendered listboxes, duplicate labels |
 | 06 | Charts | Highcharts | `06_charts_highcharts.spec.ts` | Cookie banner, iframes, SVG tooltips, locale-formatted names |
 | 07 | Auth | GitHub login | `07_auth_storageState.spec.ts` | Saving and reusing `storageState` (needs `GH_USER` / `GH_PASS`) |
+| — | Full e-commerce app | Practice Software Testing (Toolshop) | `tests/toolshop/`, `tests/api/toolshop/` | 47 planned cases (`test-plans/toolshop/`): catalogue, cart, 4-step checkout, accounts, contact, API checks. Each test registers its own customer |
 
 ## Setup
 
@@ -32,6 +33,7 @@ Optional, for the auth spec: set `GH_USER` and `GH_PASS` (a GitHub account witho
 | `npm run test:practice` | Run `tests/practice/` only |
 | `npm run test:smoke` | Run tests tagged `@smoke` |
 | `npm run test:api` | Run API tests (tagged `@api`) |
+| `npx playwright test --project=toolshop` | Run the Toolshop suite (at most 2 at a time, shared public demo) |
 | `npx playwright test <file>` | Run one spec |
 | `npm run test:ui` / `test:headed` / `test:debug` | Interactive UI mode / visible browser / Inspector |
 | `npx playwright show-report` | Open the last HTML report (served locally, so traces work) |

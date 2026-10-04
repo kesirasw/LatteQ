@@ -7,4 +7,4 @@ Plain-English test plans and test cases, one folder per website, written before 
 
 | Site | UI test plan | UI test cases | API test plan | Status | Last updated |
 |---|---|---|---|---|---|
-| Practice Software Testing (Toolshop) | [test-plan.md](toolshop/test-plan.md) | [7 files, 47 cases](toolshop/test-cases/) | not written yet (contract inventory ready: `api-context/toolshop/`) | Draft | 2026-10-04 |
+| Practice Software Testing (Toolshop) | [test-plan.md](toolshop/test-plan.md) | [7 files, 47 cases](toolshop/test-cases/), all automated | not written yet (contract inventory ready: `api-context/toolshop/`) | Automated | 2026-10-05 |

@@ -7,7 +7,7 @@ Part of the [Toolshop test plan](../test-plan.md).
 | ID | Title | Priority | Basis |
 |---|---|---|---|
 | TC-API-01 | Signing in through the service | High | Seen during exploration |
-| TC-API-02 | Listing products through the service | Medium | Needs confirming |
+| TC-API-02 | Listing products through the service | Medium | Confirmed by run |
 | TC-API-03 | Checking a payment through the service | Medium | Seen during exploration |
 | TC-API-04 | The service refuses a state that doesn't match the country | Medium | Seen during exploration |
 | TC-API-05 | The service refuses orders without a valid sign-in | Low | Seen during exploration |
@@ -33,9 +33,9 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Steps:**
   1. Ask the service for the list of products.
 - **Expected result:** The service returns a page of products, and their names match the first page of the website's catalogue.
-- **Basis:** Needs confirming
+- **Basis:** Confirmed by automated run (2026-10-05)
 - **Map reference:** C1
-- **Notes:** The service was confirmed to be up. The list wasn't compared with the website.
+- **Notes:** Confirmed by the automated run on 2026-10-05. The names matched the website's first page.
 
 ### TC-API-03 — Checking a payment through the service
 

@@ -11,11 +11,19 @@ import type { output as zOutput } from 'zod/v4';
  */
 
 /**
- * 401 Unauthorized.
+ * 401 Unauthorized from the login endpoint.
  * Live: {"error":"Unauthorized"} (POST /users/login with a wrong password, 2026-10-04).
  */
 export const UnauthorizedResponseSchema = z.strictObject({
   error: z.string(),
+});
+
+/**
+ * 401 Unauthorized from protected endpoints (missing, invalid or expired token). A different shape from login's.
+ * Live: {"message":"Unauthorized"} (POST /invoices without a token / with an invalid token, 2026-10-04).
+ */
+export const UnauthenticatedResponseSchema = z.strictObject({
+  message: z.string(),
 });
 
 /**
@@ -34,5 +42,6 @@ export const NotFoundResponseSchema = z.strictObject({
 export const UnprocessableEntityResponseSchema = z.record(z.string(), z.array(z.string()));
 
 export type UnauthorizedResponse = zOutput<typeof UnauthorizedResponseSchema>;
+export type UnauthenticatedResponse = zOutput<typeof UnauthenticatedResponseSchema>;
 export type NotFoundResponse = zOutput<typeof NotFoundResponseSchema>;
 export type UnprocessableEntityResponse = zOutput<typeof UnprocessableEntityResponseSchema>;
