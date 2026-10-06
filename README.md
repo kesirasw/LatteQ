@@ -1,146 +1,90 @@
 # LatteQ
 
-**Smooth Automation, Strong Quality.** A Playwright + TypeScript framework for practising real-world UI automation against public sites, with an AI-assisted QA workflow for Claude Code and GitHub Copilot.
+**Smooth Automation, Strong Quality.**
 
-## What's covered
+## About the project
 
-| # | Area | Site | Spec | Practises |
-|---|---|---|---|---|
-| 01 | Tables | DataTables | `01_tables_datatables.spec.ts` | Search filtering, header sort buttons, live status text |
-| 02 | Forms | Booking.com | `02_forms_booking.spec.ts` | Autocomplete, A/B variants, random modals, bot checks (runs on real Chrome) |
-| 03 | SPA | GitHub | `03_spa_github.spec.ts` | Quick-search dialog, hydration races, custom inputs, issue filters |
-| 04 | Edge cases | UI Testing Playground | `04_playground_uitp.spec.ts` | Dynamic IDs, slow page loads |
-| 05 | Components | MUI Select | `05_components_mui.spec.ts` | Portal-rendered listboxes, duplicate labels |
-| 06 | Charts | Highcharts | `06_charts_highcharts.spec.ts` | Cookie banner, iframes, SVG tooltips, locale-formatted names |
-| 07 | Auth | GitHub login | `07_auth_storageState.spec.ts` | Saving and reusing `storageState` (needs `GH_USER` / `GH_PASS`) |
-| — | Full e-commerce app | Practice Software Testing (Toolshop) | `tests/toolshop/`, `tests/api/toolshop/` | 47 planned cases (`test-plans/toolshop/`): catalogue, cart, 4-step checkout, accounts, contact, API checks. Each test registers its own customer |
+LatteQ is a Playwright + TypeScript test automation framework with an AI-assisted QA workflow built in. It pairs a conventional, well-structured test architecture (page objects, fixtures, typed configuration, contract-validated API checks) with a set of **skills**: written rules and procedures that AI coding assistants (Claude Code and GitHub Copilot) follow when they plan, write, debug and review tests.
 
-## Setup
+The framework is exercised against real public websites and APIs rather than a sandbox, so the workflow is proven on the kind of behaviour real products show: overlays, A/B variants, slow rendering, bot checks and APIs that don't match their own documentation.
 
-```bash
-npm install
-npx playwright install chromium   # bundled browser for most specs
-npx playwright install chrome     # Google Chrome, used by the Booking spec (skip if Chrome is installed)
-```
+## Significance
 
-Optional, for the auth spec: copy `.env.example` to `.env` and set `GH_USER` and `GH_PASS` (a GitHub account without 2FA), or set them in your shell (shell values win). `.env` is git-ignored and loaded by `playwright.config.ts`. Never commit it.
+AI assistants can write test code quickly, but left alone they tend to produce tests that are fast to write and expensive to keep: guessed locators, hard waits, assertions bent to match whatever the site does today, and fixes that live only in a chat history. LatteQ addresses that directly:
 
-## Commands
+- **Context before code.** The assistant reads what is already known about a site (saved UI maps, API contracts) before writing anything, and explores a live page only when that knowledge is missing.
+- **Correctness over a green run.** A failing test is checked against the requirement, contract and test plan before anything is changed. Product bugs are recorded and kept visible, not hidden by editing the expected result.
+- **Human in the loop.** Non-trivial changes are proposed with a confidence score and wait for approval before they are applied.
+- **Rules that are enforced, not just written.** The same rules are applied at three levels: the skills the assistant reads, a check that blocks rule-breaking edits as they are written, and ESLint.
+- **Knowledge that stays in the repo.** Every diagnosed failure, product defect, UI fact and design decision is saved as a file, so the next person (or assistant) starts from it instead of rediscovering it.
 
-| Command | What it does |
-|---|---|
-| `npm test` | Run every spec (list + HTML report) |
-| `npm run test:practice` | Run `tests/practice/` only |
-| `npm run test:smoke` | Run tests tagged `@smoke` |
-| `npm run test:api` | Run API tests (tagged `@api`) |
-| `npx playwright test --project=toolshop` | Run the Toolshop suite (at most 2 at a time, shared public demo) |
-| `npx playwright test <file>` | Run one spec |
-| `npm run test:ui` / `test:headed` / `test:debug` | Interactive UI mode / visible browser / Inspector |
-| `npx playwright show-report` | Open the last HTML report (served locally, so traces work) |
-| `npm run verify` | Type-check + ESLint + Prettier check. Run before every commit |
-| `npm run lint:fix` / `npm run format` | Auto-fix lint / formatting |
-| `npm run ui:cdt -- <command>` | chrome-devtools CLI, used to crawl a site |
-| `npm run ui:snap -- <site> <state>` | Save a sanitized page snapshot to `ui-context/` |
-| `npm run ui:map -- <snapshot>` | Turn a snapshot into Playwright locator suggestions |
-| `npm run heal:suggest -- test-results/<failed-test> --locator "<locator>"` | Suggest replacement locators from a failed test's page snapshot (read-only) |
-| `npm run api:inventory -- <contract URL> --site <site>` | Save an API contract and its endpoint inventory to `api-context/` |
+## Objective
 
-Results land in `playwright-report/` (HTML) and `test-results/` (screenshots, videos and traces of failures). Both are git-ignored.
+- Provide a reusable, maintainable Playwright architecture for UI and API testing that new team members can pick up quickly.
+- Define a repeatable AI-assisted workflow, from exploring a site to planning, automating, debugging and reviewing, that works the same way in Claude Code and GitHub Copilot.
+- Show how to keep tests stable and trustworthy on real, changing sites without sleeps, retries or loosened assertions.
+- Separate test bugs from product bugs with a clear decision process, and keep a record of both.
+- Build up shared knowledge of each site and API in the repository, so work is never repeated.
 
-## Project layout
+## Skills
+
+Skills live in [.claude/skills/](.claude/skills/) (one `SKILL.md` each) and are mirrored for Copilot in [.github/instructions/](.github/instructions/) and [.github/prompts/](.github/prompts/). [CLAUDE.md](CLAUDE.md) holds the non-negotiable rules and routes each kind of task to its skill. They are listed here in the order they are typically used.
+
+| Skill | What it does | Use it when | Main files |
+|---|---|---|---|
+| `onboarding` | Guides a new QA or developer through installing the repo and browsers, proving the setup, and using the skills in Claude Code or Copilot; ends with a first task for their role | Someone is new, or asks how to set up the repo or use the skills | `README.md`, `.env.example` |
+| `ai-native-workflow` | The entry point. Runs the 8-phase workflow: classify → route to a skill → gather context → plan with a 1–10 confidence score → human approval → apply → verify → report | Starting any non-trivial task, or unsure which skill applies | `CLAUDE.md` |
+| `ui-context` | Reads the saved knowledge for a site before any locator, page object, test or plan is written; decides when a fresh crawl is needed and how to record what it finds | Any work that touches a site's UI | `ui-context/<site>/MAP.md`, snapshots |
+| `chrome-devtools-cli` | Drives a real headless Chrome to explore a live page: accessibility snapshots, clicks, form input, network and console; saves clean snapshots for reuse | `ui-context` says the saved map is missing or out of date | `scripts/ui-context/` |
+| `test-planning` | Writes a plain-English UI test plan and test cases after a site has been explored, each traced back to the site map | Planning test coverage for a website | `test-plans/<site>/` |
+| `api-test-planning` | Writes a plain-English API test plan and test cases from the OpenAPI contract, covering every documented response, authentication, validation and business rule; lists where the contract and live API disagree | Planning test coverage for an API | `api-context/<site>/`, `test-plans/<site>/api/` |
+| `selectors` | Chooses robust locators in a fixed priority order (role → label → placeholder → text → test id → scoped CSS) and resolves ambiguous matches properly | Writing or fixing any locator | `pages/` |
+| `page-objects` | Defines the page-object shape: readonly locators, intent-level methods, interactions through the safe `Actions` helpers, readiness checks on navigation | Creating or changing anything in `pages/` | `pages/`, `utils/actions.ts` |
+| `fixtures` | Wires page objects and helpers into tests through a single `test` / `expect` export; decides what belongs in a fixture versus a plain helper | Registering a page object or adding a helper | `fixtures/test.ts`, `utils/` |
+| `data-config` | Keeps URLs, credentials, shared test data and timeouts in one typed place, read from environment variables; owns the Playwright configuration | Adding a URL, credential, data value or timeout, or changing the config | `data/`, `playwright.config.ts`, `.env.example` |
+| `test-standards` | Sets the rules for spec files: naming, titles and tags, Given/When/Then steps, outcome assertions, and reasons for any skipped test | Creating or editing a UI spec | `tests/` |
+| `api-testing` | Automates API checks against the contract: Zod schema validation of every response, status-code coverage, negative and path-parameter tests, and parking tests where the API breaks its contract | Writing API tests or response schemas | `tests/api/`, `fixtures/api/`, `data/api-endpoints.ts` |
+| `debugging` | Investigates failing or flaky tests: classifies the failure, runs the bug oracle (is the product or the test wrong?), heals broken locators with approval, and records what was learned | A test fails, times out, flakes, or breaks after a site change | `docs/TEST_FIXES_KNOWLEDGE_BASE.md`, `docs/DEFECTS.md` |
+| `pr-reviewer` | Reviews a branch or diff against the rules and the relevant skills, runs the checks and tests, and reports Blockers / Should fix / Nits | Before merging a branch or pull request | `.github/prompts/pr-reviewer.prompt.md` |
+
+## Project structure
 
 ```
 LatteQ/
+├── CLAUDE.md                     rules for AI assistants and the skill index
+├── .claude/
+│   ├── skills/<skill>/SKILL.md   one folder per skill (see table above)
+│   ├── hooks/                    write-time check that blocks rule-breaking edits
+│   └── settings.json             registers the hook
+├── .github/
+│   ├── copilot-instructions.md   Copilot version of the rules
+│   ├── instructions/             path-scoped Copilot rules, one per area
+│   ├── prompts/                  /onboarding and /pr-reviewer prompts
+│   └── workflows/                Copilot coding-agent setup
 ├── tests/
-│   ├── practice/NN_<area>_<site>.spec.ts   specs, one site per file
-│   └── seed.spec.ts                        starting point for new specs
-├── pages/<Site>Page.ts                     page objects: locators + user-intent methods
-├── tests/api/<site>/<resource>.spec.ts     API specs (apiRequest + Zod schemas)
-├── fixtures/test.ts                        the only test/expect export; wires pages, utils and apiRequest
-├── fixtures/api/                           apiRequest fixture + Zod response schemas per site
-├── utils/                                  Actions (safe click/fill), Network, table, auth, waits helpers
-├── data/env.ts                             ENV: site URLs, credentials (from process.env), keywords, timeouts
-├── data/api-endpoints.ts, invalid-values.ts API paths per site; values for negative API tests
-├── ui-context/<site>/                      saved UI knowledge per site: MAP.md + accessibility snapshots
-├── scripts/ui-context/                     snapshot capture + snapshot→locator mapper
-├── api-context/<site>/                     OpenAPI contract snapshot + generated endpoint INVENTORY.md
-├── test-plans/<site>/                      plain-English test plan + test-cases/NN-<area>.md (UI)
-│   └── api/                                plain-English API test plan + test-cases/NN-<resource>.md
+│   ├── practice/                 UI specs, one site per file
+│   ├── <site>/                   UI specs for a full application, one feature area per file
+│   └── api/<site>/               API specs, one resource per file
+├── pages/                        page objects: locators + user-intent methods
+├── fixtures/
+│   ├── test.ts                   the only test / expect export; registers pages, helpers and apiRequest
+│   └── api/                      apiRequest fixture and Zod response schemas per site
+├── utils/                        Actions (safe click / fill / navigate), Network, table, auth and wait helpers
+├── data/                         ENV (URLs, credentials, timeouts), API endpoints, test data, invalid values
+├── ui-context/<site>/            saved UI knowledge: MAP.md + accessibility snapshots
+├── api-context/<site>/           OpenAPI contract snapshot + generated endpoint inventory
+├── test-plans/<site>/            plain-English UI test plan and test cases
+│   └── api/                      plain-English API test plan and test cases
+├── scripts/
+│   ├── ui-context/               snapshot capture, snapshot → locator mapping, healing suggestions
+│   └── api-context/              contract download and endpoint inventory
 ├── docs/
-│   ├── TEST_FIXES_KNOWLEDGE_BASE.md        every real-site failure diagnosed so far, with the fix
-│   ├── DEFECTS.md                          product defects (DEF-NNN) that tests keep red with test.fail
-│   ├── decisions/                          why we chose X over Y (read before changing a convention)
-│   └── practice-sites.md                   original notes on which sites to practise against
-├── CLAUDE.md, .claude/                     Claude Code rules, skills and write-time check
-├── .github/                                Copilot instructions, /pr-reviewer prompt, setup workflow
+│   ├── TEST_FIXES_KNOWLEDGE_BASE.md   every diagnosed real-site failure and its fix
+│   ├── DEFECTS.md                     product defect register (DEF-NNN)
+│   ├── decisions/                     why each convention was chosen
+│   ├── practice-sites.md              notes on the public sites used for practice
+│   └── THIRD-PARTY-NOTICES.md         licences for adapted material
 ├── playwright.config.ts
-└── eslint.config.mjs, tsconfig.json, .prettierrc.json
+├── eslint.config.mjs, tsconfig.json, .prettierrc.json
+└── .env.example                  optional credentials and environment overrides
 ```
-
-## How a test is written
-
-1. **Read the site's map**: `ui-context/<site>/MAP.md` has its quirks, step-by-step flows with observed outcomes, and ready-to-use Playwright locators.
-2. **Crawl only if the map lacks something**: use the chrome-devtools CLI (`npm run ui:cdt`), save the state with `ui:snap`, generate locators with `ui:map`, and add the rows to the map.
-3. **Page object** in `pages/`: locators from the map, interactions through `this.actions.*`, URLs from `ENV`.
-4. **Register it** in `fixtures/test.ts`.
-5. **Spec** in `tests/practice/`: import `test`/`expect` from `fixtures/test.ts`, call page-object methods, and assert a user-visible outcome.
-6. **Verify**: `npm run verify` and `npx playwright test <file>`.
-
-```ts
-import { test, expect } from '../../fixtures/test';
-
-test('DataTables: search filters rows to the matching office @smoke', async ({ datatables }) => {
-  await datatables.open();
-  await datatables.search('London');
-
-  await expect(datatables.status).toContainText('filtered from 57 total entries');
-});
-```
-
-## Rules of the road
-
-Enforced by ESLint, a Claude Code write-time check, and code review:
-
-- No `waitForTimeout`, XPath, `test.only`, `any` / `@ts-ignore`, or empty `.catch(() => {})`.
-- Locators: `getByRole` → `getByLabel` → `getByPlaceholder` → `getByText` → `getByTestId` → scoped CSS (with a comment).
-- URLs and credentials only in `data/env.ts`.
-- Every test asserts something the user would see.
-- Flaky? Find the real wait condition. Don't raise timeouts or force clicks. Record site-caused fixes in `docs/TEST_FIXES_KNOWLEDGE_BASE.md`.
-
-The full rule set is in [CLAUDE.md](CLAUDE.md).
-
-## AI-assisted workflow
-
-**New here?** Ask your AI tool to onboard you: `/onboarding` in Claude Code or Copilot Chat. It checks your machine, installs the repo and browsers, runs a smoke test, and shows you how to use the skills ([.claude/skills/onboarding/SKILL.md](.claude/skills/onboarding/SKILL.md)).
-
-- **Claude Code** loads [CLAUDE.md](CLAUDE.md) and the skills in `.claude/skills/`. Non-trivial work follows 8 phases: classify → route → context (map first) → proposal with a 1–10 confidence score → your approval → apply → verify → report.
-- **GitHub Copilot** uses [.github/copilot-instructions.md](.github/copilot-instructions.md) plus path-scoped rules in `.github/instructions/`, and a `/pr-reviewer` prompt.
-- **Bugs vs broken tests**: a red test is checked against the requirement, contract and test plan before anyone touches it. Product bugs stay red on purpose (`test.fail` + `docs/DEFECTS.md`); broken locators are healed with AI help and your approval, never automatically at runtime.
-- **Knowledge is saved in the repo**, not in chats: failures in the knowledge base, bugs in `DEFECTS.md`, UI facts in `ui-context/`, and the reasons behind conventions in `docs/decisions/`.
-- **UI exploration** uses the chrome-devtools CLI only (no Playwright MCP). What it learns is saved in `ui-context/`, so the same site is never crawled twice for the same element.
-
-## Practice path (14 days)
-
-| Days | Focus | Site |
-|---|---|---|
-| 1–2 | Tables, sorting, pagination | DataTables |
-| 3–4 | Autocomplete, date pickers, modals | Booking.com |
-| 5–6 | SPA search, hydration, filters | GitHub |
-| 7 | Dynamic IDs, slow loads, hidden layers | UI Testing Playground |
-| 8–9 | Portals, keyboard, accessibility roles | MUI |
-| 10–11 | Extend: infinite scroll / lazy loading (pick a site from `docs/practice-sites.md`) | — |
-| 12–13 | Iframes, SVG charts, network validation | Highcharts |
-| 14 | Auth reuse with `storageState`, then build your own extension | GitHub login |
-
-## Troubleshooting
-
-| Symptom | Where to look |
-|---|---|
-| A test fails on a third-party site | `docs/TEST_FIXES_KNOWLEDGE_BASE.md`, then the site's `ui-context/<site>/MAP.md` Quirks |
-| "strict mode violation" | Make the locator unique: `exact: true`, scope to a region, or `filter` |
-| Element not found after a site update | `npm run heal:suggest` on the failure, then the assisted-healing steps in the `debugging` skill. If a visible label changed, check it's intended before healing |
-| Is it a bug in the site or in the test? | Bug oracle in the `debugging` skill: requirement → contract → test plan → heuristics. Bugs go to `docs/DEFECTS.md` |
-| Booking spec can't launch | Install Google Chrome: `npx playwright install chrome` |
-| Auth specs skipped | Set `GH_USER` / `GH_PASS` |
-
-Playwright docs: <https://playwright.dev> · [Best practices](https://playwright.dev/docs/best-practices) · [Locators](https://playwright.dev/docs/locators)
