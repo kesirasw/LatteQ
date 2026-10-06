@@ -13,3 +13,4 @@ applyTo: "test-plans/**"
 - Basis is **Seen during exploration** or **Needs confirming**. Never present a guess as seen.
 - Suspected defects: the expected result states the correct behaviour; the plan's "Questions and suspected defects" section records what was actually seen.
 - Summary counts in `test-plan.md` are counted from the files, not estimated.
+- **Review before automation.** When the plan and cases are written, leave Status as **Draft**, summarise them for the user and ask them to review and validate. Set Status to **Approved** (with **Reviewed by** name and date) only when they approve. Don't start automating in the same step.

@@ -16,6 +16,7 @@ Turn an API's OpenAPI contract into a test plan and test cases that **testers, d
 - **Contract problems are findings, not fixes.** A missing auth requirement, an undocumented error body, or a status the API doesn't honour goes in the plan's *Contract findings*. The case states what *should* happen.
 - **Mark cases that create or change data** ("Changes data: yes, clean up by …"). On a shared demo, every such case needs a cleanup step.
 - **Readable file names**, numbered in a sensible order: `01-users-and-login.md`, `04-invoices.md`.
+- **A person reviews the plan before anything is automated.** When the plan and test cases are written, stop and ask the user to review and validate them. No API spec or schema is written for a plan whose Status isn't **Approved**.
 
 ## Layout
 
@@ -44,7 +45,7 @@ Large contracts (Toolshop: 88 operations) are planned in slices. Decide scope **
 1. Resources the UI test plan relies on (its backend checks and critical flows) → in scope first.
 2. Resources that change data or handle money/auth → next.
 3. Read-only reference data (brands, categories) → later or lower priority.
-If scope isn't stated, propose it in the Phase 4 proposal and ask (`ai-native-workflow`).
+If scope isn't stated, ask the user which resources to cover before writing the plan (`ai-native-workflow`).
 
 ## Scenario checklist (per operation in scope)
 
@@ -151,7 +152,8 @@ Part of the [<Site> API test plan](../test-plan.md).
 | API | <base URL> |
 | Contract | <URL> (OpenAPI <version>), snapshot in api-context/<site>/ (<date>) |
 | Related UI plan | ../test-plan.md (if any) |
-| Status | Draft / Reviewed / Approved |
+| Status | Draft / Approved |
+| Reviewed by | <name> on <date> (filled in only when a person approves the plan) |
 | Last updated | <date> |
 
 ## 1. Purpose
@@ -175,8 +177,10 @@ Part of the [<Site> API test plan](../test-plan.md).
 5. **Findings:** list contract problems (operations that change data without auth, undocumented error bodies, inline or missing schemas, statuses not honoured).
 6. **Index:** add or refresh the site row in `test-plans/README.md`.
 7. **Check:** no JSON/code outside the Endpoint field: `grep -nE '\{"|getBy|expect\(|Bearer|\.parse\(' test-plans/<site>/api/test-cases/*.md` should return nothing. Every case has Priority, Endpoint, Expected response, Basis, Changes data. Every documented status of every in-scope operation is covered or deliberately excluded.
+8. **Ask for review and stop.** Leave Status as **Draft** and give the user a short summary: resources and case counts, coverage gaps or exclusions, the **Needs confirming** cases, and the contract findings. Ask them to review and validate the plan and test cases. Don't start automation in the same step.
+9. **Apply the review.** If they ask for changes, update the cases, re-run the check in step 7, and ask again. When they approve, set Status to **Approved** and fill in **Reviewed by** with their name and the date.
 
 ## Relation to other skills
 
 - **UI plan (`test-planning`):** its *Backend checks* file keeps only checks that support UI flows, and links here for full API coverage. Don't duplicate cases. Reference the API case ID instead.
-- **Automation (`api-testing`):** each API case becomes a spec in `tests/api/<site>/<resource>.spec.ts`, with the case ID in a comment above the test. Variations become `for...of` loops. Expected responses become status + Zod schema assertions. When an automated case passes, a **Needs confirming** basis becomes **Seen in live response** (or "Confirmed by automated run on <date>").
+- **Automation (`api-testing`):** starts only from an **Approved** plan (procedure steps 8–9). Each API case becomes a spec in `tests/api/<site>/<resource>.spec.ts`, with the case ID in a comment above the test. Variations become `for...of` loops. Expected responses become status + Zod schema assertions. When an automated case passes, a **Needs confirming** basis becomes **Seen in live response** (or "Confirmed by automated run on <date>").

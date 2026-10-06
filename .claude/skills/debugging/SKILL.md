@@ -91,7 +91,7 @@ LatteQ heals locators **with an agent and a human gate, never at runtime** ([dec
 3. **Oracle check:** a candidate whose **visible name changed** ("Place order" → "Submit") is a §3 question. Heal only on *Intended change*.
 4. **Confirm** with a chrome-devtools CLI snapshot of the same state (`ui-context`): the failure snapshot is one moment on one run.
 5. **Patch** the locator in the page object only (specs untouched), and the row in `MAP.md` (`Source: cdt`, then `cdt + run` after a green run).
-6. **Propose** with the Phase 4 block from `ai-native-workflow` (old → new locator, evidence, confidence). Wait for approval.
+6. **Ask for approval:** show the user the old → new locator and the evidence (failure snapshot, CLI snapshot, oracle result). Keep the change only if they approve; otherwise revert it.
 7. **Verify** (§6) and **record** (§7).
 
 Limits: heal locators only, never assertions, expected text or test data. Three or more broken locators on one page = redesign: re-crawl that state and review the page object as a whole.

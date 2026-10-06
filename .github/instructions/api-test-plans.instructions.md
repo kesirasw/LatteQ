@@ -12,3 +12,4 @@ applyTo: "{test-plans/*/api/**,api-context/**}"
 - Every documented status code of every in-scope operation has a case, or is excluded in the plan with a reason.
 - Contract problems (operations that change data without auth, undocumented error bodies) go in the plan's "Contract findings". Cases state the correct behaviour.
 - Cases that change data say how to clean up. Summary counts come from the files.
+- **Review before automation.** When the plan and cases are written, leave Status as **Draft**, summarise them for the user and ask them to review and validate. Set Status to **Approved** (with **Reviewed by** name and date) only when they approve. Don't start automating in the same step.

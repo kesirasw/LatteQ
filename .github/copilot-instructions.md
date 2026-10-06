@@ -31,6 +31,7 @@ Scoped rules are auto-applied from `.github/instructions/*.instructions.md` by f
 12. **Oracle before fix** (`.claude/skills/debugging/SKILL.md` §3). A red test isn't automatically the test's fault. Decide test bug / environment / intended change / product defect against requirement → OpenAPI contract → test plan → heuristics; the site's current behaviour is never proof. Product defects: row in `docs/DEFECTS.md`, keep the correct expectation, `test.fail(true, 'DEF-NNN: …')`. Can't tell → ask.
 13. **Assisted healing only** (debugging §5): for a broken locator run `npm run heal:suggest -- test-results/<failed-test> --locator "<locator>"`, check any changed visible name with the oracle, confirm with a chrome-devtools CLI snapshot, then patch the page object + `MAP.md` and propose it for approval.
 14. **Save what was learned** in the repo: KB, `docs/DEFECTS.md`, `ui-context/<site>/MAP.md`, or `docs/decisions/` for choices between alternatives. Read `docs/decisions/` before "fixing" a convention.
+15. **Plan review before automation.** After a crawl, write the test plan and test cases, then stop and ask the user to review and validate them. Automate only from a plan whose Status is **Approved**.
 
 ## WON'T
 
@@ -38,19 +39,7 @@ Scoped rules are auto-applied from `.github/instructions/*.instructions.md` by f
 
 ## Workflow for non-trivial tasks
 
-1. Classify → 2. Pick the matching skill → 3. Context (read code + `ui-context` map; crawl with the chrome-devtools CLI only what's missing; ask if a URL/flow/expected result is missing) → 4. Propose:
-
-```
-## Proposal
-- Scope: <files + changes>
-- Approach: <1-3 lines>
-- Trade-offs: <or "none">
-- Confidence: <1-10>
-- Rationale: <+/- factors>
-- Unknowns: <or "none">
-```
-
-Confidence < 5 → ask questions instead of proposing. 5–7 → proceed only if the user accepts the unknowns. → 5. Wait for approval → 6. Apply → 7. Verify → 8. Report and ask before committing.
+1. Classify → 2. Pick the matching skill → 3. Context (read code + `ui-context` map; crawl with the chrome-devtools CLI only what's missing; ask if a URL/flow/expected result is missing) → 4. Apply → 5. Verify → 6. Report (files changed, context used, test result, open unknowns) and ask before committing.
 
 ## UI context
 

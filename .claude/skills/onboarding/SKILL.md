@@ -1,6 +1,6 @@
 ---
 name: onboarding
-description: Guided onboarding for a new LatteQ team member (QA or developer) — check prerequisites, clone and install the repo, install browsers, set optional credentials, prove the setup with `npm run verify` and a smoke spec, then show how to drive the project's skills from Claude Code (CLAUDE.md + .claude/skills, slash commands, the confidence gate) or GitHub Copilot (.github/copilot-instructions.md, path-scoped instructions, prompt files, the Copilot coding agent), and hand them a role-specific first task. Load when someone says "I'm new", "onboard me", "set up this repo", "how do I install LatteQ", "how do I use the skills in Claude / Copilot", or "where do I start".
+description: Guided onboarding for a new LatteQ team member (QA or developer) — check prerequisites, clone and install the repo, install browsers, set optional credentials, prove the setup with `npm run verify` and a smoke spec, then show how to drive the project's skills from Claude Code (CLAUDE.md + .claude/skills, slash commands, the workflow) or GitHub Copilot (.github/copilot-instructions.md, path-scoped instructions, prompt files, the Copilot coding agent), and hand them a role-specific first task. Load when someone says "I'm new", "onboard me", "set up this repo", "how do I install LatteQ", "how do I use the skills in Claude / Copilot", or "where do I start".
 ---
 
 # Onboarding
@@ -128,7 +128,7 @@ Start with the shared picture, then the tool they chose.
 1. **Constitution:** `CLAUDE.md` (MUST / SHOULD / WON'T). Copilot gets the same rules, shortened, in `.github/copilot-instructions.md`.
 2. **Skills:** `.claude/skills/<name>/SKILL.md`, one per job. The Skills Index in `CLAUDE.md` lists when each one applies.
 3. **Context folders the AI reads instead of guessing:** `ui-context/<site>/MAP.md` (locators, flows, quirks), `api-context/<site>/` (OpenAPI + inventory), `test-plans/<site>/` (plain-English cases).
-4. **Workflow:** classify → route → context → **proposal with a 1–10 confidence score** → *you approve* → apply → verify → report (`ai-native-workflow`). The person's job at the gate is to read the Scope and Unknowns before saying yes.
+4. **Workflow:** classify → route → context → apply → verify → report (`ai-native-workflow`). The AI asks only when an input is missing (URL, flow, expected result, credentials). The person's job is to read the report (files changed, context used, test result, open unknowns) and review the diff before it is committed. For a new site there is one review checkpoint in the middle: after the crawl, the AI writes the test plan and test cases and stops; the person reviews and validates them, and automation starts only once the plan is marked **Approved**.
 5. **Exploration:** chrome-devtools CLI only (`npm run ui:cdt`); never Playwright MCP or codegen. Why: `docs/decisions/001-…`.
 6. **Red tests:** the AI first decides whether the product or the test is wrong (bug oracle, `debugging` §3). Product bugs stay red on purpose (`test.fail` + `docs/DEFECTS.md`); broken locators are healed with your approval (`npm run heal:suggest`), never silently.
 7. **Where knowledge lives:** `docs/TEST_FIXES_KNOWLEDGE_BASE.md` (failures, Index at top), `docs/DEFECTS.md` (bugs), `ui-context/` (UI), `docs/decisions/` (why we do things this way). Skim `docs/decisions/README.md` on day one.
@@ -141,7 +141,6 @@ Start with the shared picture, then the tool they chose.
 | Open the repo root | `CLAUDE.md` loads automatically; skills in `.claude/skills/` are discovered automatically |
 | Invoke a skill | Just describe the task ("add a test that DataTables paginates to page 2") — the matching skill loads itself. Or name it: `/ui-context`, `/test-planning`, `/api-testing`, `/debugging`, `/pr-reviewer`, `/onboarding` |
 | Write-time guard | `.claude/settings.json` runs `.claude/hooks/enforce-constitution.mjs` before every edit; it blocks hard waits, XPath, `any`, `.only`, literal URLs and similar. If it blocks, the change is wrong — fix the change |
-| Approve / reject | Answer the proposal block. "Rework: <gap>" sends it back to context-gathering |
 | Commits | Claude asks before committing; it never pushes unless asked |
 
 ### Track B — GitHub Copilot (VS Code)
@@ -166,7 +165,7 @@ Start with the shared picture, then the tool they chose.
 
 ## Step 7 — First task by role
 
-Suggest one; run it through the normal 8-phase workflow (proposal → approval → verify).
+Suggest one; run it through the normal workflow (context → apply → verify → report).
 
 | Role | First task | Skills it exercises | Done when |
 |------|------------|---------------------|-----------|
@@ -180,7 +179,7 @@ Then point them at the 14-day practice path in `README.md`.
 ```bash
 git pull
 npm ci                                    # when package-lock.json changed
-# ...work with the AI: map first → proposal → approve → apply...
+# ...work with the AI: map first → apply → verify → report...
 npm run verify
 npx playwright test <changed spec>
 npx playwright show-report                # on failure: open the trace

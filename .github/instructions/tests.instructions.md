@@ -16,3 +16,4 @@ applyTo: "tests/**/*.ts"
 - Tests are independent (`fullyParallel: true`); shared setup goes in `beforeEach` or a fixture.
 - Shared keywords from `ENV.TEST_KEYWORDS`.
 - After editing, run `npx playwright test <file>` and report the result.
+- Automating cases from `test-plans/<site>/`? Check the plan's Status first. Not **Approved** → stop and ask the user to review the plan.

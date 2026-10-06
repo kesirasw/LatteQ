@@ -29,7 +29,7 @@ MAP.md exists for the site?
                   └─ not found → crawl just the missing state
 ```
 
-Say which branch you took in the Phase 4 proposal ("Context: reused ui-context/github/MAP.md, no crawl").
+Say which branch you took in the report ("Context: reused ui-context/github/MAP.md, no crawl").
 
 ## Layout
 

@@ -12,3 +12,4 @@ applyTo: "{tests/api/**,fixtures/api/**,data/api-endpoints.ts,data/invalid-value
 - Cover every status code the contract lists. For request bodies: empty body, each required field omitted, each field with `INVALID_*` values from `data/invalid-values.ts`. Fuzz every path parameter.
 - API disagrees with the contract → keep the test as the contract says, `test.skip` with `// FIXME: DEF-NNN …` explaining why, and register it in `docs/DEFECTS.md`. Never change the expected status to match a bug (bug oracle: `.claude/skills/debugging/SKILL.md` §3).
 - Specs: `tests/api/<site>/<resource>.spec.ts`; titles `'<Site> API: <behaviour> @api'`; clean up any data you create on a shared demo.
+- Automating cases from `test-plans/<site>/`? Check the plan's Status first. Not **Approved** → stop and ask the user to review the plan.

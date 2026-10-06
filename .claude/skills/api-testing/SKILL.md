@@ -16,6 +16,7 @@ author: Adapted for LatteQ from agentic-playwright by Ivan Davidov (MIT)
 - **Never drop or bend a test because the API misbehaves.** Write it as the contract says, mark it `test.skip` with a `// FIXME:` comment explaining the mismatch (Phase 7). Never change the expected status to match a bug.
 - **Empty-body validation is never enough.** Every request-body endpoint needs per-field omission and per-field invalid-type tests; every path parameter gets the fuzzing loop.
 - **Use the `apiRequest` fixture directly.** Promote to a helper fixture only when the same setup/teardown appears in 3+ spec files.
+- **Automate only an approved plan.** If the specs automate cases from `test-plans/<site>/api/`, check the plan's Status first. Not **Approved** → stop and ask the user to review the plan (`api-test-planning`).
 
 ## Where things live
 

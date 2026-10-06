@@ -13,3 +13,4 @@ Short records of **why** LatteQ works the way it does: the choices a new teammat
 | [005](005-toolshop-isolation-and-load.md) | Toolshop: one fresh customer per test, at most 2 workers | Accepted | 2026-10-05 |
 | [006](006-bug-oracle-and-assisted-healing.md) | Bug oracle + assisted healing; no runtime self-healing | Accepted | 2026-10-06 |
 | [007](007-testdata-and-env-config.md) | `data/` → `testdata/`; URLs from `.env` via `config/` | Accepted, not yet implemented | 2026-10-06 |
+| [008](008-no-confidence-gate.md) | No confidence score or approval step before applying changes | Accepted | 2026-10-06 |

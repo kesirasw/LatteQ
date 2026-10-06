@@ -13,6 +13,7 @@ Turn a crawled site (`ui-context/<site>/MAP.md`) into a test plan and test cases
 - **Plain English only.** No locators, selectors, `data-test`, code, regexes, HTTP status codes, JSON, or tool names in steps and expected results. Describe what a person does and sees. Technical detail stays in the map; link to it with a *Map reference*.
 - **Every expected result says where it came from**: **Seen during exploration** (the map recorded it) or **Needs confirming** (reasonable expectation not yet observed). Never present a guess as seen.
 - **One behaviour per test case**, with a single clear expected result a person can check.
+- **A person reviews the plan before anything is automated.** When the plan and test cases are written, stop and ask the user to review and validate them. No page object or spec is written for a plan whose Status isn't **Approved**.
 - **Defects are reported, not normalised**: when the site behaves wrongly, the expected result states the *correct* behaviour and the case is listed under *Suspected defects* with what was actually seen.
 - **Readable file names**: lowercase, hyphenated, descriptive (`checkout-and-payment.md`), never `tc1.md` or `misc.md`.
 
@@ -102,7 +103,8 @@ Part of the [<Site> test plan](../test-plan.md).
 |---|---|
 | Website | <plain URL> |
 | Based on | Exploration on <date> — see `ui-context/<site>/MAP.md` |
-| Status | Draft / Reviewed / Approved |
+| Status | Draft / Approved |
+| Reviewed by | <name> on <date> (filled in only when a person approves the plan) |
 | Last updated | <date> |
 
 ## 1. Purpose            — why we're testing this site, in two or three sentences
@@ -125,7 +127,9 @@ Part of the [<Site> test plan](../test-plan.md).
 4. Write `test-plan.md`; build the summary table by **counting** the cases in the files (don't estimate).
 5. Add/refresh the site row in `test-plans/README.md`.
 6. Check before handing over: no code/locators/status codes in any case (`grep -nE "getBy|data-test|\[[0-9]{3}\]|POST |GET |\`" test-plans/<site>/test-cases/*.md` should only hit nothing or plain-English quotes); every case has Priority, Basis and Map reference; counts match.
+7. **Ask for review and stop.** Leave Status as **Draft** and give the user a short summary: feature areas and case counts (High/Medium/Low), the **Needs confirming** cases, suspected defects, and open questions. Ask them to review and validate the plan and test cases. Don't start automation in the same step.
+8. **Apply the review.** If they ask for changes, update the cases, re-run the check in step 6, and ask again. When they approve, set Status to **Approved** and fill in **Reviewed by** with their name and the date.
 
 ## After the plan
 
-If the site has an API plan (`test-plans/<site>/api/`, `api-test-planning` skill), keep backend checks to what supports UI flows and reference API case IDs instead of duplicating them. Backend-check cases are automated with the `api-testing` skill (case ID in a comment above each test). Automation otherwise follows the normal workflow: `page-objects` and `test-standards` turn High-priority cases into specs, using locators from the map. When a **Needs confirming** case is automated and passes, update its Basis to **Seen during exploration** (or note "Confirmed by automated run on <date>") and the map's *Last verified by run*.
+Automation starts only from an **Approved** plan (procedure steps 7–8). If the site has an API plan (`test-plans/<site>/api/`, `api-test-planning` skill), keep backend checks to what supports UI flows and reference API case IDs instead of duplicating them. Backend-check cases are automated with the `api-testing` skill (case ID in a comment above each test). Automation otherwise follows the normal workflow: `page-objects` and `test-standards` turn High-priority cases into specs, using locators from the map. When a **Needs confirming** case is automated and passes, update its Basis to **Seen during exploration** (or note "Confirmed by automated run on <date>") and the map's *Last verified by run*.

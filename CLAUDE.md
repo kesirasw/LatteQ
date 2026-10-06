@@ -51,7 +51,8 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 10. **Validate API responses with Zod.** Every API response body is checked as `expect(SchemaName.parse(body)).toBeTruthy();` against a `z.strictObject()` schema built from the site's OpenAPI contract (`api-testing`).
 11. **Record real-site fixes.** When a failure is caused by the target site (overlay, cert, rendering, bot wall), add an entry to `docs/TEST_FIXES_KNOWLEDGE_BASE.md` using its existing format.
 12. **Oracle before fix.** A red test is not automatically the test's fault. Before changing an assertion, expected value or test data, decide test bug / environment / intended change / product defect with the bug oracle (`debugging` §3: requirement → contract → plan → heuristics). Product defects get a `DEF-NNN` row in `docs/DEFECTS.md` and keep the correct expectation under `test.fail(true, 'DEF-NNN: …')`. Broken locators are healed only via assisted healing (`debugging` §5), with approval.
-13. **Save what was learned** in the repo, not just the chat: KB, `DEFECTS.md`, `MAP.md` or `docs/decisions/` (`ai-native-workflow` Phase 8).
+13. **Save what was learned** in the repo, not just the chat: KB, `DEFECTS.md`, `MAP.md` or `docs/decisions/` (`ai-native-workflow` Phase 6).
+14. **Plan review before automation.** After a crawl, write the test plan and test cases (`test-planning` / `api-test-planning`), then stop and ask the user to review and validate them. Automate only cases from a plan whose Status is **Approved**.
 
 ## SHOULD
 
@@ -93,11 +94,13 @@ The WON'T table is enforced in three layers:
 
 ## Workflow Entry Point
 
-Non-trivial work follows the **8-phase workflow** in `.claude/skills/ai-native-workflow/SKILL.md`:
+Non-trivial work follows the **6-phase workflow** in `.claude/skills/ai-native-workflow/SKILL.md`:
 
-1. Classify intent → 2. Route to skill → 3. Context (map first, crawl only if needed) → 4. **Plan + Confidence gate** (1–10, rationale, unknowns) → 5. Human gate → 6. Apply → 7. Verify → 8. Report + ask before commit.
+1. Classify intent → 2. Route to skill → 3. Context (map first, crawl only if needed; ask if an input is missing) → 4. Apply → 5. Verify → 6. Report + ask before commit.
 
-Trivial edits (typo, single import) may use Direct Mode — but confirm the premise in the file first.
+For a new site, planning comes before automation: crawl → test plan and test cases → **human review and validation** → automation (MUST #14).
+
+Even for a one-line fix, confirm the premise in the file first.
 
 ## Skills Index
 

@@ -9,9 +9,9 @@ description: Configuration and test-data rules for LatteQ — data/env.ts (ENV o
 
 - **`ENV` in `data/env.ts` is the single source** for site URLs, credentials, shared keywords and timeout constants. Pages and specs import `ENV`; they never contain literal URLs.
 - **Credentials only via `process.env`**, read in `data/env.ts`. Never commit real values. `.env` is git-ignored.
-- **Don't invent env-var names.** Check `data/env.ts`; if a new one is needed, propose the name in Phase 4.
+- **Don't invent env-var names.** Check `data/env.ts`; if a new one is needed, name it in the report so the team knows to set it.
 - **A test needing a missing credential skips with a reason** — `test.skip(!ENV.GH_USER, 'GH_USER not set')` — it doesn't fail mysteriously or log in with blanks.
-- **Config changes are global.** Any edit to `playwright.config.ts` affects every test — call it out in the proposal and run the full suite afterwards.
+- **Config changes are global.** Any edit to `playwright.config.ts` affects every test — call it out in the report and run the full suite afterwards.
 
 ## Adding a site
 
@@ -44,5 +44,5 @@ Override with `process.env.*` so CI can point at another environment without cod
 
 - **Auth:** add a `setup` project matching `/.*\.setup\.ts/` that logs in and calls `saveStorageState`, then give dependent projects `dependencies: ['setup']` and `use: { storageState: AUTH_STATE_PATH }`.
 - **`ignoreHTTPSErrors: true`** is already on globally for UITP's certificate (knowledge base §4). Don't add per-test workarounds.
-- **New browser projects** (Firefox/WebKit) — propose first; the practice sites behave differently per engine.
+- **New browser projects** (Firefox/WebKit) — ask first; the practice sites behave differently per engine.
 - **Reporters:** `list` + `html` (never auto-open). Keep `trace: 'on-first-retry'`, `screenshot: 'only-on-failure'`, `video: 'retain-on-failure'` — `debugging` depends on them.
