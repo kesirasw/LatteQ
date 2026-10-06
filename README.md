@@ -23,7 +23,7 @@ npx playwright install chromium   # bundled browser for most specs
 npx playwright install chrome     # Google Chrome, used by the Booking spec (skip if Chrome is installed)
 ```
 
-Optional, for the auth spec: set `GH_USER` and `GH_PASS` (a GitHub account without 2FA) in your environment or a `.env` file. Never commit them.
+Optional, for the auth spec: copy `.env.example` to `.env` and set `GH_USER` and `GH_PASS` (a GitHub account without 2FA), or set them in your shell (shell values win). `.env` is git-ignored and loaded by `playwright.config.ts`. Never commit it.
 
 ## Commands
 
@@ -107,6 +107,8 @@ Enforced by ESLint, a Claude Code write-time check, and code review:
 The full rule set is in [CLAUDE.md](CLAUDE.md).
 
 ## AI-assisted workflow
+
+**New here?** Ask your AI tool to onboard you: `/onboarding` in Claude Code or Copilot Chat. It checks your machine, installs the repo and browsers, runs a smoke test, and shows you how to use the skills ([.claude/skills/onboarding/SKILL.md](.claude/skills/onboarding/SKILL.md)).
 
 - **Claude Code** loads [CLAUDE.md](CLAUDE.md) and the skills in `.claude/skills/`. Non-trivial work follows 8 phases: classify → route → context (map first) → proposal with a 1–10 confidence score → your approval → apply → verify → report.
 - **GitHub Copilot** uses [.github/copilot-instructions.md](.github/copilot-instructions.md) plus path-scoped rules in `.github/instructions/`, and a `/pr-reviewer` prompt.

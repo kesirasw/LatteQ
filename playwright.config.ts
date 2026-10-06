@@ -1,4 +1,9 @@
+import fs from 'node:fs';
 import { defineConfig, devices } from '@playwright/test';
+
+// Optional local .env (git-ignored): GH_USER / GH_PASS and *_URL overrides, read by data/env.ts.
+// Variables already set in the shell are kept.
+if (fs.existsSync('.env')) process.loadEnvFile('.env');
 
 export default defineConfig({
   testDir: './tests',

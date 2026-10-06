@@ -96,6 +96,7 @@ Trivial edits (typo, single import) may use Direct Mode — but confirm the prem
 | Skill                | Load when                                                                      |
 | -------------------- | ------------------------------------------------------------------------------ |
 | `ai-native-workflow` | Start of any non-trivial task; "which skill?"                                  |
+| `onboarding`         | New QA/dev: install the repo, prove the setup, learn the skills in Claude or Copilot |
 | `ui-context`         | Before writing any locator, page object, spec or test plan (map first)        |
 | `chrome-devtools-cli`| When `ui-context` says a crawl is needed — the only exploration tool          |
 | `test-planning`      | Writing a test plan / test cases for a site after its crawl (plain English)   |

@@ -70,6 +70,7 @@ LatteQ-specific confidence reducers: target is a third-party site with bot prote
 | "Add a util / helper / register fixture" | `fixtures` | `test-standards` |
 | "Review my branch / PR" | `pr-reviewer` | routes per file |
 | "How does AI work in this repo?" | this skill | — |
+| "I am new / set up this repo / how do I use the skills in Claude or Copilot?" | `onboarding` | — |
 
 No match → ask the user to clarify rather than guessing.
 

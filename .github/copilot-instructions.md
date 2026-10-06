@@ -59,3 +59,4 @@ Confidence < 5 → ask questions instead of proposing. 5–7 → proceed only if
 
 - No Playwright MCP agents: plans and tests are written from `ui-context` maps, and failures are debugged with traces plus the chrome-devtools CLI.
 - `/pr-reviewer` prompt (`.github/prompts/pr-reviewer.prompt.md`) → branch review.
+- `/onboarding` prompt (`.github/prompts/onboarding.prompt.md`) → new QA/dev setup and a tour of the AI workflow (`.claude/skills/onboarding/SKILL.md`).
