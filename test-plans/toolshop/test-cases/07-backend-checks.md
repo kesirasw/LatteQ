@@ -2,7 +2,7 @@
 
 Part of the [Toolshop test plan](../test-plan.md).
 
-**What this covers:** Checks made directly against the shop's service, without the website. They confirm the business rules behind the screens, and they're fast to run. The technical details (addresses, request formats) are in the site map.
+**What this covers:** Checks made directly against the shop's service, without the website. They confirm the business rules behind the screens, and they're fast to run. The technical details (addresses, request formats) are in the site map. Full API coverage (113 cases) is in the [API test plan](../api/test-plan.md), which references these checks instead of repeating them.
 
 | ID | Title | Priority | Basis |
 |---|---|---|---|

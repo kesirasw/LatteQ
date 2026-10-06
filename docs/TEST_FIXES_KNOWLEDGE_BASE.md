@@ -25,6 +25,7 @@ Read this table first; open only the entries that match. **Category** uses the f
 | 12 | Toolshop | Orders refused unless the address matches the postcode lookup | Site rule (test data) | 2026-10-04 |
 | 13 | Toolshop API | Two different 401 bodies, undocumented status | Contract mismatch | 2026-10-04 |
 | 14 | Toolshop | Shared demo fails under parallel load | Environment (load) | 2026-10-05 |
+| 15 | Toolshop API | Contract mismatches parked as FIXME tests | Product defect / contract | 2026-10-06 |
 | 16 | Toolshop | Test product sold out on the shared demo, "Add to cart" disabled | Environment (test data) | 2026-10-06 |
 
 ---
@@ -669,6 +670,26 @@ A separate `toolshop` project in `playwright.config.ts` with `workers: 2`; other
 #### Key Learning
 - "Passes alone, fails at scale" on someone else's server can be load, not your code. Lower the concurrency for that target, and keep the tests strict.
 - Log long background runs to a file, so a hang still leaves evidence.
+
+---
+
+### 15. Toolshop API - Contract Mismatches Parked as FIXME Tests (2026-10-06)
+
+**Files**: `tests/api/toolshop/{users,products,carts,payment,invoices}.spec.ts`
+**Plan**: `test-plans/toolshop/api/test-plan.md`, section 9 (findings 1–23)
+
+#### Problem
+Automating the API plan (113 cases) against the live demo: 24 tests expect what the contract (or, where it is silent, common sense) says, and the service answers differently. Examples: any customer can search all customers' personal data (200, expected 403); anonymous `PUT /products/{id}` answers 200; a customer can set their own order to SHIPPED; one cart can be ordered twice; `GET /users/refresh` without a key answers 500; an 80-year-old can register although the contract allows 18–75.
+
+#### Root Cause
+Site-side defects and contract drift, not test problems. Each one was confirmed by running the parked test un-skipped once and checking it failed for exactly the stated reason. Two first failed for the wrong reason, both caused by the shared demo: a fixed "not-an-email" address was already taken (409), and a changed city failed address validation (422) before the permission check.
+
+#### Solution
+Each test is written as the case says and parked with `test.skip` plus a `// FIXME:` naming its finding (api-testing, Phase 7). Different-but-sensible codes (201 for new invoices, 422 for validation) are asserted as they are, with a comment. Contract gaps (undocumented fields and error bodies) are filled from live responses in the schemas and marked FIXME. Data that the demo keeps between runs (emails) is made unique per run.
+
+#### Key Learning
+- Before parking a test, run it un-skipped once and read the actual status: it must fail for the reason in the FIXME, not because of leftover data on a shared demo.
+- On a shared demo, any value a buggy endpoint accepts once (here a malformed email) becomes leftover data that changes the next run's answer.
 
 ---
 

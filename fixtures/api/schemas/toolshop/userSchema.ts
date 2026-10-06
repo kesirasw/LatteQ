@@ -49,6 +49,12 @@ export const UserResponseSchema = z.strictObject({
   created_at: z.string().optional(),
 });
 
+/** GET /users/logout → 200 (`LogoutResponse`) */
+export const LogoutResponseSchema = z.strictObject({
+  message: z.string().optional(),
+});
+
 export type LoginResponse = zOutput<typeof LoginResponseSchema>;
+export type LogoutResponse = zOutput<typeof LogoutResponseSchema>;
 export type LoginRequest = zOutput<typeof LoginRequestSchema>;
 export type UserResponse = zOutput<typeof UserResponseSchema>;

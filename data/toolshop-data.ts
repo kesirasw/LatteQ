@@ -23,6 +23,21 @@ export const ToolshopData = {
   address: { country: 'Austria', countryCode: 'AT', postalCode: '1010', houseNumber: '1' },
   /** A state that doesn't belong to Austria; the shop refuses orders with it (TC-CHK-11, API-04). */
   mismatchedState: 'Missouri',
+  /** What the postcode lookup returns for `address` (MAP: "Address validation"); the only billing address orders accept. */
+  billingAddress: { street: 'Marvin-Krenn-Gasse', city: 'Mittersill', state: 'Vorarlberg' },
+  /** Valid details per payment method, in the formats the checkout sends (MAP K7, K14). Card expiry must be in the future. */
+  paymentDetails: {
+    'cash-on-delivery': {},
+    'bank-transfer': { bank_name: 'LatteQ Test Bank', account_name: 'Latte Tester', account_number: '123456789' },
+    'credit-card': {
+      credit_card_number: '1111-1111-1111-1111',
+      expiration_date: '12/2030',
+      cvv: '123',
+      card_holder_name: 'Latte Tester',
+    },
+    'buy-now-pay-later': { monthly_installments: '3' },
+    'gift-card': { gift_card_number: 'ABCD1234EFGH5678', validation_code: '1234' },
+  },
   contactSubject: 'Customer service',
   contactMessage:
     'Hello from the LatteQ automation practice suite. This message is comfortably longer than fifty characters.',
