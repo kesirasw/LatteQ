@@ -28,10 +28,13 @@ Scoped rules are auto-applied from `.github/instructions/*.instructions.md` by f
 9. After edits run `npm run verify` and `npx playwright test <file>`; report the real result.
 10. API responses are validated with `expect(SchemaName.parse(body)).toBeTruthy()` against `z.strictObject()` schemas built from the OpenAPI contract.
 11. Record real-site fixes in `docs/TEST_FIXES_KNOWLEDGE_BASE.md`.
+12. **Oracle before fix** (`.claude/skills/debugging/SKILL.md` §3). A red test isn't automatically the test's fault. Decide test bug / environment / intended change / product defect against requirement → OpenAPI contract → test plan → heuristics; the site's current behaviour is never proof. Product defects: row in `docs/DEFECTS.md`, keep the correct expectation, `test.fail(true, 'DEF-NNN: …')`. Can't tell → ask.
+13. **Assisted healing only** (debugging §5): for a broken locator run `npm run heal:suggest -- test-results/<failed-test> --locator "<locator>"`, check any changed visible name with the oracle, confirm with a chrome-devtools CLI snapshot, then patch the page object + `MAP.md` and propose it for approval.
+14. **Save what was learned** in the repo: KB, `docs/DEFECTS.md`, `ui-context/<site>/MAP.md`, or `docs/decisions/` for choices between alternatives. Read `docs/decisions/` before "fixing" a convention.
 
 ## WON'T
 
-`waitForTimeout` · XPath · `.catch(() => {})` on waits/assertions/navigation · undocumented `force: true` · `any` / `@ts-ignore` · literal URLs or credentials outside `data/env.ts` · `test.only` · `skip`/`fixme` without a reason · raising timeouts to hide flakiness · placeholder/TODO locators · new `.js` specs.
+`waitForTimeout` · XPath · `.catch(() => {})` on waits/assertions/navigation · undocumented `force: true` · `any` / `@ts-ignore` · literal URLs or credentials outside `data/env.ts` · `test.only` · `skip`/`fixme` without a reason · raising timeouts to hide flakiness · placeholder/TODO locators · new `.js` specs · changing an expected value/assertion to match what the site does now · `test.fail` without `DEF-NNN` · runtime self-healing (fallback locator chains, `.or()` to "try another").
 
 ## Workflow for non-trivial tasks
 

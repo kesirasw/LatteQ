@@ -20,8 +20,8 @@ Part of the [Toolshop test plan](../test-plan.md).
 - **Type:** Navigation
 - **Before you start:** On the home page.
 - **Steps:**
-  1. Click the product **Combination Pliers**.
-- **Expected result:** The product page opens with the title **Combination Pliers**, a price, and a quantity of **1**. The buttons **Add to cart**, **Add to favourites** and **Compare** are shown, along with a **Related products** section.
+  1. Click the product **Combination Pliers** (if it is sold out, any product that is in stock).
+- **Expected result:** The product page opens with the title of that product, a price, and a quantity of **1**. The buttons **Add to cart**, **Add to favourites** and **Compare** are shown, along with a **Related products** section.
 - **Basis:** Seen during exploration
 - **Map reference:** P1
 
@@ -42,7 +42,7 @@ Part of the [Toolshop test plan](../test-plan.md).
 
 - **Priority:** High
 - **Type:** Functional
-- **Before you start:** The cart is empty. On the **Combination Pliers** product page.
+- **Before you start:** The cart is empty. On the **Combination Pliers** product page, or another product page if it is sold out (a sold-out product cannot be added).
 - **Steps:**
   1. Set the quantity to **2**.
   2. Click **Add to cart**.

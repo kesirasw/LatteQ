@@ -42,6 +42,7 @@ Optional, for the auth spec: copy `.env.example` to `.env` and set `GH_USER` and
 | `npm run ui:cdt -- <command>` | chrome-devtools CLI, used to crawl a site |
 | `npm run ui:snap -- <site> <state>` | Save a sanitized page snapshot to `ui-context/` |
 | `npm run ui:map -- <snapshot>` | Turn a snapshot into Playwright locator suggestions |
+| `npm run heal:suggest -- test-results/<failed-test> --locator "<locator>"` | Suggest replacement locators from a failed test's page snapshot (read-only) |
 | `npm run api:inventory -- <contract URL> --site <site>` | Save an API contract and its endpoint inventory to `api-context/` |
 
 Results land in `playwright-report/` (HTML) and `test-results/` (screenshots, videos and traces of failures). Both are git-ignored.
@@ -67,6 +68,8 @@ LatteQ/
 │   └── api/                                plain-English API test plan + test-cases/NN-<resource>.md
 ├── docs/
 │   ├── TEST_FIXES_KNOWLEDGE_BASE.md        every real-site failure diagnosed so far, with the fix
+│   ├── DEFECTS.md                          product defects (DEF-NNN) that tests keep red with test.fail
+│   ├── decisions/                          why we chose X over Y (read before changing a convention)
 │   └── practice-sites.md                   original notes on which sites to practise against
 ├── CLAUDE.md, .claude/                     Claude Code rules, skills and write-time check
 ├── .github/                                Copilot instructions, /pr-reviewer prompt, setup workflow
@@ -112,6 +115,8 @@ The full rule set is in [CLAUDE.md](CLAUDE.md).
 
 - **Claude Code** loads [CLAUDE.md](CLAUDE.md) and the skills in `.claude/skills/`. Non-trivial work follows 8 phases: classify → route → context (map first) → proposal with a 1–10 confidence score → your approval → apply → verify → report.
 - **GitHub Copilot** uses [.github/copilot-instructions.md](.github/copilot-instructions.md) plus path-scoped rules in `.github/instructions/`, and a `/pr-reviewer` prompt.
+- **Bugs vs broken tests**: a red test is checked against the requirement, contract and test plan before anyone touches it. Product bugs stay red on purpose (`test.fail` + `docs/DEFECTS.md`); broken locators are healed with AI help and your approval, never automatically at runtime.
+- **Knowledge is saved in the repo**, not in chats: failures in the knowledge base, bugs in `DEFECTS.md`, UI facts in `ui-context/`, and the reasons behind conventions in `docs/decisions/`.
 - **UI exploration** uses the chrome-devtools CLI only (no Playwright MCP). What it learns is saved in `ui-context/`, so the same site is never crawled twice for the same element.
 
 ## Practice path (14 days)
@@ -133,7 +138,8 @@ The full rule set is in [CLAUDE.md](CLAUDE.md).
 |---|---|
 | A test fails on a third-party site | `docs/TEST_FIXES_KNOWLEDGE_BASE.md`, then the site's `ui-context/<site>/MAP.md` Quirks |
 | "strict mode violation" | Make the locator unique: `exact: true`, scope to a region, or `filter` |
-| Element not found after a site update | Refresh that page state in `ui-context` with the CLI, then update the page object |
+| Element not found after a site update | `npm run heal:suggest` on the failure, then the assisted-healing steps in the `debugging` skill. If a visible label changed, check it's intended before healing |
+| Is it a bug in the site or in the test? | Bug oracle in the `debugging` skill: requirement → contract → test plan → heuristics. Bugs go to `docs/DEFECTS.md` |
 | Booking spec can't launch | Install Google Chrome: `npx playwright install chrome` |
 | Auth specs skipped | Set `GH_USER` / `GH_PASS` |
 

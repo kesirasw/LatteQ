@@ -29,7 +29,7 @@ Routing layer between user intent and the skills that own the rules. This skill 
 | 5 | **Human gate** | Wait for approve / reject / rework. Reject → back to 3 with the stated gap. | — |
 | 6 | **Apply** | Edit per the leaf skill. Re-read its Critical block before finishing. | leaf skill |
 | 7 | **Verify** | `npm run verify` + `npx playwright test <affected files>`. Red → `debugging`. | `debugging` on red |
-| 8 | **Report** | Files changed, test result (pass/fail counts), anything skipped, open unknowns. Ask before committing. | — |
+| 8 | **Report + learn** | Files changed, test result (pass/fail counts), anything skipped, open unknowns. Save what was learned (table below). Ask before committing. | — |
 
 ### Phase 4 — Proposal format (mandatory)
 
@@ -66,6 +66,8 @@ LatteQ-specific confidence reducers: target is a third-party site with bot prote
 | "This locator is wrong / strict mode violation" | `selectors` | `ui-context` (refresh state), `debugging` |
 | "Add a spec / restructure tests / tagging" | `test-standards` | `fixtures`, `page-objects` |
 | "Test failing / flaky / timeout" | `debugging` | `selectors`, `page-objects`, `data-config` |
+| "Is this a bug or the test?" / "the site changed, heal the test" | `debugging` (§3 bug oracle, §5 assisted healing) | `ui-context`, `page-objects` |
+| "Why do we do X / why not Y?" | `docs/decisions/` | the skill that owns X |
 | "Add URL / env var / keyword / config change" | `data-config` | `fixtures` |
 | "Add a util / helper / register fixture" | `fixtures` | `test-standards` |
 | "Review my branch / PR" | `pr-reviewer` | routes per file |
@@ -77,6 +79,21 @@ No match → ask the user to clarify rather than guessing.
 ## Direct Mode
 
 For trivial work (typo, single import, rename a local variable) apply and report. The user can say "just do it" to stay in Direct Mode for trivial edits this session. Substantive changes still go through all 8 phases.
+
+### Phase 8 — Save what was learned
+
+Knowledge that stays in a chat, or in one person's agent memory, is lost to teammates and to Copilot. Before reporting, ask "did this task teach us something the next person would need?" and put it in the repo:
+
+| Learned | Goes to | Owner skill |
+|---------|---------|-------------|
+| A site/environment-caused failure and its fix | `docs/TEST_FIXES_KNOWLEDGE_BASE.md` (+ Index row) | `debugging` |
+| The product behaves wrongly | `docs/DEFECTS.md` + plan's suspected defects | `debugging` §3 |
+| UI structure, locator, quirk, observed outcome | `ui-context/<site>/MAP.md` | `ui-context` |
+| API contract gap or mismatch | plan's contract findings; `DEFECTS.md` if it's a defect | `api-test-planning` |
+| A choice between real alternatives, or a reversed rule ("why don't we use X?") | `docs/decisions/NNN-*.md` | — |
+| One person's preference (tone, shortcuts) | agent memory, not the repo | — |
+
+Mention in the report what was saved where, or "nothing new to record".
 
 ## When to Stop and Ask
 

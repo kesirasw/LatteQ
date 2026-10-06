@@ -17,13 +17,48 @@ Gets a new QA or developer from zero to a green run and their first AI-assisted 
 
 ## Step 1 — Prerequisites
 
-| Tool | Check | Need | If missing |
-|------|-------|------|------------|
-| Node.js | `node --version` | LTS, 20.12 or newer (`playwright.config.ts` uses `process.loadEnvFile`; the repo is developed on 24) | <https://nodejs.org> or `nvm install --lts` |
-| npm | `npm --version` | comes with Node | — |
-| Git | `git --version` | any recent | <https://git-scm.com> |
-| VS Code | `code --version` | recommended editor (Claude Code extension and Copilot both run there) | <https://code.visualstudio.com> |
-| Google Chrome | — | only for the Booking spec (`channel: 'chrome'`) | Step 3 installs it via Playwright |
+Run the checks first and install only what fails. A brand-new machine usually needs Node, Git and VS Code.
+
+| Tool | Check | Need |
+|------|-------|------|
+| Node.js + npm | `node --version`, `npm --version` | Node LTS **20.12 or newer** (`playwright.config.ts` uses `process.loadEnvFile`; the repo is developed on 24). npm ships with Node |
+| Git | `git --version` | any recent |
+| VS Code | `code --version` | recommended editor; the Claude Code extension and Copilot both run there |
+| Google Chrome | — | only for the Booking spec (`channel: 'chrome'`); Step 3 installs it |
+
+### Install what's missing (ask first; these are machine-wide)
+
+**Windows** (PowerShell; `winget` ships with Windows 10/11):
+
+```powershell
+winget install OpenJS.NodeJS.LTS
+winget install Git.Git
+winget install Microsoft.VisualStudioCode
+```
+
+**macOS** ([Homebrew](https://brew.sh)):
+
+```bash
+brew install node git
+brew install --cask visual-studio-code
+```
+
+**Linux** (Debian/Ubuntu). Use nvm, because distro Node packages are often too old:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+# open a new terminal, then:
+nvm install --lts
+sudo apt-get install -y git
+```
+
+No package manager or admin rights? Use the installers from <https://nodejs.org> (LTS), <https://git-scm.com> and <https://code.visualstudio.com>.
+
+**Open a new terminal afterwards** so `PATH` picks up the new tools, then re-run the checks. Node already installed but older than 20.12 → upgrade the same way (`winget upgrade OpenJS.NodeJS.LTS`, `brew upgrade node`, `nvm install --lts`).
+
+### Playwright is not a separate install
+
+Don't install Playwright globally (`npm i -g playwright` / `@playwright/test`). It's a project dev dependency at the version pinned in `package-lock.json`, so `npm ci` (Step 2) installs it and `npx playwright …` runs that copy. A global copy at a different version is a common source of "works on my machine" errors. Browsers come separately, in Step 3.
 
 ## Step 2 — Clone and install
 
@@ -33,7 +68,7 @@ cd LatteQ
 npm ci                 # exact versions from package-lock.json (use npm install only if you are changing dependencies)
 ```
 
-Check: `node_modules/@playwright/test` exists and `npm ci` printed no `ERR!`.
+Check: `npm ci` printed no `ERR!`, and `npx playwright --version` prints a version (the project's copy).
 
 ## Step 3 — Browsers
 
@@ -94,7 +129,9 @@ Start with the shared picture, then the tool they chose.
 2. **Skills:** `.claude/skills/<name>/SKILL.md`, one per job. The Skills Index in `CLAUDE.md` lists when each one applies.
 3. **Context folders the AI reads instead of guessing:** `ui-context/<site>/MAP.md` (locators, flows, quirks), `api-context/<site>/` (OpenAPI + inventory), `test-plans/<site>/` (plain-English cases).
 4. **Workflow:** classify → route → context → **proposal with a 1–10 confidence score** → *you approve* → apply → verify → report (`ai-native-workflow`). The person's job at the gate is to read the Scope and Unknowns before saying yes.
-5. **Exploration:** chrome-devtools CLI only (`npm run ui:cdt`); never Playwright MCP or codegen.
+5. **Exploration:** chrome-devtools CLI only (`npm run ui:cdt`); never Playwright MCP or codegen. Why: `docs/decisions/001-…`.
+6. **Red tests:** the AI first decides whether the product or the test is wrong (bug oracle, `debugging` §3). Product bugs stay red on purpose (`test.fail` + `docs/DEFECTS.md`); broken locators are healed with your approval (`npm run heal:suggest`), never silently.
+7. **Where knowledge lives:** `docs/TEST_FIXES_KNOWLEDGE_BASE.md` (failures, Index at top), `docs/DEFECTS.md` (bugs), `ui-context/` (UI), `docs/decisions/` (why we do things this way). Skim `docs/decisions/README.md` on day one.
 
 ### Track A — Claude Code
 
@@ -154,6 +191,8 @@ npx playwright show-report                # on failure: open the trace
 
 | Symptom | Fix |
 |---------|-----|
+| `node` / `npm` / `git` "is not recognized" / "command not found" right after installing | Open a new terminal (and restart VS Code) so `PATH` reloads |
+| PowerShell: "running scripts is disabled on this system" for `npm` / `npx` | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` (ask first) |
 | `npx` fails inside an agent shell on Windows (exit 127 / -4071) | Call the tools through node: `node node_modules/typescript/bin/tsc --noEmit`, `node node_modules/eslint/bin/eslint.js .`, `node node_modules/prettier/bin/prettier.cjs --check .`, `node node_modules/@playwright/test/cli.js test <file>` |
 | `Executable doesn't exist at …chromium…` | Step 3 was skipped: `npx playwright install chromium` |
 | Booking spec: "Chromium distribution 'chrome' is not found" | `npx playwright install chrome` |

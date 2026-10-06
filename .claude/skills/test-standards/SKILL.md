@@ -12,6 +12,7 @@ description: Spec-file standards for LatteQ — file naming (tests/practice/NN_a
 - **Every test asserts an outcome** the user would see (URL, text, count, sorted order, value). Actions alone ≠ a test.
 - **No swallowed assertions** — never `expect(...).catch(() => {})` or `waitForURL(...).catch(() => {})`.
 - **`test.skip` / `test.fixme` always carry a reason string.** No `test.only` in committed code.
+- **`test.fail` marks a registered product defect only:** `test.fail(true, 'DEF-NNN: <what is wrong>. Remove test.fail once fixed.')`, with the row in `docs/DEFECTS.md`, and the test still asserting the *correct* behaviour. Never use it for a flaky or unfinished test (write-time hook `expected-failure-without-defect`; bug oracle in `debugging` §3).
 - **TypeScript only.** No new `.js` specs.
 - **Run what you touched:** `npx playwright test <file>` and report the result.
 

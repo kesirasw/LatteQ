@@ -34,8 +34,8 @@ description: Review a LatteQ branch or diff against the Constitution and skills 
    | `test-plans/**` | `test-planning` (plain English, no locators/codes, every case has Basis + Map reference, counts match) |
    | `ui-context/**` | `ui-context` (MAP format, no uids as locators, snapshots sanitized: no `sid=`/`state=` in URLs) |
    | `.claude/**`, `.github/**`, `CLAUDE.md` | consistency between Claude and Copilot rule sets |
-3. **Mechanical scan** of added lines (`git diff -U0 origin/main...HEAD | grep '^+'`): `waitForTimeout`, `xpath=` / `'//`, `.catch(() => {})`, `force: true`, `from '@playwright/test'` in specs, `test.only`, `: any`, `@ts-ignore`, `https?://` literals outside `data/env.ts`, `.first()`/`.nth(` without intent.
-4. **Judgement review:** every new/changed locator has a row in `ui-context/<site>/MAP.md`? outcome assertions present? page-object methods intent-level? new page registered in fixtures? knowledge-base entry for real-site fixes?
+3. **Mechanical scan** of added lines (`git diff -U0 origin/main...HEAD | grep '^+'`): `waitForTimeout`, `xpath=` / `'//`, `.catch(() => {})`, `force: true`, `from '@playwright/test'` in specs, `test.only`, `: any`, `@ts-ignore`, `https?://` literals outside `data/env.ts`, `.first()`/`.nth(` without intent, `test.fail(` without `DEF-NNN`, `.or(` used as a fallback locator.
+4. **Judgement review:** every new/changed locator has a row in `ui-context/<site>/MAP.md`? outcome assertions present? page-object methods intent-level? new page registered in fixtures? knowledge-base entry for real-site fixes? **Changed expectations** (an assertion value, expected text/status, or a plan's expected result edited in the diff): is there an oracle reason (requirement, contract, plan change with reason)? If it just matches what the site does now, it's a Blocker (`debugging` §3). New `test.fail` → matching row in `docs/DEFECTS.md`? Healed locators → `MAP.md` row updated? Lessons saved (`ai-native-workflow` Phase 8)?
 5. **Verify:** `npm run verify` and `npx playwright test <changed specs + specs using changed pages>`.
 6. **Report.**
 

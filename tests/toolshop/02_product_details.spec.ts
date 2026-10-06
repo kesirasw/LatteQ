@@ -4,13 +4,17 @@ import { ToolshopData, ToolshopMessages } from '../../data/toolshop-data';
 // Plan: test-plans/toolshop/test-cases/02-product-details.md
 
 test.describe('Toolshop: product details', () => {
-  test.beforeEach(async ({ toolshopCatalog }) => {
+  // Quantity and cart buttons are disabled on a sold-out product, so use one in stock (KB §16)
+  test.beforeEach(async ({ toolshopCatalog, toolshopInStockProduct }) => {
     await toolshopCatalog.open();
-    await toolshopCatalog.openProduct(ToolshopData.products.combinationPliers);
+    await toolshopCatalog.openProduct(toolshopInStockProduct.name);
   });
 
-  test('TC-PRD-01 Toolshop: opening a product from the catalogue @smoke', async ({ toolshopProduct }) => {
-    await expect(toolshopProduct.title).toHaveText(ToolshopData.products.combinationPliers);
+  test('TC-PRD-01 Toolshop: opening a product from the catalogue @smoke', async ({
+    toolshopProduct,
+    toolshopInStockProduct,
+  }) => {
+    await expect(toolshopProduct.title).toHaveText(toolshopInStockProduct.name);
     await expect(toolshopProduct.unitPrice).toHaveText(/^\d+\.\d{2}$/);
     await expect(toolshopProduct.quantity).toHaveValue('1');
     await expect(toolshopProduct.addToCartButton).toBeVisible();
@@ -41,6 +45,14 @@ test.describe('Toolshop: product details', () => {
     await toolshopProduct.addToFavourites();
 
     await expect(toolshopProduct.header.alert).toContainText(ToolshopMessages.favouriteUnauthorized);
+  });
+});
+
+test.describe('Toolshop: related products', () => {
+  // Related products depend on the product, so this one stays on Combination Pliers; viewing needs no stock
+  test.beforeEach(async ({ toolshopCatalog }) => {
+    await toolshopCatalog.open();
+    await toolshopCatalog.openProduct(ToolshopData.products.combinationPliers);
   });
 
   test('TC-PRD-05 Toolshop: opening a related product', async ({ toolshopProduct }) => {

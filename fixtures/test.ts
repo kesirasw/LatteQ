@@ -1,6 +1,7 @@
 import { test as base, mergeTests } from '@playwright/test';
 import { test as apiRequestFixture } from './api/api-request-fixture';
 import { test as toolshopFixture } from './api/toolshop-fixture';
+import { test as toolshopProductFixture } from './api/toolshop-product-fixture';
 import { Actions } from '../utils/actions';
 import { Network } from '../utils/network';
 
@@ -54,6 +55,6 @@ const uiTest = base.extend<Fixtures>({
 });
 
 /** The single `test` for every spec: page objects + utils + `apiRequest` + Toolshop helpers. */
-export const test = mergeTests(uiTest, apiRequestFixture, toolshopFixture);
+export const test = mergeTests(uiTest, apiRequestFixture, toolshopFixture, toolshopProductFixture);
 
 export { expect } from '@playwright/test';

@@ -11,6 +11,7 @@ applyTo: "tests/**/*.ts"
 - Every test ends with an assertion on user-visible state. Prefer auto-retrying locator assertions (`toHaveCount`, `toContainText`, `toHaveURL`); use `not.toHaveCount(0)` instead of `expect(await x.count()).toBeGreaterThan(0)`.
 - Never `.catch(() => {})` an assertion or wait. No `waitForTimeout`.
 - `test.skip` / `test.fixme` need a reason string; no `test.only`.
+- `test.fail` only for a registered product defect: `test.fail(true, 'DEF-NNN: …')` with its row in `docs/DEFECTS.md`, still asserting the correct behaviour. Never change an assertion to match what the site does now (debugging §3).
 - Use `test.step('Given/When/Then …')` for tests with more than three stages.
 - Tests are independent (`fullyParallel: true`); shared setup goes in `beforeEach` or a fixture.
 - Shared keywords from `ENV.TEST_KEYWORDS`.

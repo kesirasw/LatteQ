@@ -99,7 +99,7 @@ Keys are the page-object property / method names, so POM ↔ map stay greppable.
 ## Freshness & invalidation
 
 - **Stale after 30 days** (Captured date) → refresh the states you're about to use.
-- **Locator failure in a run** (`debugging` classifies "site changed") → refresh that state, update rows, then fix the POM.
+- **Locator failure in a run** (`debugging` classifies "site changed") → follow assisted healing (`debugging` §5): `npm run heal:suggest` on the failure, bug-oracle check on any changed visible name, refresh that state with the CLI, update rows, then fix the POM. Never update a row just because a run saw something different.
 - After a green run that exercises a map, update **Last verified by run**.
 - Refreshing = re-capture the state file (overwrites), re-run `ui:map`, update rows; note changes in Quirks if behaviour changed.
 

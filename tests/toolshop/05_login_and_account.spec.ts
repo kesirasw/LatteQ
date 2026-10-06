@@ -72,7 +72,7 @@ test.describe('Toolshop: login and account', () => {
   test('TC-AUT-07 Toolshop: asking for a new password', async ({ toolshopAuth, toolshopCustomer, network, page }) => {
     test.fail(
       true,
-      'Suspected defect: the confirmation shows the untranslated key "page.forgot-password.confirm". Remove test.fail once a real message is shown.',
+      'DEF-003 (plan §9.3): the confirmation shows the untranslated key "page.forgot-password.confirm". Remove test.fail once a real message is shown.',
     );
     const answered = network.waitForResponseContains('/users/forgot-password', { status: 200 });
     await toolshopAuth.requestNewPassword(toolshopCustomer.email);

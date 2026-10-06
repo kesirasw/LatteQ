@@ -17,10 +17,10 @@ Part of the [Toolshop test plan](../test-plan.md).
 
 - **Priority:** High
 - **Type:** Calculation
-- **Before you start:** Two **Combination Pliers** are in the cart (TC-PRD-03).
+- **Before you start:** Two of one product are in the cart (TC-PRD-03): **Combination Pliers**, or any product in stock if it is sold out.
 - **Steps:**
   1. Click the cart icon in the top menu.
-- **Expected result:** The cart lists **Combination Pliers** with quantity **2** and price **$14.15**. The line total and the cart total both show **$28.30**.
+- **Expected result:** The cart lists the product with quantity **2** and its unit price (Combination Pliers: **$14.15**). The line total and the cart total both show twice the unit price (**$28.30**).
 - **Basis:** Seen during exploration
 - **Map reference:** K1
 

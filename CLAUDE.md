@@ -30,7 +30,10 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 | `api-context/<site>/`          | OpenAPI contract snapshot + generated `INVENTORY.md` (`npm run api:inventory`) | `api-test-planning`      |
 | `test-plans/<site>/api/`       | Plain-English API test plan + `test-cases/NN-<resource>.md`, from the contract | `api-test-planning`  |
 | `test-plans/<site>/`           | Plain-English test plan (`test-plan.md`) + `test-cases/NN-<area>.md`, written after the crawl | `test-planning`     |
-| `docs/TEST_FIXES_KNOWLEDGE_BASE.md` | Every real-site failure we have diagnosed, with root cause and fix           | `debugging`                  |
+| `docs/TEST_FIXES_KNOWLEDGE_BASE.md` | Every real-site failure we have diagnosed, with root cause and fix (Index at the top) | `debugging`            |
+| `docs/DEFECTS.md`              | Product defect register (`DEF-NNN`), referenced by every `test.fail`           | `debugging` (bug oracle)     |
+| `docs/decisions/`              | Decision records: why we chose X over Y; read before "fixing" a convention  | —                            |
+| `scripts/ui-context/heal-suggest.mjs` | Replacement-locator candidates from a failure snapshot (`npm run heal:suggest`) | `debugging` (assisted healing) |
 | `docs/practice-sites.md`       | Original notes on which public sites to practise against, and why            | —                            |
 | `README.md`                    | Human entry point: setup, commands, layout, how the AI workflow fits in      | —                            |
 
@@ -47,6 +50,8 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 9. **Verify.** After editing any spec, page or fixture, run `npm run verify` (type-check + lint + format check) and the affected tests: `npx playwright test <file>`. Report the actual result.
 10. **Validate API responses with Zod.** Every API response body is checked as `expect(SchemaName.parse(body)).toBeTruthy();` against a `z.strictObject()` schema built from the site's OpenAPI contract (`api-testing`).
 11. **Record real-site fixes.** When a failure is caused by the target site (overlay, cert, rendering, bot wall), add an entry to `docs/TEST_FIXES_KNOWLEDGE_BASE.md` using its existing format.
+12. **Oracle before fix.** A red test is not automatically the test's fault. Before changing an assertion, expected value or test data, decide test bug / environment / intended change / product defect with the bug oracle (`debugging` §3: requirement → contract → plan → heuristics). Product defects get a `DEF-NNN` row in `docs/DEFECTS.md` and keep the correct expectation under `test.fail(true, 'DEF-NNN: …')`. Broken locators are healed only via assisted healing (`debugging` §5), with approval.
+13. **Save what was learned** in the repo, not just the chat: KB, `DEFECTS.md`, `MAP.md` or `docs/decisions/` (`ai-native-workflow` Phase 8).
 
 ## SHOULD
 
@@ -71,6 +76,9 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 | Raising timeouts to make a flaky test pass                                    | Find the real wait condition (`debugging`)                        |
 | Placeholder/TODO locators, "fill in later" page objects                       | Read the map (or crawl), then write real locators                 |
 | Playwright MCP / `playwright codegen` / ad-hoc scripts for UI discovery       | chrome-devtools CLI → `ui-context` map                            |
+| Changing an expected value / assertion / plan result to match what the site does now | Bug oracle (`debugging` §3); defect → `DEFECTS.md` + `test.fail('DEF-NNN: …')` |
+| `test.fail` without a `DEF-NNN` reason; `test.fail` for flaky or unfinished tests | Register the defect first; flaky → `debugging`                    |
+| Runtime self-healing: fallback locator chains (`.or()` to "try another"), picking whatever element exists now | Assisted healing (`debugging` §5): `heal:suggest` → oracle → map → page object, with approval |
 | Session uids from a snapshot used as locators                                 | The mapped Playwright locator                                     |
 | `z.object()` in API schemas, bare `Schema.parse(body)`, loosening a schema to match a buggy API | `z.strictObject()`, `expect(Schema.parse(body)).toBeTruthy()`, `test.skip` + `// FIXME:` |
 | `.js` spec files                                                              | TypeScript only                                                   |
@@ -80,7 +88,7 @@ You are an Automation Test Architect for LatteQ. You design stable, readable, ty
 The WON'T table is enforced in three layers:
 
 1. **This file + skills** — read by the agent (prompt level).
-2. **Write-time hook** — `.claude/hooks/enforce-constitution.mjs`, registered in `.claude/settings.json` as a `PreToolUse` hook on `Write|Edit|MultiEdit`. It blocks any edit that *adds* a hard wait, XPath, `@playwright/test` import in a spec, `.only`, empty `.catch`, `any`, `@ts-ignore`, a literal URL in `pages/`/`tests/`, undocumented `force: true`, a reasonless `skip`/`fixme`, `z.object()` in `fixtures/api/schemas/`, or an unwrapped `Schema.parse(` in a spec. Pre-existing violations in untouched lines don't block. If blocked, fix the change — don't work around the hook.
+2. **Write-time hook** — `.claude/hooks/enforce-constitution.mjs`, registered in `.claude/settings.json` as a `PreToolUse` hook on `Write|Edit|MultiEdit`. It blocks any edit that *adds* a hard wait, XPath, `@playwright/test` import in a spec, `.only`, empty `.catch`, `any`, `@ts-ignore`, a literal URL in `pages/`/`tests/`, undocumented `force: true`, a reasonless `skip`/`fixme`, a `test.fail` without a `DEF-NNN` reason, `z.object()` in `fixtures/api/schemas/`, or an unwrapped `Schema.parse(` in a spec. Pre-existing violations in untouched lines don't block. If blocked, fix the change — don't work around the hook.
 3. **ESLint** — `npm run lint` (also covers Copilot, which the hook doesn't).
 
 ## Workflow Entry Point
@@ -107,7 +115,7 @@ Trivial edits (typo, single import) may use Direct Mode — but confirm the prem
 | `api-testing`        | API specs, Zod schemas, `apiRequest`, automating a plan's backend checks        |
 | `test-standards`     | Creating or editing a spec file                                                |
 | `data-config`        | Adding URLs, env vars, keywords, timeouts; editing `playwright.config.ts`      |
-| `debugging`          | Any failing or flaky test                                                      |
+| `debugging`          | Any failing or flaky test; "is this a bug?"; healing a locator after a site change |
 | `pr-reviewer`        | Reviewing a branch or diff before merge                                        |
 
 ## Commands
@@ -128,6 +136,7 @@ npm run ui:cdt -- start --headless --isolated --acceptInsecureCerts --no-usage-s
 npm run ui:cdt -- new_page "<url>"
 npm run ui:snap -- <site> <state> [--verbose]          # save sanitized snapshot to ui-context/
 npm run ui:map -- ui-context/<site>/<state>.snapshot.txt   # Playwright locator candidates
+npm run heal:suggest -- test-results/<failed-test> [--locator "<locator from the error>"]   # healing candidates
 npm run ui:cdt -- stop
 
 # API context (OpenAPI contract)

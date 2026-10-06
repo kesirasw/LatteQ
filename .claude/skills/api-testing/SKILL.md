@@ -193,7 +193,7 @@ test.skip('Toolshop API: invoice without billing_city is rejected @api', async (
 });
 ```
 
-3. Never edit the expected status to match the bug. Record the mismatch in `docs/TEST_FIXES_KNOWLEDGE_BASE.md` if it's a site problem, and in the site's test plan under suspected defects.
+3. Never edit the expected status to match the bug. Register it in `docs/DEFECTS.md` and put the ID in the comment (`// FIXME: DEF-NNN …`), list it in the site's test plan under suspected defects, and add a `docs/TEST_FIXES_KNOWLEDGE_BASE.md` entry if diagnosing it taught something. Which source wins when contract, plan and live API disagree: the bug oracle in `debugging` §3.
 4. If the API returns a *different but valid* code than the contract (422 vs 400), assert the real one and comment the discrepancy.
 
 ## Phase 8 — Promote to a helper fixture (only when needed)

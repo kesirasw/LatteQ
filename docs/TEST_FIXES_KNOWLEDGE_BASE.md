@@ -5,6 +5,30 @@ This document serves as a comprehensive knowledge base for all test failures enc
 
 ---
 
+## Index
+
+Read this table first; open only the entries that match. **Category** uses the failure taxonomy in `.claude/skills/debugging/SKILL.md` §2. Add a row whenever you add an entry. Product defects themselves live in [DEFECTS.md](DEFECTS.md); the reasons behind conventions in [decisions/](decisions/README.md).
+
+| # | Site | Problem | Category | Date |
+|---|------|---------|----------|------|
+| 1 | DataTables | Strict mode violation on column header | Selector ambiguity | — |
+| 2 | Booking.com | Modal overlay intercepts clicks | Overlay | — |
+| 3 | GitHub | Modal dialog blocks interaction | Overlay | — |
+| 4 | UITP | SSL certificate error | Cert / network | — |
+| 5 | MUI | Multiple matching headings | Selector ambiguity | — |
+| 6 | Highcharts | Element not found before the chart renders | Late render | — |
+| 7 | GitHub auth | Missing storageState file, manual setup | Shared state / setup | — |
+| 8 | Booking.com | Bot check wipes typed input | Bot wall / browser variant | 2026-10-04 |
+| 9 | GitHub | Clicks swallowed during hydration | Late render (SPA) | 2026-10-04 |
+| 10 | Highcharts | Cookie banner, iframe, locale, hover tracking | Overlay / browser variant | 2026-10-04 |
+| 11 | DataTables | Sort clicked the footer header | Selector ambiguity | 2026-10-04 |
+| 12 | Toolshop | Orders refused unless the address matches the postcode lookup | Site rule (test data) | 2026-10-04 |
+| 13 | Toolshop API | Two different 401 bodies, undocumented status | Contract mismatch | 2026-10-04 |
+| 14 | Toolshop | Shared demo fails under parallel load | Environment (load) | 2026-10-05 |
+| 16 | Toolshop | Test product sold out on the shared demo, "Add to cart" disabled | Environment (test data) | 2026-10-06 |
+
+---
+
 ## Test Failures & Solutions
 
 ### 1. DataTables Test - Strict Mode Violation (Selector Ambiguity)
@@ -645,6 +669,43 @@ A separate `toolshop` project in `playwright.config.ts` with `workers: 2`; other
 #### Key Learning
 - "Passes alone, fails at scale" on someone else's server can be load, not your code. Lower the concurrency for that target, and keep the tests strict.
 - Log long background runs to a file, so a hang still leaves evidence.
+
+---
+
+### 16. Toolshop - Test Product Sold Out on the Shared Demo (2026-10-06)
+
+**Files**: `tests/toolshop/{02_product_details,03_shopping_cart,04_checkout_and_payment}.spec.ts`
+**Fixture**: `fixtures/api/toolshop-product-fixture.ts`
+
+#### Problem
+```
+expect(locator).toBeEnabled() failed
+Expected: enabled
+Received: disabled
+  - waiting for getByRole('button', { name: 'Add to cart' })
+```
+Every checkout test failed in `beforeEach`, before its body ran (so `test.fail` tests failed too, for the wrong reason).
+
+#### Root Cause
+The specs always used **Combination Pliers**. On the shared demo, other people's orders had sold it out: the page showed "Out of stock", quantity and cart buttons were disabled, and the API answered `in_stock: false`. Our tests don't change stock. `npm run heal:suggest` reported the button **unchanged** in the failure snapshot, so this was not a locator problem (bug oracle verdict: environment / test data).
+
+#### Solution
+New `toolshopInStockProduct` fixture: reads the catalogue's first page from the API and uses Combination Pliers when it's in stock, otherwise the first in-stock product. Product details, cart and checkout use it. TC-PRD-05 (related products) stays on Combination Pliers in its own `describe`, because its related "Pliers" link belongs to that product and viewing needs no stock.
+
+#### Code Change
+```typescript
+// Before
+await catalog.openProduct(ToolshopData.products.combinationPliers);
+
+// After
+test.beforeEach(async ({ toolshopCatalog, toolshopInStockProduct }) => {
+  await toolshopCatalog.openProduct(toolshopInStockProduct.name);
+});
+```
+
+#### Key Learning
+- On a shared demo, any fixed product, account or quantity can be used up by strangers. Choose data that is valid **now** (ask the API), and keep fixed data only where the test is about that specific item.
+- A setup failure hides every test after it, including expected failures: read *where* it failed before reading what failed.
 
 ---
 

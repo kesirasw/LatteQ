@@ -1,15 +1,17 @@
 import { test, expect } from '../../fixtures/test';
-import { ToolshopData, ToolshopMessages } from '../../data/toolshop-data';
+import { ToolshopMessages } from '../../data/toolshop-data';
 
 // Plan: test-plans/toolshop/test-cases/03-shopping-cart.md
 
-const product = ToolshopData.products.combinationPliers;
 const money = (amount: number) => `$${amount.toFixed(2)}`;
 
 test.describe('Toolshop: shopping cart', () => {
+  // Combination Pliers unless the shared demo has sold it out (toolshopInStockProduct, KB §16)
+  let product = '';
   let unitPrice = 0;
 
-  test.beforeEach(async ({ toolshopCatalog, toolshopProduct }) => {
+  test.beforeEach(async ({ toolshopCatalog, toolshopProduct, toolshopInStockProduct }) => {
+    product = toolshopInStockProduct.name;
     await toolshopCatalog.open();
     await toolshopCatalog.openProduct(product);
     unitPrice = Number(await toolshopProduct.unitPrice.innerText());

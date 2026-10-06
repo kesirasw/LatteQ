@@ -113,7 +113,7 @@ Part of the [<Site> test plan](../test-plan.md).
 ## 6. When testing starts and when it's done — entry / exit criteria
 ## 7. Risks and how we handle them — table: risk · effect · what we do about it
 ## 8. Test case summary  — table per file: cases, High/Medium/Low, seen/needs confirming; totals
-## 9. Questions and suspected defects — numbered; each defect: what should happen vs what was seen, with the case ID
+## 9. Questions and suspected defects — numbered; each defect: what should happen vs what was seen, with the case ID and its `DEF-NNN` from `docs/DEFECTS.md` once automated
 ## 10. Suggested order for automation
 ```
 

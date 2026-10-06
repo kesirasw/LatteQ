@@ -17,6 +17,15 @@ const isSpec = (rel) => rel.startsWith('tests/') && /\.spec\.(ts|js)$/.test(rel)
 
 const regexRule = (re) => (text) => (text.match(re) || []).length;
 
+// Argument text of every `test.fail(...)` call (parentheses balanced; may span lines).
+const testFailArgs = (text) =>
+  [...text.matchAll(/\btest\.fail\(/g)].map((m) => {
+    let depth = 1;
+    let i = m.index + m[0].length;
+    for (; i < text.length && depth > 0; i++) depth += text[i] === '(' ? 1 : text[i] === ')' ? -1 : 0;
+    return text.slice(m.index + m[0].length, i - 1);
+  });
+
 // `force: true` is allowed only with a comment on the same or previous line.
 const undocumentedForce = (text) => {
   const lines = text.split(/\r?\n/);
@@ -85,6 +94,13 @@ const RULES = [
     applies: inDirs('tests/'),
     count: regexRule(/\btest\.(skip|fixme)\(\s*\)/g),
     fix: "Pass a condition and reason: test.skip(cond, 'why').",
+  },
+  {
+    id: 'expected-failure-without-defect',
+    applies: inDirs('tests/'),
+    // test.fail() marks a known product defect; its reason must start with the register ID
+    count: (text) => testFailArgs(text).filter((args) => !/(['"`])DEF-\d{3}/.test(args)).length,
+    fix: "Register the defect in docs/DEFECTS.md, then test.fail(true, 'DEF-NNN: …') (debugging skill, bug oracle).",
   },
   {
     id: 'loose-zod-schema',

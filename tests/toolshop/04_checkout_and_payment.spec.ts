@@ -13,17 +13,18 @@ async function startCheckout(
   catalog: ToolshopCatalogPage,
   product: ToolshopProductPage,
   checkout: ToolshopCheckoutPage,
+  productName: string,
 ) {
   await catalog.open();
-  await catalog.openProduct(ToolshopData.products.combinationPliers);
+  await catalog.openProduct(productName);
   await product.addToCart();
   await checkout.open();
   await checkout.proceed();
 }
 
 test.describe('Toolshop: checkout and payment', () => {
-  test.beforeEach(async ({ toolshopCatalog, toolshopProduct, toolshopCheckout }) => {
-    await startCheckout(toolshopCatalog, toolshopProduct, toolshopCheckout);
+  test.beforeEach(async ({ toolshopCatalog, toolshopProduct, toolshopCheckout, toolshopInStockProduct }) => {
+    await startCheckout(toolshopCatalog, toolshopProduct, toolshopCheckout, toolshopInStockProduct.name);
   });
 
   test('TC-CHK-01 Toolshop: signing in during checkout @smoke', async ({ toolshopCheckout, toolshopCustomer }) => {
@@ -183,7 +184,7 @@ test.describe('Toolshop: checkout and payment', () => {
     }) => {
       test.fail(
         true,
-        'Suspected defect (plan §9.1): the shop refuses the order (422) but shows no message on screen. Remove test.fail once the site explains the error.',
+        'DEF-001 (plan §9.1): the shop refuses the order (422) but shows no message on screen. Remove test.fail once the site explains the error.',
       );
       await checkout.fillAddressByPostcode(address.postalCode, address.houseNumber);
       await checkout.state.clear();
@@ -206,7 +207,7 @@ test.describe('Toolshop: checkout and payment', () => {
     }) => {
       test.fail(
         true,
-        'Suspected defect (plan §9.2): an expired sign-in makes the shop refuse the order (401) with no message on screen. Remove test.fail once the site explains it.',
+        'DEF-002 (plan §9.2): an expired sign-in makes the shop refuse the order (401) with no message on screen. Remove test.fail once the site explains it.',
       );
       await checkout.fillAddressByPostcode(address.postalCode, address.houseNumber);
       await checkout.proceed();

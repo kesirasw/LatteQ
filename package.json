@@ -18,6 +18,7 @@
     "ui:cdt": "chrome-devtools",
     "ui:map": "node scripts/ui-context/map-locators.mjs",
     "ui:snap": "node scripts/ui-context/snapshot.mjs",
+    "heal:suggest": "node scripts/ui-context/heal-suggest.mjs",
     "test:api": "playwright test --grep @api",
     "api:inventory": "node scripts/api-context/inventory.mjs"
   },
