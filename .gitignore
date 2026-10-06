@@ -10,6 +10,9 @@ playwright-report/
 blob-report/
 playwright/.cache/
 
+# Saved login state (session cookies) written by utils/auth.ts
+.auth/
+
 # IDE
 .vscode/
 .idea/

@@ -1,0 +1,825 @@
+# Practice sites — original notes
+
+> A saved chat. LatteQ's practice suites were chosen from these suggestions (DataTables, Booking.com, GitHub, UI Testing Playground, MUI, Highcharts). Kept for ideas on what to automate next. The implemented sites and their quirks live in `ui-context/`.
+
+---
+
+Can you help me fetch complex pages to practice playwright web automation
+Absolutely — great idea for sharpening Playwright skills 👌
+If you want complex, real-world pages to practice advanced web automation, here’s a curated list grouped by what skill they stress-test. These are perfect for someone at your level (not toy demos).
+________________________________________
+🔥 1. Highly Dynamic / SPA-Heavy Apps
+Great for wait strategies, async rendering, flaky element handling
+✅ Practice targets
+•	GitHub
+o	Repo search, issues list, PR filters, pagination
+o	Infinite scroll + lazy loading
+•	LinkedIn (logged out)
+o	Dynamic cards, delayed content load
+•	Reddit
+o	Infinite scroll, dynamic comments, lazy-loaded media
+👉 Skills practiced:
+•	waitForLoadState('networkidle')
+•	locator.waitFor()
+•	Handling re-rendered DOMs
+________________________________________
+🧠 2. Complex Forms + Validations
+Perfect for realistic business flows (insurance vibes 👀)
+✅ Practice targets
+•	Booking.com
+o	Date pickers, dropdowns, auto-suggestions
+•	Airbnb
+o	Multi-step filters, dynamic pricing
+•	Amazon Checkout (till address step)
+o	Conditional fields, address validation
+👉 Skills practiced:
+•	Smart locators
+•	Date pickers
+•	Conditional UI flows
+•	Avoiding hard waits
+________________________________________
+🌀 3. Shadow DOM & Web Components
+Excellent for advanced DOM traversal
+✅ Practice targets
+•	Salesforce Lightning Design System demo
+•	Google Chrome Settings (chrome://settings) (local practice)
+•	Material UI demos
+o	https://mui.com/material-ui/react-select/
+👉 Skills practiced:
+•	page.locator(':shadow-root')
+•	Working with encapsulated components
+________________________________________
+📊 4. Charts, Graphs & Canvas
+Hardest to automate — great challenge 💪
+✅ Practice targets
+•	TradingView
+o	Canvas-based charts
+•	Google Analytics demo account
+•	Highcharts demos
+o	https://www.highcharts.com/demo
+👉 Skills practiced:
+•	DOM vs Canvas detection
+•	Network interception
+•	Validating data via API instead of UI
+•	Screenshot + pixel comparison (optional)
+________________________________________
+🧾 5. Tables, Pagination & Filters
+Gold for data-heavy enterprise apps
+✅ Practice targets
+•	DataTables examples
+o	https://datatables.net/examples/
+•	Jira public project
+o	Search issues, filters, pagination
+•	Open Government data portals
+o	Massive tables + filters
+👉 Skills practiced:
+•	Table row parsing
+•	Sorting & filtering assertions
+•	Dynamic row locators
+________________________________________
+🔐 6. Authentication & Secure Flows
+Great for storageState, headers, auth bypass
+✅ Practice targets
+•	GitHub Login
+•	Auth0 demo apps
+•	Okta sample apps
+👉 Skills practiced:
+•	storageState
+•	Auth reuse across tests
+•	Header-based auth (API + UI hybrid)
+________________________________________
+🧪 7. Automation-Specific Practice Sites
+Designed exactly for people like us 😄
+Must-use
+•	Playwright Demo
+o	https://playwright.dev/docs/test-examples
+•	UI Testing Playground
+o	https://uitestingplayground.com
+•	Automation Exercise
+o	https://automationexercise.com
+•	The Internet (Herokuapp)
+o	https://the-internet.herokuapp.com
+👉 Skills practiced:
+•	Flakiness handling
+•	Dynamic IDs
+•	Race conditions
+•	Hidden elements
+________________________________________
+🚀 Suggested Practice Roadmap (Power Move)
+Since you already work with Playwright professionally:
+Week 1
+•	Booking.com form flow
+•	DataTables pagination + filters
+Week 2
+•	GitHub search + infinite scroll
+•	Highcharts graph validation via network calls
+Week 3
+•	Auth flow with storageState
+•	Shadow DOM components (MUI)
+________________________________________
+🧩 Want a Challenge?
+If you want, I can:
+•	🔹 Design real interview-style Playwright challenges
+•	🔹 Give you test scenarios (like insurance E2E flows)
+•	🔹 Create a mock app spec + expected assertions
+•	🔹 Help you build a benchmark framework (timeouts, retries, tracing)
+Just tell me what angle you want to practice next 😄
+All of the above
+Perfect — then let’s turn “all of the above” into a structured Playwright practice pack: pages + what to automate + difficulty ramp + what you’ll learn (and how to validate without flaky UI-only assertions).
+Below is a ready-to-run practice syllabus you can follow like a gym program. 💪
+________________________________________
+0) Setup rules (so your practice is realistic)
+Use these constraints for every exercise:
+•	No hard waits (waitForTimeout) unless you’re debugging.
+•	Prefer user-visible assertions: expect(locator).toBeVisible(), toHaveText(), toHaveURL()
+•	Prefer stable locators: role / label / testid > text > css > xpath
+•	Always enable:
+o	trace on first retry
+o	screenshots on failure
+o	video on failure (optional)
+________________________________________
+1) Dynamic / SPA-heavy apps (async + re-render + infinite scroll)
+A. GitHub (logged out is enough)
+Automations
+1.	Search a repo (e.g., “playwright”) → open the first result
+2.	Go to Issues tab → filter “is:issue is:open label:bug”
+3.	Paginate to next page and assert URL includes page=2
+Skills
+•	network/DOM stability
+•	pagination + filtering
+•	robust locators on complex pages
+Bonus
+•	capture the search API response (via page.on('response')) and assert result count matches the UI.
+B. Reddit (logged out)
+Automations
+1.	Open a subreddit → scroll until a post title from the next “page” loads
+2.	Open a post → ensure comments section loads
+Skills
+•	infinite scroll
+•	lazy-loaded content
+•	avoiding “stale element” issues
+________________________________________
+2) Complex forms + validations (multi-step flows)
+A. Booking.com
+Automations
+1.	Set destination
+2.	Choose date range via date picker
+3.	Increase adults/children
+4.	Search → assert results page and that destination is reflected
+Skills
+•	date pickers
+•	auto-suggest inputs
+•	multi-condition assertions
+Non-flaky validation tip
+•	Assert:
+o	URL params (destination/check-in)
+o	key result container visible
+o	at least N property cards
+B. Amazon (stop before payment)
+Automations
+1.	Search an item
+2.	Apply filters (brand/price)
+3.	Open product, add to cart
+4.	Assert cart count + item title
+Skills
+•	heavy DOM, dynamic IDs
+•	conditional popups
+•	stable selectors
+________________________________________
+3) Shadow DOM / Web components
+A. Material UI demos (best learning surface)
+Use MUI Select + Autocomplete:
+•	https://mui.com/material-ui/react-select/
+•	https://mui.com/material-ui/react-autocomplete/
+Automations
+1.	Select dropdown → choose value → verify value reflected
+2.	Autocomplete → type partial → pick option → verify chip/text
+Skills
+•	complex components
+•	portal-based dropdowns (rendered outside parent)
+•	keyboard navigation testing (Tab/Arrow/Enter)
+Pro move
+•	Do it twice: mouse + keyboard-only (accessibility practice).
+________________________________________
+4) Charts / canvas / graphs (hard mode)
+A. Highcharts demos
+https://www.highcharts.com/demo
+Automations
+1.	Open a chart demo
+2.	Hover points → verify tooltip appears
+3.	Click legend to hide series → verify series disappears
+Skills
+•	hover interactions
+•	tooltips that appear/disappear
+•	visual state assertions
+Non-flaky validation tip
+•	Validate via:
+o	DOM tooltip container exists + has expected text
+o	series elements count changes
+B. TradingView (optional: canvas-heavy)
+Here, UI assertions are fragile — practice network-based validation:
+•	intercept requests
+•	assert symbol/timeframe params
+________________________________________
+5) Tables / filters / sorting / pagination
+A. DataTables examples
+https://datatables.net/examples/
+Automations
+1.	Filter table by search box
+2.	Sort by column
+3.	Paginate and assert row content changes
+Skills
+•	table parsing
+•	deterministic assertions
+•	pagination logic
+Bonus
+•	Create a helper: getColumnValues(table, colIndex) and assert sorted order.
+________________________________________
+6) Authentication (storageState + session reuse)
+A. GitHub login (or any app you have access to)
+Automations
+1.	Login once → save storageState
+2.	Reuse session in later tests
+3.	Assert you land on an authenticated page without login
+Skills
+•	storageState
+•	avoiding repeated logins
+•	test isolation
+Bonus
+•	Implement “auth fixture”:
+o	if storage doesn’t exist → login → save
+o	else reuse
+________________________________________
+7) Automation playgrounds (designed for testing edge cases)
+A. UI Testing Playground
+https://uitestingplayground.com
+Do these in order:
+•	Dynamic ID
+•	Load Delay
+•	AJAX Data
+•	Hidden Layers
+•	Mouse Over
+•	Client Side Delay
+Skills
+•	race conditions
+•	delayed rendering
+•	stable locator strategies
+B. The Internet (Herokuapp)
+https://the-internet.herokuapp.com
+Pick:
+•	dynamic controls
+•	file upload
+•	notification messages
+•	infinite scroll
+•	broken images (assert failures cleanly)
+________________________________________
+A complete “All-in” 14-day plan (1 hour/day)
+Day 1–2: DataTables (filter/sort/paginate)
+Day 3–4: Booking.com (date picker + results)
+Day 5–6: GitHub (search + issues filters + pagination)
+Day 7: UI Testing Playground (Dynamic ID + Load Delay)
+Day 8–9: MUI Select + Autocomplete (portal dropdowns)
+Day 10: Reddit infinite scroll + post open
+Day 11–12: Highcharts hover tooltip + legend toggle
+Day 13: Auth storageState flow
+Day 14: Combine everything into a mini framework (fixtures + helpers + reporting)
+________________________________________
+Want the “practice repo” structure too?
+Here’s a recommended structure you can mirror in your framework:
+•	tests/practice/01_tables.spec.ts
+•	tests/practice/02_forms.spec.ts
+•	tests/practice/03_spa.spec.ts
+•	tests/practice/04_shadowdom.spec.ts
+•	tests/practice/05_charts.spec.ts
+•	tests/practice/06_auth.spec.ts
+•	tests/helpers/ (table utils, date picker utils, retry-safe click/type)
+•	playwright.config.ts with trace/screenshot/video defaults
+________________________________________
+One thing I can do next (pick any, I’ll just do it)
+1.	I’ll write starter Playwright spec files for each category (tables/forms/spa/shadowdom/charts/auth) with best-practice patterns.
+2.	I’ll give you a locator + wait strategy cheat-sheet mapped to each page type.
+3.	I’ll give you a “flakiness hardening checklist” you can apply to every exercise.
+If you say “go with #1”, I’ll generate the full starter suite in one go.
+All of the above not just 1, but also build helper utils, page objects
+Got it — let’s build you a complete Playwright practice repo that covers all the categories and includes helper utils + page objects + fixtures (TypeScript).
+Below is a copy/paste-ready scaffold with representative pages, utilities, and POMs you can extend.
+________________________________________
+Repo structure (recommended)
+playwright-practice/
+  playwright.config.ts
+  package.json
+  /tests
+    /practice
+      01_tables_datatables.spec.ts
+      02_forms_booking.spec.ts
+      03_spa_github.spec.ts
+      04_playground_uitp.spec.ts
+      05_components_mui.spec.ts
+      06_charts_highcharts.spec.ts
+      07_auth_storageState.spec.ts
+  /pages
+    BookingPage.ts
+    DataTablesPage.ts
+    GitHubPage.ts
+    UITestingPlaygroundPage.ts
+    MUIPage.ts
+    HighchartsPage.ts
+  /utils
+    actions.ts
+    waits.ts
+    assertions.ts
+    table.ts
+    network.ts
+    auth.ts
+    dates.ts
+  /fixtures
+    test.ts
+  /data
+    env.ts
+________________________________________
+1) Playwright config (trace/screenshot/video best practice)
+// playwright.config.ts
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests',
+  timeout: 60_000,
+  expect: { timeout: 10_000 },
+  retries: 1,
+  fullyParallel: true,
+  use: {
+    baseURL: undefined,
+    headless: true,
+    actionTimeout: 15_000,
+    navigationTimeout: 30_000,
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    trace: 'on-first-retry',
+  },
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+  ],
+  reporter: [['list'], ['html', { open: 'never' }]],
+});
+________________________________________
+2) Fixtures: inject utils + pages cleanly
+// fixtures/test.ts
+import { test as base } from '@playwright/test';
+import { Actions } from '../utils/actions';
+import { Network } from '../utils/network';
+
+import { BookingPage } from '../pages/BookingPage';
+import { GitHubPage } from '../pages/GitHubPage';
+import { DataTablesPage } from '../pages/DataTablesPage';
+import { UITestingPlaygroundPage } from '../pages/UITestingPlaygroundPage';
+import { MUIPage } from '../pages/MUIPage';
+import { HighchartsPage } from '../pages/HighchartsPage';
+
+type Fixtures = {
+  actions: Actions;
+  network: Network;
+  booking: BookingPage;
+  github: GitHubPage;
+  datatables: DataTablesPage;
+  uitp: UITestingPlaygroundPage;
+  mui: MUIPage;
+  highcharts: HighchartsPage;
+};
+
+export const test = base.extend<Fixtures>({
+  actions: async ({ page }, use) => await use(new Actions(page)),
+  network: async ({ page }, use) => await use(new Network(page)),
+
+  booking: async ({ page, actions }, use) => await use(new BookingPage(page, actions)),
+  github: async ({ page, actions }, use) => await use(new GitHubPage(page, actions)),
+  datatables: async ({ page, actions }, use) => await use(new DataTablesPage(page, actions)),
+  uitp: async ({ page, actions }, use) => await use(new UITestingPlaygroundPage(page, actions)),
+  mui: async ({ page, actions }, use) => await use(new MUIPage(page, actions)),
+  highcharts: async ({ page, actions }, use) => await use(new HighchartsPage(page, actions)),
+});
+
+export { expect } from '@playwright/test';
+________________________________________
+3) Core helper utils (the “scalable across any site” layer)
+3.1 actions.ts — safe click/type with auto-waits & retries
+// utils/actions.ts
+import { Page, Locator, expect } from '@playwright/test';
+
+export class Actions {
+  constructor(private readonly page: Page) {}
+
+  locator(target: Locator | string): Locator {
+    return typeof target === 'string' ? this.page.locator(target) : target;
+  }
+
+  async safeClick(target: Locator | string, opts?: { timeout?: number }) {
+    const loc = this.locator(target);
+    await expect(loc).toBeVisible({ timeout: opts?.timeout ?? 10_000 });
+    await expect(loc).toBeEnabled({ timeout: opts?.timeout ?? 10_000 });
+    await loc.scrollIntoViewIfNeeded();
+    await loc.click({ timeout: opts?.timeout ?? 10_000 });
+  }
+
+  async safeFill(target: Locator | string, value: string, opts?: { timeout?: number; clear?: boolean }) {
+    const loc = this.locator(target);
+    await expect(loc).toBeVisible({ timeout: opts?.timeout ?? 10_000 });
+    await loc.scrollIntoViewIfNeeded();
+    if (opts?.clear ?? true) await loc.fill('');
+    await loc.fill(value);
+    await expect(loc).toHaveValue(value, { timeout: opts?.timeout ?? 10_000 });
+  }
+
+  async safeType(target: Locator | string, value: string, opts?: { delay?: number; timeout?: number }) {
+    const loc = this.locator(target);
+    await expect(loc).toBeVisible({ timeout: opts?.timeout ?? 10_000 });
+    await loc.click();
+    await loc.type(value, { delay: opts?.delay ?? 20 });
+  }
+
+  async safePress(target: Locator | string, key: string) {
+    const loc = this.locator(target);
+    await expect(loc).toBeVisible();
+    await loc.press(key);
+  }
+
+  async stableNavigate(url: string) {
+    await this.page.goto(url, { waitUntil: 'domcontentloaded' });
+    // Many modern sites never go truly idle; prefer a pragmatic wait:
+    await this.page.waitForLoadState('domcontentloaded');
+  }
+}
+3.2 waits.ts — reusable “done loading” heuristics
+// utils/waits.ts
+import { Page } from '@playwright/test';
+
+export async function waitForDomSettled(page: Page, ms = 250) {
+  // lightweight: two RAFs + a small timeout
+  await page.evaluate(
+    (delay) =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, delay)));
+      }),
+    ms
+  );
+}
+3.3 table.ts — column parsing + sort checks
+// utils/table.ts
+import { Locator, expect } from '@playwright/test';
+
+export async function getColumnText(table: Locator, colIndex1Based: number) {
+  const rows = table.locator('tbody tr');
+  const count = await rows.count();
+  const values: string[] = [];
+  for (let i = 0; i < count; i++) {
+    values.push(await rows.nth(i).locator(`td:nth-child(${colIndex1Based})`).innerText());
+  }
+  return values.map(v => v.trim());
+}
+
+export function isSortedAsc(values: string[]) {
+  const norm = values.map(v => v.toLowerCase());
+  return norm.every((v, i) => i === 0 || norm[i - 1] <= v);
+}
+
+export async function expectSortedAsc(values: string[]) {
+  await expect(isSortedAsc(values), `Expected values sorted ASC but got: ${values.slice(0, 8).join(', ')}`).toBeTruthy();
+}
+3.4 network.ts — validate requests instead of brittle UI
+// utils/network.ts
+import { Page, Response } from '@playwright/test';
+
+export class Network {
+  constructor(private readonly page: Page) {}
+
+  async waitForResponseContains(urlPart: string, opts?: { timeout?: number; status?: number }): Promise<Response> {
+    return await this.page.waitForResponse(
+      (r) => r.url().includes(urlPart) && (opts?.status ? r.status() === opts.status : true),
+      { timeout: opts?.timeout ?? 20_000 }
+    );
+  }
+
+  async captureJson(urlPart: string, action: () => Promise<void>, opts?: { timeout?: number }) {
+    const respPromise = this.page.waitForResponse((r) => r.url().includes(urlPart), { timeout: opts?.timeout ?? 20_000 });
+    await action();
+    const resp = await respPromise;
+    const json = await resp.json().catch(() => null);
+    return { resp, json };
+  }
+}
+3.5 auth.ts — storageState helper (drop-in for any site)
+// utils/auth.ts
+import { Page } from '@playwright/test';
+import fs from 'fs';
+import path from 'path';
+
+export const AUTH_STATE_PATH = path.join(process.cwd(), '.auth', 'state.json');
+
+export function authStateExists() {
+  return fs.existsSync(AUTH_STATE_PATH);
+}
+
+export async function saveStorageState(page: Page) {
+  fs.mkdirSync(path.dirname(AUTH_STATE_PATH), { recursive: true });
+  await page.context().storageState({ path: AUTH_STATE_PATH });
+}
+________________________________________
+4) Page Objects (POMs) for each practice site
+4.1 DataTables POM
+// pages/DataTablesPage.ts
+import { Page, Locator, expect } from '@playwright/test';
+import { Actions } from '../utils/actions';
+
+export class DataTablesPage {
+  readonly table: Locator;
+  readonly searchBox: Locator;
+
+  constructor(private readonly page: Page, private readonly actions: Actions) {
+    this.table = page.locator('#example'); // DataTables sample uses id=example
+    this.searchBox = page.locator('input[type="search"]');
+  }
+
+  async open() {
+    await this.actions.stableNavigate('https://datatables.net/examples/basic_init/zero_configuration.html');
+    await expect(this.table).toBeVisible();
+  }
+
+  async search(term: string) {
+    await this.actions.safeFill(this.searchBox, term);
+  }
+
+  async sortByHeader(headerText: string) {
+    const header = this.page.getByRole('columnheader', { name: headerText });
+    await this.actions.safeClick(header);
+  }
+}
+4.2 Booking POM (form-heavy)
+// pages/BookingPage.ts
+import { Page, Locator, expect } from '@playwright/test';
+import { Actions } from '../utils/actions';
+
+export class BookingPage {
+  readonly destinationInput: Locator;
+
+  constructor(private readonly page: Page, private readonly actions: Actions) {
+    this.destinationInput = page.getByPlaceholder(/where are you going/i);
+  }
+
+  async open() {
+    await this.actions.stableNavigate('https://www.booking.com/');
+    // Booking shows consent sometimes; keep practice realistic:
+    // you can add a "try dismiss cookie" method later.
+    await expect(this.page).toHaveURL(/booking\.com/);
+  }
+
+  async setDestination(destination: string) {
+    await this.actions.safeClick(this.destinationInput);
+    await this.actions.safeFill(this.destinationInput, destination);
+    // pick first autosuggest
+    const first = this.page.locator('[data-testid="autocomplete-result"]').first();
+    await this.actions.safeClick(first);
+  }
+
+  async clickSearch() {
+    await this.actions.safeClick(this.page.getByRole('button', { name: /search/i }));
+  }
+
+  async assertResults() {
+    await expect(this.page).toHaveURL(/searchresults/i);
+    await expect(this.page.locator('[data-testid="property-card"]')).toHaveCountGreaterThan(0);
+  }
+}
+Note: toHaveCountGreaterThan doesn’t exist by default. If you want it, we can add a tiny custom helper; for now use count() in test.
+4.3 GitHub POM (SPA-ish)
+// pages/GitHubPage.ts
+import { Page, Locator, expect } from '@playwright/test';
+import { Actions } from '../utils/actions';
+
+export class GitHubPage {
+  readonly searchBox: Locator;
+
+  constructor(private readonly page: Page, private readonly actions: Actions) {
+    this.searchBox = page.getByPlaceholder(/search or jump to/i);
+  }
+
+  async open() {
+    await this.actions.stableNavigate('https://github.com/');
+    await expect(this.page).toHaveURL(/github\.com/);
+  }
+
+  async search(term: string) {
+    await this.actions.safeClick(this.searchBox);
+    await this.actions.safeType(this.searchBox, term);
+    await this.actions.safePress(this.searchBox, 'Enter');
+    await expect(this.page).toHaveURL(/search/);
+  }
+
+  async openFirstRepoResult() {
+    const firstRepo = this.page.locator('a.v-align-middle').first();
+    await this.actions.safeClick(firstRepo);
+    await expect(this.page.locator('#repository-container-header')).toBeVisible();
+  }
+
+  async goToIssuesAndFilter(filterQuery: string) {
+    await this.actions.safeClick(this.page.getByRole('link', { name: 'Issues' }));
+    const filterBox = this.page.getByPlaceholder(/is:issue is:open/i);
+    await this.actions.safeFill(filterBox, filterQuery);
+    await this.actions.safePress(filterBox, 'Enter');
+    await expect(this.page).toHaveURL(/q=/);
+  }
+}
+4.4 UI Testing Playground POM (automation-specific)
+// pages/UITestingPlaygroundPage.ts
+import { Page, expect } from '@playwright/test';
+import { Actions } from '../utils/actions';
+
+export class UITestingPlaygroundPage {
+  constructor(private readonly page: Page, private readonly actions: Actions) {}
+
+  async open() {
+    await this.actions.stableNavigate('https://uitestingplayground.com/');
+    await expect(this.page.getByRole('heading', { name: 'UI Test Automation Playground' })).toBeVisible();
+  }
+
+  async openDynamicId() {
+    await this.actions.safeClick(this.page.getByRole('link', { name: 'Dynamic ID' }));
+    await expect(this.page.getByRole('heading', { name: 'Dynamic ID' })).toBeVisible();
+  }
+
+  async clickDynamicButton() {
+    // Button id changes; rely on role + name
+    await this.actions.safeClick(this.page.getByRole('button', { name: 'Button with Dynamic ID' }));
+  }
+
+  async openLoadDelay() {
+    await this.actions.safeClick(this.page.getByRole('link', { name: 'Load Delay' }));
+    await expect(this.page.getByRole('heading', { name: 'Load Delay' })).toBeVisible();
+  }
+
+  async clickAppearingButton() {
+    await this.actions.safeClick(this.page.getByRole('button', { name: 'Button Appearing After Delay' }));
+  }
+}
+4.5 MUI POM (portals + complex components)
+// pages/MUIPage.ts
+import { Page, expect } from '@playwright/test';
+import { Actions } from '../utils/actions';
+
+export class MUIPage {
+  constructor(private readonly page: Page, private readonly actions: Actions) {}
+
+  async openSelectDemo() {
+    await this.actions.stableNavigate('https://mui.com/material-ui/react-select/');
+    await expect(this.page.getByRole('heading', { name: /select/i })).toBeVisible();
+  }
+
+  async pickSimpleSelect(optionText: string) {
+    // On MUI docs there are multiple selects; pick a stable one by label near it.
+    // For practice, you’ll likely adjust selectors once you inspect the page.
+    const combo = this.page.getByRole('combobox').first();
+    await this.actions.safeClick(combo);
+    // Options are in a portal (outside component), role=option
+    await this.actions.safeClick(this.page.getByRole('option', { name: optionText }));
+    await expect(combo).toContainText(optionText);
+  }
+}
+4.6 Highcharts POM (hover/tooltip/legend)
+// pages/HighchartsPage.ts
+import { Page, Locator, expect } from '@playwright/test';
+import { Actions } from '../utils/actions';
+
+export class HighchartsPage {
+  readonly chart: Locator;
+
+  constructor(private readonly page: Page, private readonly actions: Actions) {
+    this.chart = page.locator('.highcharts-container').first();
+  }
+
+  async openDemo() {
+    await this.actions.stableNavigate('https://www.highcharts.com/demo');
+    await expect(this.page.getByRole('heading', { name: /highcharts demos/i })).toBeVisible();
+  }
+
+  async openFirstDemoTile() {
+    const firstDemo = this.page.locator('a.demo-card, a[href*="/demo/"]').first();
+    await this.actions.safeClick(firstDemo);
+    await expect(this.chart).toBeVisible();
+  }
+
+  async hoverFirstPointAndAssertTooltip() {
+    // SVG point marker in many demos:
+    const point = this.page.locator('.highcharts-point').first();
+    await expect(point).toBeVisible();
+    await point.hover();
+    const tooltip = this.page.locator('.highcharts-tooltip').first();
+    await expect(tooltip).toBeVisible();
+  }
+
+  async toggleFirstLegendItem() {
+    const legendItem = this.page.locator('.highcharts-legend-item').first();
+    await expect(legendItem).toBeVisible();
+    await legendItem.click();
+  }
+}
+________________________________________
+5) Tests (one per category, using POM + utils)
+5.1 Tables test (DataTables)
+// tests/practice/01_tables_datatables.spec.ts
+import { test, expect } from '../../fixtures/test';
+import { getColumnText, expectSortedAsc } from '../../utils/table';
+
+test('DataTables: filter + sort + pagination', async ({ datatables, page }) => {
+  await datatables.open();
+
+  await datatables.search('London');
+  const rowsAfterFilter = await page.locator('#example tbody tr').count();
+  expect(rowsAfterFilter).toBeGreaterThan(0);
+
+  await datatables.sortByHeader('Name');
+
+  const col = await getColumnText(datatables.table, 1);
+  await expectSortedAsc(col);
+});
+5.2 Forms test (Booking)
+// tests/practice/02_forms_booking.spec.ts
+import { test, expect } from '../../fixtures/test';
+
+test('Booking: destination + search results', async ({ booking, page }) => {
+  await booking.open();
+  await booking.setDestination('Melbourne');
+  await booking.clickSearch();
+
+  await expect(page).toHaveURL(/searchresults/i);
+  const cards = page.locator('[data-testid="property-card"]');
+  expect(await cards.count()).toBeGreaterThan(0);
+});
+5.3 SPA-ish test (GitHub)
+// tests/practice/03_spa_github.spec.ts
+import { test } from '../../fixtures/test';
+
+test('GitHub: search repo + issues filter', async ({ github }) => {
+  await github.open();
+  await github.search('microsoft playwright');
+  await github.openFirstRepoResult();
+  await github.goToIssuesAndFilter('is:issue is:open label:bug');
+});
+5.4 UI Testing Playground
+// tests/practice/04_playground_uitp.spec.ts
+import { test } from '../../fixtures/test';
+
+test('UITP: Dynamic ID + Load Delay', async ({ uitp }) => {
+  await uitp.open();
+
+  await uitp.openDynamicId();
+  await uitp.clickDynamicButton();
+
+  await uitp.open();
+  await uitp.openLoadDelay();
+  await uitp.clickAppearingButton();
+});
+5.5 MUI components (portal dropdown)
+// tests/practice/05_components_mui.spec.ts
+import { test } from '../../fixtures/test';
+
+test('MUI: select option via portal', async ({ mui }) => {
+  await mui.openSelectDemo();
+  await mui.pickSimpleSelect('Ten');
+});
+5.6 Charts (Highcharts hover + tooltip)
+// tests/practice/06_charts_highcharts.spec.ts
+import { test } from '../../fixtures/test';
+
+test('Highcharts: open demo + hover tooltip', async ({ highcharts }) => {
+  await highcharts.openDemo();
+  await highcharts.openFirstDemoTile();
+  await highcharts.hoverFirstPointAndAssertTooltip();
+});
+5.7 Auth storageState pattern (template)
+// tests/practice/07_auth_storageState.spec.ts
+import { test, expect } from '@playwright/test';
+import { AUTH_STATE_PATH, authStateExists, saveStorageState } from '../../utils/auth';
+
+test.describe('Auth storageState template', () => {
+  test('Login once and save storageState (example)', async ({ page }) => {
+    test.skip(authStateExists(), 'Auth state already exists. Delete .auth/state.json to re-run login.');
+
+    await page.goto('https://github.com/login');
+    // Fill username/password manually or via env vars (recommended)
+    // await page.getByLabel('Username or email address').fill(process.env.GH_USER!);
+    // await page.getByLabel('Password').fill(process.env.GH_PASS!);
+    // await page.getByRole('button', { name: 'Sign in' }).click();
+
+    // For practice: just show where to assert login success.
+    // await expect(page.getByRole('link', { name: /your profile/i })).toBeVisible();
+
+    await saveStorageState(page);
+  });
+
+  test.use({ storageState: AUTH_STATE_PATH });
+
+  test('Reuse auth state (example)', async ({ page }) => {
+    test.skip(!authStateExists(), 'No auth state found. Run the first test once.');
+    await page.goto('https://github.com/');
+    await expect(page).toHaveURL(/github\.com/);
+  });
+});
+

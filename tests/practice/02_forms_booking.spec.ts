@@ -1,11 +1,15 @@
-import { test, expect } from '../../fixtures/test';
+import { test } from '../../fixtures/test';
+import { ENV } from '../../data/env';
 
-test('Booking: destination + search results', async ({ booking, page }) => {
+// Booking's bot check blocks Playwright's bundled Chromium but lets real Chrome through (KB §8)
+test.use({ channel: 'chrome' });
+
+test('Booking: searching a destination shows its results @flaky-site', async ({ booking }) => {
+  const destination = ENV.TEST_KEYWORDS.booking;
+
   await booking.open();
-  await booking.setDestination('Melbourne');
+  await booking.setDestination(destination);
   await booking.clickSearch();
 
-  await expect(page).toHaveURL(/searchresults/i);
-  const cards = page.locator('[data-testid="property-card"]');
-  expect(await cards.count()).toBeGreaterThan(0);
+  await booking.assertResults(destination);
 });
